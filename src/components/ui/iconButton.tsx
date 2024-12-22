@@ -1,14 +1,14 @@
 import clsx from "clsx";
-import { IconType } from "react-icons/lib";
 interface IconButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
   className?: string;
-  Icon: IconType;
+  Icon: React.ReactNode;
   onClick?: () => void;
   ariaLabel?: string;
   disabled?: boolean;
 }
 
 export const IconButton = (props: IconButtonProps) => {
+  const Icon = props.Icon;
   return (
     // tailwindcss button
     <button
@@ -21,7 +21,7 @@ export const IconButton = (props: IconButtonProps) => {
       onClick={props.onClick}
       aria-label={props.ariaLabel}
     >
-      <props.Icon />
+      {Icon}
     </button>
   );
 };

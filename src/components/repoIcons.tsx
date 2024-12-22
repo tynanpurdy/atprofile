@@ -9,13 +9,7 @@ import {
   Waves,
 } from "lucide-react";
 
-import {
-  siBluesky,
-  siLinkfire,
-  siMediafire,
-  SimpleIcon,
-  siReddit,
-} from "simple-icons";
+import { siBluesky, siMediafire, siReddit } from "simple-icons";
 
 interface IconMapping {
   // The icon to display, a url to an image or a component (Lucide icon)

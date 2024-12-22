@@ -4,19 +4,6 @@ import { useEffect, useState } from "react";
 import { IconButton } from "./ui/iconButton";
 import { Circle, Moon, Sun } from "lucide-react";
 
-const other = (theme: string) => {
-  if (theme === "dark") {
-    return "light";
-  } else {
-    if (theme === "system") {
-      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)");
-      return systemTheme.matches ? "light" : "dark";
-    } else {
-      return "dark";
-    }
-  }
-};
-
 export const ColorToggle = () => {
   const { theme, toggleTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
