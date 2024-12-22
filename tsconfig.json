@@ -10,6 +10,7 @@
   ],
   "compilerOptions": {
     "baseUrl": ".",
+    "types": ["@atcute/bluesky/lexicons"],
     "paths": {
       "@/*": ["./src/*"]
     }
