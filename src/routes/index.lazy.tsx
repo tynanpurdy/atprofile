@@ -8,7 +8,6 @@ import {
 import {
   IdentityMetadata,
   resolveFromIdentity,
-  resolveHandle,
 } from "@atcute/oauth-browser-client";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { AtSign } from "lucide-react";
@@ -102,7 +101,7 @@ export const Route = createLazyFileRoute("/")({
 
 function Index() {
   const { blueSkyData, data, identity, isLoading, error } =
-    useRepoData("danabra.mov");
+    useRepoData("kasey.cafe");
 
   if (isLoading) {
     return <div>Loading...</div>;

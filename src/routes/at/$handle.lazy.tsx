@@ -8,7 +8,6 @@ import {
 import {
   IdentityMetadata,
   resolveFromIdentity,
-  resolveHandle,
 } from "@atcute/oauth-browser-client";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { AtSign } from "lucide-react";
