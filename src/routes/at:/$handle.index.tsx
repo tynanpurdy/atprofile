@@ -9,7 +9,7 @@ import {
   IdentityMetadata,
   resolveFromIdentity,
 } from "@atcute/oauth-browser-client";
-import { createLazyFileRoute } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { AtSign } from "lucide-react";
 import { useState, useEffect } from "preact/compat";
 
@@ -95,7 +95,7 @@ function useRepoData(handle: string): RepoData {
   return state;
 }
 
-export const Route = createLazyFileRoute("/at/$handle")({
+export const Route = createFileRoute("/at:/$handle/")({
   component: RouteComponent,
 });
 
@@ -160,11 +160,12 @@ function RouteComponent() {
           <ul>
             {data?.collections.map((c) => (
               <li key={c} className="text-blue-500">
-                <a href={`/at/${handle}/${c}`}>{c}</a>
+                <a href={`/at:/${handle}/${c}`}>{c}</a>
               </li>
             ))}
           </ul>
         </div>
+        <div>{handle}</div>
       </div>
     </div>
   );

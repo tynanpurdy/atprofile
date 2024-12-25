@@ -13,17 +13,17 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as AtHandleIndexImport } from './routes/at:/$handle.index'
 
 // Create Virtual Routes
 
 const AboutLazyImport = createFileRoute('/about')()
 const IndexLazyImport = createFileRoute('/')()
-const AtHandleLazyImport = createFileRoute('/at/$handle')()
-const AtHandleCollectionLazyImport = createFileRoute(
-  '/at/$handle/$collection',
+const AtHandleCollectionIndexLazyImport = createFileRoute(
+  '/at:/$handle/$collection/',
 )()
 const AtHandleCollectionRkeyLazyImport = createFileRoute(
-  '/at/$handle/$collection/$rkey',
+  '/at:/$handle/$collection/$rkey',
 )()
 
 // Create/Update Routes
@@ -40,28 +40,29 @@ const IndexLazyRoute = IndexLazyImport.update({
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
 
-const AtHandleLazyRoute = AtHandleLazyImport.update({
-  id: '/at/$handle',
-  path: '/at/$handle',
+const AtHandleIndexRoute = AtHandleIndexImport.update({
+  id: '/at:/$handle/',
+  path: '/at:/$handle/',
   getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/at/$handle.lazy').then((d) => d.Route))
+} as any)
 
-const AtHandleCollectionLazyRoute = AtHandleCollectionLazyImport.update({
-  id: '/$collection',
-  path: '/$collection',
-  getParentRoute: () => AtHandleLazyRoute,
-} as any).lazy(() =>
-  import('./routes/at/$handle.$collection.lazy').then((d) => d.Route),
-)
+const AtHandleCollectionIndexLazyRoute =
+  AtHandleCollectionIndexLazyImport.update({
+    id: '/at:/$handle/$collection/',
+    path: '/at:/$handle/$collection/',
+    getParentRoute: () => rootRoute,
+  } as any).lazy(() =>
+    import('./routes/at:/$handle/$collection.index.lazy').then((d) => d.Route),
+  )
 
 const AtHandleCollectionRkeyLazyRoute = AtHandleCollectionRkeyLazyImport.update(
   {
-    id: '/$rkey',
-    path: '/$rkey',
-    getParentRoute: () => AtHandleCollectionLazyRoute,
+    id: '/at:/$handle/$collection/$rkey',
+    path: '/at:/$handle/$collection/$rkey',
+    getParentRoute: () => rootRoute,
   } as any,
 ).lazy(() =>
-  import('./routes/at/$handle.$collection.$rkey.lazy').then((d) => d.Route),
+  import('./routes/at:/$handle.$collection.$rkey.lazy').then((d) => d.Route),
 )
 
 // Populate the FileRoutesByPath interface
@@ -82,81 +83,55 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutLazyImport
       parentRoute: typeof rootRoute
     }
-    '/at/$handle': {
-      id: '/at/$handle'
-      path: '/at/$handle'
-      fullPath: '/at/$handle'
-      preLoaderRoute: typeof AtHandleLazyImport
+    '/at:/$handle/': {
+      id: '/at:/$handle/'
+      path: '/at:/$handle'
+      fullPath: '/at:/$handle'
+      preLoaderRoute: typeof AtHandleIndexImport
       parentRoute: typeof rootRoute
     }
-    '/at/$handle/$collection': {
-      id: '/at/$handle/$collection'
-      path: '/$collection'
-      fullPath: '/at/$handle/$collection'
-      preLoaderRoute: typeof AtHandleCollectionLazyImport
-      parentRoute: typeof AtHandleLazyImport
-    }
-    '/at/$handle/$collection/$rkey': {
-      id: '/at/$handle/$collection/$rkey'
-      path: '/$rkey'
-      fullPath: '/at/$handle/$collection/$rkey'
+    '/at:/$handle/$collection/$rkey': {
+      id: '/at:/$handle/$collection/$rkey'
+      path: '/at:/$handle/$collection/$rkey'
+      fullPath: '/at:/$handle/$collection/$rkey'
       preLoaderRoute: typeof AtHandleCollectionRkeyLazyImport
-      parentRoute: typeof AtHandleCollectionLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/at:/$handle/$collection/': {
+      id: '/at:/$handle/$collection/'
+      path: '/at:/$handle/$collection'
+      fullPath: '/at:/$handle/$collection'
+      preLoaderRoute: typeof AtHandleCollectionIndexLazyImport
+      parentRoute: typeof rootRoute
     }
   }
 }
 
 // Create and export the route tree
 
-interface AtHandleCollectionLazyRouteChildren {
-  AtHandleCollectionRkeyLazyRoute: typeof AtHandleCollectionRkeyLazyRoute
-}
-
-const AtHandleCollectionLazyRouteChildren: AtHandleCollectionLazyRouteChildren =
-  {
-    AtHandleCollectionRkeyLazyRoute: AtHandleCollectionRkeyLazyRoute,
-  }
-
-const AtHandleCollectionLazyRouteWithChildren =
-  AtHandleCollectionLazyRoute._addFileChildren(
-    AtHandleCollectionLazyRouteChildren,
-  )
-
-interface AtHandleLazyRouteChildren {
-  AtHandleCollectionLazyRoute: typeof AtHandleCollectionLazyRouteWithChildren
-}
-
-const AtHandleLazyRouteChildren: AtHandleLazyRouteChildren = {
-  AtHandleCollectionLazyRoute: AtHandleCollectionLazyRouteWithChildren,
-}
-
-const AtHandleLazyRouteWithChildren = AtHandleLazyRoute._addFileChildren(
-  AtHandleLazyRouteChildren,
-)
-
 export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
   '/about': typeof AboutLazyRoute
-  '/at/$handle': typeof AtHandleLazyRouteWithChildren
-  '/at/$handle/$collection': typeof AtHandleCollectionLazyRouteWithChildren
-  '/at/$handle/$collection/$rkey': typeof AtHandleCollectionRkeyLazyRoute
+  '/at:/$handle': typeof AtHandleIndexRoute
+  '/at:/$handle/$collection/$rkey': typeof AtHandleCollectionRkeyLazyRoute
+  '/at:/$handle/$collection': typeof AtHandleCollectionIndexLazyRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
   '/about': typeof AboutLazyRoute
-  '/at/$handle': typeof AtHandleLazyRouteWithChildren
-  '/at/$handle/$collection': typeof AtHandleCollectionLazyRouteWithChildren
-  '/at/$handle/$collection/$rkey': typeof AtHandleCollectionRkeyLazyRoute
+  '/at:/$handle': typeof AtHandleIndexRoute
+  '/at:/$handle/$collection/$rkey': typeof AtHandleCollectionRkeyLazyRoute
+  '/at:/$handle/$collection': typeof AtHandleCollectionIndexLazyRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexLazyRoute
   '/about': typeof AboutLazyRoute
-  '/at/$handle': typeof AtHandleLazyRouteWithChildren
-  '/at/$handle/$collection': typeof AtHandleCollectionLazyRouteWithChildren
-  '/at/$handle/$collection/$rkey': typeof AtHandleCollectionRkeyLazyRoute
+  '/at:/$handle/': typeof AtHandleIndexRoute
+  '/at:/$handle/$collection/$rkey': typeof AtHandleCollectionRkeyLazyRoute
+  '/at:/$handle/$collection/': typeof AtHandleCollectionIndexLazyRoute
 }
 
 export interface FileRouteTypes {
@@ -164,36 +139,40 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
-    | '/at/$handle'
-    | '/at/$handle/$collection'
-    | '/at/$handle/$collection/$rkey'
+    | '/at:/$handle'
+    | '/at:/$handle/$collection/$rkey'
+    | '/at:/$handle/$collection'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
-    | '/at/$handle'
-    | '/at/$handle/$collection'
-    | '/at/$handle/$collection/$rkey'
+    | '/at:/$handle'
+    | '/at:/$handle/$collection/$rkey'
+    | '/at:/$handle/$collection'
   id:
     | '__root__'
     | '/'
     | '/about'
-    | '/at/$handle'
-    | '/at/$handle/$collection'
-    | '/at/$handle/$collection/$rkey'
+    | '/at:/$handle/'
+    | '/at:/$handle/$collection/$rkey'
+    | '/at:/$handle/$collection/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
   AboutLazyRoute: typeof AboutLazyRoute
-  AtHandleLazyRoute: typeof AtHandleLazyRouteWithChildren
+  AtHandleIndexRoute: typeof AtHandleIndexRoute
+  AtHandleCollectionRkeyLazyRoute: typeof AtHandleCollectionRkeyLazyRoute
+  AtHandleCollectionIndexLazyRoute: typeof AtHandleCollectionIndexLazyRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
   AboutLazyRoute: AboutLazyRoute,
-  AtHandleLazyRoute: AtHandleLazyRouteWithChildren,
+  AtHandleIndexRoute: AtHandleIndexRoute,
+  AtHandleCollectionRkeyLazyRoute: AtHandleCollectionRkeyLazyRoute,
+  AtHandleCollectionIndexLazyRoute: AtHandleCollectionIndexLazyRoute,
 }
 
 export const routeTree = rootRoute
@@ -208,7 +187,9 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/about",
-        "/at/$handle"
+        "/at:/$handle/",
+        "/at:/$handle/$collection/$rkey",
+        "/at:/$handle/$collection/"
       ]
     },
     "/": {
@@ -217,22 +198,14 @@ export const routeTree = rootRoute
     "/about": {
       "filePath": "about.lazy.tsx"
     },
-    "/at/$handle": {
-      "filePath": "at/$handle.lazy.tsx",
-      "children": [
-        "/at/$handle/$collection"
-      ]
+    "/at:/$handle/": {
+      "filePath": "at:/$handle.index.tsx"
     },
-    "/at/$handle/$collection": {
-      "filePath": "at/$handle.$collection.lazy.tsx",
-      "parent": "/at/$handle",
-      "children": [
-        "/at/$handle/$collection/$rkey"
-      ]
+    "/at:/$handle/$collection/$rkey": {
+      "filePath": "at:/$handle.$collection.$rkey.lazy.tsx"
     },
-    "/at/$handle/$collection/$rkey": {
-      "filePath": "at/$handle.$collection.$rkey.lazy.tsx",
-      "parent": "/at/$handle/$collection"
+    "/at:/$handle/$collection/": {
+      "filePath": "at:/$handle/$collection.index.lazy.tsx"
     }
   }
 }

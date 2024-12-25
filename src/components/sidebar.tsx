@@ -20,7 +20,7 @@ import { ColorToggle } from "./themeSwitcher";
 const items = [
   {
     title: "Home",
-    url: "#",
+    url: "/",
     icon: Home,
   },
   {
@@ -32,7 +32,7 @@ const items = [
 
 export function AppSidebar() {
   return (
-    <Sidebar collapsible="icon" variant="sidebar">
+    <Sidebar collapsible="offcanvas">
       <SidebarContent>
         <SidebarHeader className="-my-4">
           <div className="flex items-center text-3xl px-2 pt-4">
@@ -48,7 +48,7 @@ export function AppSidebar() {
             </div>
           </SidebarGroupLabel>
           <SidebarGroupContent>
-            <SmartSearchBar />
+            <SmartSearchBar isKeybindEnabled={true} />
           </SidebarGroupContent>
         </SidebarGroup>
         <SidebarGroup className="-my-4">

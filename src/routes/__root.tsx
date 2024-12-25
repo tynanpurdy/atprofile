@@ -1,5 +1,9 @@
 import { AppSidebar } from "@/components/sidebar";
-import { SidebarProvider } from "@/components/ui/sidebar";
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
 import { QtClient, QtContext } from "@/providers/qtprovider";
 import { ThemeProvider } from "@/providers/themeProvider";
 import { createRootRoute, Outlet } from "@tanstack/react-router";
@@ -13,7 +17,10 @@ export const Route = createRootRoute({
         <QtContext.Provider value={new QtClient()}>
           <SidebarProvider>
             <AppSidebar />
-            <Outlet />
+            <SidebarInset>
+              <SidebarTrigger className="size-10 sticky top-0" />
+              <Outlet />
+            </SidebarInset>
           </SidebarProvider>
         </QtContext.Provider>
       </ThemeProvider>
