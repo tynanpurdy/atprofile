@@ -1,5 +1,3 @@
-import { useState, useEffect } from "preact/compat";
-
 // lazy dumb component. redo this ASAP
 export function RenderJson(props: { data: any; depth?: number }) {
   if (!props.depth) {

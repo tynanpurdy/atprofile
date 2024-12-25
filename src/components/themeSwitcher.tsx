@@ -1,7 +1,6 @@
 "use client";
 import { useTheme } from "@/providers/themeProvider";
 import { useEffect, useState } from "react";
-import { IconButton } from "./ui/iconButton";
 import { Circle, Moon, Sun } from "lucide-react";
 import { Button } from "./ui/button";
 
