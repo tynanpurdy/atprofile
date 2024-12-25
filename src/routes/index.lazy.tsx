@@ -1,4 +1,3 @@
-import RepoIcons from "@/components/repoIcons";
 import { SmartSearchBar } from "@/components/smartSearchBar";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { AtSign, Star } from "lucide-react";
