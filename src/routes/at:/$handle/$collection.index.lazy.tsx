@@ -4,7 +4,7 @@ import {
   IdentityMetadata,
   resolveFromIdentity,
 } from "@atcute/oauth-browser-client";
-import { createLazyFileRoute } from "@tanstack/react-router";
+import { createLazyFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "preact/hooks";
 
 export const Route = createLazyFileRoute("/at:/$handle/$collection/")({
@@ -117,12 +117,12 @@ function RouteComponent() {
   return (
     <div className="flex flex-row justify-center w-full min-h-screen">
       <div className="max-w-2xl w-screen p-4 md:mt-16 space-y-2">
-        <a href={`/at:/${identity?.raw}`} className="">
+        <Link href={`/at:/${identity?.raw}`} className="">
           <h1 className="text-2xl md:text-3xl text-muted-foreground font-normal">
             @{identity?.raw}
           </h1>
           <code>{identity?.id}</code>
-        </a>
+        </Link>
         <div>
           PDS: {identity?.pds.hostname.includes("bsky.network") && "🍄"}{" "}
           {identity?.pds.hostname}
@@ -133,7 +133,7 @@ function RouteComponent() {
           <ul>
             {records?.map((r) => (
               <li key={r.uri} className="text-blue-500">
-                <a href={`/${r.uri}`}>{r.uri.split("/").pop()}</a>
+                <Link href={`/${r.uri}`}>{r.uri.split("/").pop()}</Link>
               </li>
             ))}
           </ul>

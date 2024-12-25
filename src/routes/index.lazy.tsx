@@ -1,5 +1,5 @@
 import { SmartSearchBar } from "@/components/smartSearchBar";
-import { createLazyFileRoute } from "@tanstack/react-router";
+import { createLazyFileRoute, Link } from "@tanstack/react-router";
 import { AtSign, Star } from "lucide-react";
 
 export const Route = createLazyFileRoute("/")({
@@ -15,10 +15,9 @@ export default function Index() {
           <AtSign className="text-blue-500 mb-4" height={64} width={64} />
           <div className="text-center space-y-4 mb-4">
             <p className="text-xl text-muted-foreground max-w-[600px] mx-auto">
-              Search for a user, collection, or repo to get started.
+              Enter a user, collection, or repo to get started.
             </p>
           </div>
-
           {/* Search section */}
           <div className="w-full max-w-xl mx-auto">
             <SmartSearchBar />
@@ -28,19 +27,19 @@ export default function Index() {
               <Star fill={"#9f9f9f"} /> Try:
             </div>
             <div className="flex flex-row gap-x-2">
-              <a href="/at:/danabra.mov" className="text-blue-500">
+              <Link href="/at:/danabra.mov" className="text-blue-500">
                 <div className="bg-muted text-muted-foreground rounded-full px-2">
                   at://danabra.mov
                 </div>
-              </a>
-              <a
+              </Link>
+              <Link
                 href="/at:/erisa.moe/social.psky.feed.post"
                 className="text-blue-500"
               >
                 <div className="bg-muted text-muted-foreground rounded-full px-2">
                   at://erisa.moe/social.psky.feed.post
                 </div>
-              </a>
+              </Link>
             </div>
           </div>
         </div>

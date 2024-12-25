@@ -71,7 +71,7 @@ export function SmartSearchBar({
           <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
             type="text"
-            placeholder="Search..."
+            placeholder="Enter a handle, at url, or PDS url"
             value={input}
             onChange={(e) => setInput(e.currentTarget.value)}
             className="border-0 focus-visible:ring-0 focus-visible:ring-offset-0 pl-12 py-6 text-lg"

@@ -9,7 +9,7 @@ import {
   IdentityMetadata,
   resolveFromIdentity,
 } from "@atcute/oauth-browser-client";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { AtSign } from "lucide-react";
 import { useState, useEffect } from "preact/compat";
 
@@ -160,7 +160,7 @@ function RouteComponent() {
           <ul>
             {data?.collections.map((c) => (
               <li key={c} className="text-blue-500">
-                <a href={`/at:/${handle}/${c}`}>{c}</a>
+                <Link href={`/at:/${handle}/${c}`}>{c}</Link>
               </li>
             ))}
           </ul>
