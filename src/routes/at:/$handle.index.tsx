@@ -103,12 +103,16 @@ function RouteComponent() {
   const { handle } = Route.useParams();
   const { blueSkyData, data, identity, isLoading, error } = useRepoData(handle);
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
   if (error) {
     return <div>Error: {error.message}</div>;
+  }
+
+  if (isLoading && !blueSkyData) {
+    return (
+      <div className="flex flex-row justify-center align-middle w-full h-full min-h-screen">
+        (throbber here)
+      </div>
+    );
   }
 
   return (

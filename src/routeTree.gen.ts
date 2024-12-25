@@ -13,6 +13,7 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as FirehoseIndexImport } from './routes/firehose/index'
 import { Route as AtHandleIndexImport } from './routes/at:/$handle.index'
 
 // Create Virtual Routes
@@ -39,6 +40,12 @@ const IndexLazyRoute = IndexLazyImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
+
+const FirehoseIndexRoute = FirehoseIndexImport.update({
+  id: '/firehose/',
+  path: '/firehose/',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const AtHandleIndexRoute = AtHandleIndexImport.update({
   id: '/at:/$handle/',
@@ -83,6 +90,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutLazyImport
       parentRoute: typeof rootRoute
     }
+    '/firehose/': {
+      id: '/firehose/'
+      path: '/firehose'
+      fullPath: '/firehose'
+      preLoaderRoute: typeof FirehoseIndexImport
+      parentRoute: typeof rootRoute
+    }
     '/at:/$handle/': {
       id: '/at:/$handle/'
       path: '/at:/$handle'
@@ -112,6 +126,7 @@ declare module '@tanstack/react-router' {
 export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
   '/about': typeof AboutLazyRoute
+  '/firehose': typeof FirehoseIndexRoute
   '/at:/$handle': typeof AtHandleIndexRoute
   '/at:/$handle/$collection/$rkey': typeof AtHandleCollectionRkeyLazyRoute
   '/at:/$handle/$collection': typeof AtHandleCollectionIndexLazyRoute
@@ -120,6 +135,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
   '/about': typeof AboutLazyRoute
+  '/firehose': typeof FirehoseIndexRoute
   '/at:/$handle': typeof AtHandleIndexRoute
   '/at:/$handle/$collection/$rkey': typeof AtHandleCollectionRkeyLazyRoute
   '/at:/$handle/$collection': typeof AtHandleCollectionIndexLazyRoute
@@ -129,6 +145,7 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexLazyRoute
   '/about': typeof AboutLazyRoute
+  '/firehose/': typeof FirehoseIndexRoute
   '/at:/$handle/': typeof AtHandleIndexRoute
   '/at:/$handle/$collection/$rkey': typeof AtHandleCollectionRkeyLazyRoute
   '/at:/$handle/$collection/': typeof AtHandleCollectionIndexLazyRoute
@@ -139,6 +156,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/firehose'
     | '/at:/$handle'
     | '/at:/$handle/$collection/$rkey'
     | '/at:/$handle/$collection'
@@ -146,6 +164,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/firehose'
     | '/at:/$handle'
     | '/at:/$handle/$collection/$rkey'
     | '/at:/$handle/$collection'
@@ -153,6 +172,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
+    | '/firehose/'
     | '/at:/$handle/'
     | '/at:/$handle/$collection/$rkey'
     | '/at:/$handle/$collection/'
@@ -162,6 +182,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
   AboutLazyRoute: typeof AboutLazyRoute
+  FirehoseIndexRoute: typeof FirehoseIndexRoute
   AtHandleIndexRoute: typeof AtHandleIndexRoute
   AtHandleCollectionRkeyLazyRoute: typeof AtHandleCollectionRkeyLazyRoute
   AtHandleCollectionIndexLazyRoute: typeof AtHandleCollectionIndexLazyRoute
@@ -170,6 +191,7 @@ export interface RootRouteChildren {
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
   AboutLazyRoute: AboutLazyRoute,
+  FirehoseIndexRoute: FirehoseIndexRoute,
   AtHandleIndexRoute: AtHandleIndexRoute,
   AtHandleCollectionRkeyLazyRoute: AtHandleCollectionRkeyLazyRoute,
   AtHandleCollectionIndexLazyRoute: AtHandleCollectionIndexLazyRoute,
@@ -187,6 +209,7 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/about",
+        "/firehose/",
         "/at:/$handle/",
         "/at:/$handle/$collection/$rkey",
         "/at:/$handle/$collection/"
@@ -197,6 +220,9 @@ export const routeTree = rootRoute
     },
     "/about": {
       "filePath": "about.lazy.tsx"
+    },
+    "/firehose/": {
+      "filePath": "firehose/index.tsx"
     },
     "/at:/$handle/": {
       "filePath": "at:/$handle.index.tsx"

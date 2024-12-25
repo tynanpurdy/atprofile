@@ -106,12 +106,16 @@ function RouteComponent() {
     return () => observer.disconnect();
   }, [cursor, isLoading, fetchMore]);
 
-  if (isLoading && !records) {
-    return <div>Loading...</div>;
-  }
-
   if (error) {
     return <div>Error: {error.message}</div>;
+  }
+
+  if (isLoading || !records) {
+    return (
+      <div className="flex flex-row justify-center w-full min-h-screen">
+        (throbber here)
+      </div>
+    );
   }
 
   return (

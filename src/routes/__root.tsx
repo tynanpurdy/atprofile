@@ -24,7 +24,7 @@ export const Route = createRootRoute({
           </SidebarProvider>
         </QtContext.Provider>
       </ThemeProvider>
-      <TanStackRouterDevtools />
+      <TanStackRouterDevtools position="bottom-right" />
     </>
   ),
 });
