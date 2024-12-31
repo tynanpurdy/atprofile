@@ -7,12 +7,26 @@ export function RenderJson(props: { data: any; depth?: number; did: string }) {
   }
   // if data is not an object just render it
   if (typeof props.data !== "object") {
-    if (typeof props.data === "string" && props.data.startsWith("at://")) {
-      return (
-        <a className="text-blue-700 dark:text-blue-400" href={"/" + props.data}>
-          {props.data}
-        </a>
-      );
+    if (typeof props.data === "string") {
+      if (props.data.startsWith("at://")) {
+        return (
+          <a
+            className="text-blue-700 dark:text-blue-400"
+            href={"/" + props.data}
+          >
+            {props.data}
+          </a>
+        );
+      } else if (props.data.startsWith("did:")) {
+        return (
+          <a
+            className="text-blue-700 dark:text-blue-400"
+            href={"/at://" + props.data}
+          >
+            {props.data}
+          </a>
+        );
+      }
     }
 
     return <span>{props.data}</span>;
