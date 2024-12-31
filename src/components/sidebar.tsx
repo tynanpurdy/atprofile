@@ -1,4 +1,4 @@
-import { AtSign, FireExtinguisher, Home } from "lucide-react";
+import { AtSign, FireExtinguisher, Gauge, Home } from "lucide-react";
 
 import {
   Sidebar,
@@ -27,6 +27,11 @@ const items = [
     title: "Firehose",
     url: "#",
     icon: FireExtinguisher,
+  },
+  {
+    title: "Counter",
+    url: "https://bcounter.nat.vg",
+    icon: Gauge,
   },
 ];
 

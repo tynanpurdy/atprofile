@@ -18,6 +18,7 @@ import { Route as AtHandleIndexImport } from './routes/at:/$handle.index'
 
 // Create Virtual Routes
 
+const CounterLazyImport = createFileRoute('/counter')()
 const AboutLazyImport = createFileRoute('/about')()
 const IndexLazyImport = createFileRoute('/')()
 const AtHandleCollectionIndexLazyImport = createFileRoute(
@@ -28,6 +29,12 @@ const AtHandleCollectionRkeyLazyImport = createFileRoute(
 )()
 
 // Create/Update Routes
+
+const CounterLazyRoute = CounterLazyImport.update({
+  id: '/counter',
+  path: '/counter',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/counter.lazy').then((d) => d.Route))
 
 const AboutLazyRoute = AboutLazyImport.update({
   id: '/about',
@@ -90,6 +97,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutLazyImport
       parentRoute: typeof rootRoute
     }
+    '/counter': {
+      id: '/counter'
+      path: '/counter'
+      fullPath: '/counter'
+      preLoaderRoute: typeof CounterLazyImport
+      parentRoute: typeof rootRoute
+    }
     '/firehose/': {
       id: '/firehose/'
       path: '/firehose'
@@ -126,6 +140,7 @@ declare module '@tanstack/react-router' {
 export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
   '/about': typeof AboutLazyRoute
+  '/counter': typeof CounterLazyRoute
   '/firehose': typeof FirehoseIndexRoute
   '/at:/$handle': typeof AtHandleIndexRoute
   '/at:/$handle/$collection/$rkey': typeof AtHandleCollectionRkeyLazyRoute
@@ -135,6 +150,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
   '/about': typeof AboutLazyRoute
+  '/counter': typeof CounterLazyRoute
   '/firehose': typeof FirehoseIndexRoute
   '/at:/$handle': typeof AtHandleIndexRoute
   '/at:/$handle/$collection/$rkey': typeof AtHandleCollectionRkeyLazyRoute
@@ -145,6 +161,7 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexLazyRoute
   '/about': typeof AboutLazyRoute
+  '/counter': typeof CounterLazyRoute
   '/firehose/': typeof FirehoseIndexRoute
   '/at:/$handle/': typeof AtHandleIndexRoute
   '/at:/$handle/$collection/$rkey': typeof AtHandleCollectionRkeyLazyRoute
@@ -156,6 +173,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/counter'
     | '/firehose'
     | '/at:/$handle'
     | '/at:/$handle/$collection/$rkey'
@@ -164,6 +182,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/counter'
     | '/firehose'
     | '/at:/$handle'
     | '/at:/$handle/$collection/$rkey'
@@ -172,6 +191,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
+    | '/counter'
     | '/firehose/'
     | '/at:/$handle/'
     | '/at:/$handle/$collection/$rkey'
@@ -182,6 +202,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
   AboutLazyRoute: typeof AboutLazyRoute
+  CounterLazyRoute: typeof CounterLazyRoute
   FirehoseIndexRoute: typeof FirehoseIndexRoute
   AtHandleIndexRoute: typeof AtHandleIndexRoute
   AtHandleCollectionRkeyLazyRoute: typeof AtHandleCollectionRkeyLazyRoute
@@ -191,6 +212,7 @@ export interface RootRouteChildren {
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
   AboutLazyRoute: AboutLazyRoute,
+  CounterLazyRoute: CounterLazyRoute,
   FirehoseIndexRoute: FirehoseIndexRoute,
   AtHandleIndexRoute: AtHandleIndexRoute,
   AtHandleCollectionRkeyLazyRoute: AtHandleCollectionRkeyLazyRoute,
@@ -209,6 +231,7 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/about",
+        "/counter",
         "/firehose/",
         "/at:/$handle/",
         "/at:/$handle/$collection/$rkey",
@@ -220,6 +243,9 @@ export const routeTree = rootRoute
     },
     "/about": {
       "filePath": "about.lazy.tsx"
+    },
+    "/counter": {
+      "filePath": "counter.lazy.tsx"
     },
     "/firehose/": {
       "filePath": "firehose/index.tsx"

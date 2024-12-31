@@ -20,6 +20,9 @@ importers:
       '@radix-ui/react-dialog':
         specifier: ^1.1.4
         version: 1.1.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@radix-ui/react-progress':
+        specifier: ^1.1.1
+        version: 1.1.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@radix-ui/react-separator':
         specifier: ^1.1.1
         version: 1.1.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -32,6 +35,9 @@ importers:
       '@tanstack/react-router':
         specifier: ^1.91.3
         version: 1.91.3(@tanstack/router-generator@1.87.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@tsparticles/confetti':
+        specifier: ^3.7.1
+        version: 3.7.1
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -708,6 +714,19 @@ packages:
       '@types/react-dom':
         optional: true
 
+  '@radix-ui/react-progress@1.1.1':
+    resolution: {integrity: sha512-6diOawA84f/eMxFHcWut0aE1C2kyE9dOyCTQOMRR2C/qPiXz/X0SaiA/RLbapQaXUCmy0/hLMf9meSccD1N0pA==}
+    peerDependencies:
+      '@types/react': '*'
+      '@types/react-dom': '*'
+      react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+      react-dom: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      '@types/react-dom':
+        optional: true
+
   '@radix-ui/react-separator@1.1.1':
     resolution: {integrity: sha512-RRiNRSrD8iUiXriq/Y5n4/3iE8HzqgLHsusUSg5jVpU2+3tqcUFPJXHDymwEypunc2sWxDUS3UC+rkZRlHedsw==}
     peerDependencies:
@@ -966,6 +985,84 @@ packages:
   '@tanstack/virtual-file-routes@1.87.6':
     resolution: {integrity: sha512-PTpeM8SHL7AJM0pJOacFvHribbUODS51qe9NsMqku4mogh6BWObY1EeVmeGnp9o3VngAEsf+rJMs2zqIVz3WFA==}
     engines: {node: '>=12'}
+
+  '@tsparticles/basic@3.7.1':
+    resolution: {integrity: sha512-oJMJ3qzYUROYaOEsaFXkVynxT2OTWBXbQ9MNc1bJi/bVc1VOU44VN7X/KmiZjD+w1U+Qalk6BeVvDRwpFshblw==}
+
+  '@tsparticles/confetti@3.7.1':
+    resolution: {integrity: sha512-wYRCIi0l6PyjWm5LgxKqB4viMg/H1F3QFdBVI4zpNelypEHvnGyLw69gfhdnsiHjy2YO9/M5LOoJ2MSZllLcKg==}
+
+  '@tsparticles/engine@3.7.1':
+    resolution: {integrity: sha512-GYzBgq/oOE9YJdOL1++MoawWmYg4AvVct6CIrJGx84ZRb3U2owYmLsRGabYl0qX1CWWOvUG569043RJmyp/vQA==}
+
+  '@tsparticles/move-base@3.7.1':
+    resolution: {integrity: sha512-LPtMHwJHhzwfRIcSAk814fY9NcRiICwaEbapaJSYyP1DwscSXqOWoyAEWwzV9hMgAcPdsED6nGeg8RCXGm58lw==}
+
+  '@tsparticles/plugin-emitters@3.7.1':
+    resolution: {integrity: sha512-WV5Uwxp/Ckqv5kZynTj6mj13jYbQCArNLFv8ks+zjdlteoyT5EhQl4rg+TalaySCb1zCd6Fu2Scp35l3JJgbnw==}
+
+  '@tsparticles/plugin-hex-color@3.7.1':
+    resolution: {integrity: sha512-7xu3MV8EdNNejjYyEmrq5fCDdYAcqz/9VatLpnwtwR5Q5t2qI0tD4CrcGaFfC/rTAVJacfiJe02UV/hlj03KKA==}
+
+  '@tsparticles/plugin-hsl-color@3.7.1':
+    resolution: {integrity: sha512-zzAI1CuoCMBJhgeYZ5Rq42nGbPg35ZzIs11eQegjsWG5Msm5QKSj60qPzERnoUcCc4HCKtIWP7rYMz6h3xpoEg==}
+
+  '@tsparticles/plugin-motion@3.7.1':
+    resolution: {integrity: sha512-CJVXQVcwURpcEin1xC5abPgaBQCJQ/SfP7zGBQJrfsaGz8t6YTbZdfuK6Yc0M8j8gTldlgl4dXjQCejFmSCNmQ==}
+
+  '@tsparticles/plugin-rgb-color@3.7.1':
+    resolution: {integrity: sha512-taEraTpCYR6jpjflqBL95tN0zFU8JrAChXTt8mxVn7gddxoNMHI/LGymEPRCweLukwV6GQyAGOkeGEdWDPtYTA==}
+
+  '@tsparticles/shape-cards@3.7.1':
+    resolution: {integrity: sha512-MzXPlEH5lY9xR0j8kHaIPWzxEjvaYAxufUevi4ya5ju4qLGZB1tLAABr0h8qRMESPf1ALiVISNhdTxbDclaHFA==}
+
+  '@tsparticles/shape-circle@3.7.1':
+    resolution: {integrity: sha512-kmOWaUuFwuTtcCFYjuyJbdA5qDqWdGsharLalYnIczkLu2c1I8jJo/OmGePKhWn62ocu7mqKMomfElkIcw2AsA==}
+
+  '@tsparticles/shape-emoji@3.7.1':
+    resolution: {integrity: sha512-mX18c/xhYVljS/r5Xbowzclw+1YwhtWoQFOOfkmjjZppA+RjgcwSKLvH6E20PaH1yVTjBOfSF+3POKpwsULzTg==}
+
+  '@tsparticles/shape-heart@3.7.1':
+    resolution: {integrity: sha512-g7HxUIgz2hzn47n3/LC3Q81NxrgvWoNIgqBdcVD1S3C+h/JnRHRDnQWhSpFD/bcZJFRxn4DGHnvV42H9u2hqfA==}
+
+  '@tsparticles/shape-image@3.7.1':
+    resolution: {integrity: sha512-eDzfkQhqLY6fb9QH2Vo9TGfdJBFFpYnojhxQxc7IdzIwOFMD3JK4B52RVl9oowR+rNE8dNp6P2L+eMAF4yld0g==}
+
+  '@tsparticles/shape-polygon@3.7.1':
+    resolution: {integrity: sha512-5FrRfpYC3qnvV2nXBLE4Q0v+SMNWJO8xgzh6MBFwfptvqH4EOrqc/58eS5x0jlf+evwf9LjPgeGkOTcwaHHcYQ==}
+
+  '@tsparticles/shape-square@3.7.1':
+    resolution: {integrity: sha512-7VCqbRwinjBZ+Ryme27rOtl+jKrET8qDthqZLrAoj3WONBqyt+R9q6SXAJ9WodqEX68IBvcluqbFY5qDZm8iAQ==}
+
+  '@tsparticles/shape-star@3.7.1':
+    resolution: {integrity: sha512-3G4oipioyWKLEQYT11Sx3k6AObu3dbv/A5LRqGGTQm5IR6UACa+INwykZYI0a+MdJJMb83E0e4Fn3hlZbi0/8w==}
+
+  '@tsparticles/updater-color@3.7.1':
+    resolution: {integrity: sha512-QimV3yn17dcdJx7PpTwLtw9BhkQ0q8qFF035OdcZpnynBPAO/hg0zvSMpMGoeuDVFH02wWBy4h2/BYCv6wh6Sw==}
+
+  '@tsparticles/updater-life@3.7.1':
+    resolution: {integrity: sha512-NY5gUrgO5AsARNC0usP9PKahXf7JCxbP/H1vzTfA0SJw4veANfWTldOvhIlcm2CHVP5P1b827p0hWsBHECwz7A==}
+
+  '@tsparticles/updater-opacity@3.7.1':
+    resolution: {integrity: sha512-YcyviCooTv7SAKw7sxd84CfJqZ7dYPSdYZzCpedV6TKIObRiwLqXlyLXQGJ3YltghKQSCSolmVy8woWBCDm1qA==}
+
+  '@tsparticles/updater-out-modes@3.7.1':
+    resolution: {integrity: sha512-Cb5sWquRtUYLSiFpmBjjYKRdpNV52diCo9+qMtK1oVlldDBhUwqO+1TQjdlaA2yl5DURlY9ZfOHXvY+IT7CHCw==}
+
+  '@tsparticles/updater-roll@3.7.1':
+    resolution: {integrity: sha512-gHLRqpTGVGPJBEAIPUiYVembIn5bcaTXXxsUJEM/IN+GIOvj2uZZGZ4r2aFTA6WugqEbJsJdblDSvMfouyz7Ug==}
+
+  '@tsparticles/updater-rotate@3.7.1':
+    resolution: {integrity: sha512-toVHwl+h6SvtA8dyxSA2kMH2QdDA71vehuAa+HoRqf1y06h5kxyYiMKZFHCqDJ6lFfRPs47MjrC9dD2bDz14MQ==}
+
+  '@tsparticles/updater-size@3.7.1':
+    resolution: {integrity: sha512-+Y0H0PnDJVIsJ+zHTyubYu1jtRFmVnY1dAv3VCjScIDw6bcpL/ol+HrtHTGIX0WbMyUfjCyALfAoaXi/Wm8VcQ==}
+
+  '@tsparticles/updater-tilt@3.7.1':
+    resolution: {integrity: sha512-pSOXoXPre1VPKC5nC5GW0L9jw63w1dVdsDdggEau7MP9xO7trko9L/KyayBX12Y4Ief1ca12Incxxr67hw7GGA==}
+
+  '@tsparticles/updater-wobble@3.7.1':
+    resolution: {integrity: sha512-YIlNg4L0w4egQJhPLpgcvcfv9+X621+cQsrdN9sSmajxhhwtEQvQUvFUzGTcvpjVi+GcBNp0t4sCKEzoP8iaYw==}
 
   '@types/babel__core@7.20.5':
     resolution: {integrity: sha512-qoQprZvz5wQFJwMDqeseRXWv3rqMvhgpbXFfVyWhbx9X47POIA6i/+dXefEmZKoAgOaTdaIgNSMqMIU61yRyzA==}
@@ -2219,6 +2316,13 @@ snapshots:
       react: 19.0.0
       react-dom: 19.0.0(react@19.0.0)
 
+  '@radix-ui/react-progress@1.1.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
+    dependencies:
+      '@radix-ui/react-context': 1.1.1(react@19.0.0)
+      '@radix-ui/react-primitive': 2.0.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
+
   '@radix-ui/react-separator@1.1.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
     dependencies:
       '@radix-ui/react-primitive': 2.0.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -2411,6 +2515,132 @@ snapshots:
   '@tanstack/store@0.6.0': {}
 
   '@tanstack/virtual-file-routes@1.87.6': {}
+
+  '@tsparticles/basic@3.7.1':
+    dependencies:
+      '@tsparticles/engine': 3.7.1
+      '@tsparticles/move-base': 3.7.1
+      '@tsparticles/plugin-hex-color': 3.7.1
+      '@tsparticles/plugin-hsl-color': 3.7.1
+      '@tsparticles/plugin-rgb-color': 3.7.1
+      '@tsparticles/shape-circle': 3.7.1
+      '@tsparticles/updater-color': 3.7.1
+      '@tsparticles/updater-opacity': 3.7.1
+      '@tsparticles/updater-out-modes': 3.7.1
+      '@tsparticles/updater-size': 3.7.1
+
+  '@tsparticles/confetti@3.7.1':
+    dependencies:
+      '@tsparticles/basic': 3.7.1
+      '@tsparticles/engine': 3.7.1
+      '@tsparticles/plugin-emitters': 3.7.1
+      '@tsparticles/plugin-motion': 3.7.1
+      '@tsparticles/shape-cards': 3.7.1
+      '@tsparticles/shape-emoji': 3.7.1
+      '@tsparticles/shape-heart': 3.7.1
+      '@tsparticles/shape-image': 3.7.1
+      '@tsparticles/shape-polygon': 3.7.1
+      '@tsparticles/shape-square': 3.7.1
+      '@tsparticles/shape-star': 3.7.1
+      '@tsparticles/updater-life': 3.7.1
+      '@tsparticles/updater-roll': 3.7.1
+      '@tsparticles/updater-rotate': 3.7.1
+      '@tsparticles/updater-tilt': 3.7.1
+      '@tsparticles/updater-wobble': 3.7.1
+
+  '@tsparticles/engine@3.7.1': {}
+
+  '@tsparticles/move-base@3.7.1':
+    dependencies:
+      '@tsparticles/engine': 3.7.1
+
+  '@tsparticles/plugin-emitters@3.7.1':
+    dependencies:
+      '@tsparticles/engine': 3.7.1
+
+  '@tsparticles/plugin-hex-color@3.7.1':
+    dependencies:
+      '@tsparticles/engine': 3.7.1
+
+  '@tsparticles/plugin-hsl-color@3.7.1':
+    dependencies:
+      '@tsparticles/engine': 3.7.1
+
+  '@tsparticles/plugin-motion@3.7.1':
+    dependencies:
+      '@tsparticles/engine': 3.7.1
+
+  '@tsparticles/plugin-rgb-color@3.7.1':
+    dependencies:
+      '@tsparticles/engine': 3.7.1
+
+  '@tsparticles/shape-cards@3.7.1':
+    dependencies:
+      '@tsparticles/engine': 3.7.1
+
+  '@tsparticles/shape-circle@3.7.1':
+    dependencies:
+      '@tsparticles/engine': 3.7.1
+
+  '@tsparticles/shape-emoji@3.7.1':
+    dependencies:
+      '@tsparticles/engine': 3.7.1
+
+  '@tsparticles/shape-heart@3.7.1':
+    dependencies:
+      '@tsparticles/engine': 3.7.1
+
+  '@tsparticles/shape-image@3.7.1':
+    dependencies:
+      '@tsparticles/engine': 3.7.1
+
+  '@tsparticles/shape-polygon@3.7.1':
+    dependencies:
+      '@tsparticles/engine': 3.7.1
+
+  '@tsparticles/shape-square@3.7.1':
+    dependencies:
+      '@tsparticles/engine': 3.7.1
+
+  '@tsparticles/shape-star@3.7.1':
+    dependencies:
+      '@tsparticles/engine': 3.7.1
+
+  '@tsparticles/updater-color@3.7.1':
+    dependencies:
+      '@tsparticles/engine': 3.7.1
+
+  '@tsparticles/updater-life@3.7.1':
+    dependencies:
+      '@tsparticles/engine': 3.7.1
+
+  '@tsparticles/updater-opacity@3.7.1':
+    dependencies:
+      '@tsparticles/engine': 3.7.1
+
+  '@tsparticles/updater-out-modes@3.7.1':
+    dependencies:
+      '@tsparticles/engine': 3.7.1
+
+  '@tsparticles/updater-roll@3.7.1':
+    dependencies:
+      '@tsparticles/engine': 3.7.1
+
+  '@tsparticles/updater-rotate@3.7.1':
+    dependencies:
+      '@tsparticles/engine': 3.7.1
+
+  '@tsparticles/updater-size@3.7.1':
+    dependencies:
+      '@tsparticles/engine': 3.7.1
+
+  '@tsparticles/updater-tilt@3.7.1':
+    dependencies:
+      '@tsparticles/engine': 3.7.1
+
+  '@tsparticles/updater-wobble@3.7.1':
+    dependencies:
+      '@tsparticles/engine': 3.7.1
 
   '@types/babel__core@7.20.5':
     dependencies:

@@ -26,7 +26,7 @@ export default function Index() {
             <div className="flex flex-row gap-x-1 text-muted-foreground">
               <Star /> Try:
             </div>
-            <div className="md:flex md:flex-row space-y-2 space-x-2">
+            <div className="md:flex md:flex-row space-y-1 md:space-x-1 md:space-y-0">
               <Link href="/at:/danabra.mov" className="text-blue-500">
                 <div className="bg-muted text-muted-foreground rounded-full px-2">
                   at://danabra.mov
