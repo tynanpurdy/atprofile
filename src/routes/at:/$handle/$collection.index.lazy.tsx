@@ -1,3 +1,4 @@
+import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { QtClient } from "@/providers/qtprovider";
 import { ComAtprotoRepoListRecords } from "@atcute/client/lexicons";
 import {
@@ -88,6 +89,8 @@ function RouteComponent() {
   const { records, identity, isLoading, error, fetchMore, cursor } =
     useCollectionRecords(handle, collection);
   const loaderRef = useRef<HTMLDivElement>(null);
+
+  useDocumentTitle(records ? `${collection} | atp.tools` : "atp.tools");
 
   useEffect(() => {
     if (!loaderRef.current) return;

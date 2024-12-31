@@ -1,4 +1,5 @@
 import RepoIcons from "@/components/repoIcons";
+import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { QtClient, useXrpc } from "@/providers/qtprovider";
 import "@atcute/bluesky/lexicons";
 import {
@@ -28,6 +29,10 @@ function useRepoData(handle: string): RepoData {
     isLoading: true,
     error: null,
   });
+
+  useDocumentTitle(
+    state.data?.handle ? `${state.data.handle} | atp.tools` : "atp.tools",
+  );
 
   useEffect(() => {
     const abortController = new AbortController();

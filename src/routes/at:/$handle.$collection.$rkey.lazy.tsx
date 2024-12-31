@@ -1,4 +1,5 @@
 import { RenderJson } from "@/components/renderJson";
+import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { QtClient, useXrpc } from "@/providers/qtprovider";
 import "@atcute/bluesky/lexicons";
 import {
@@ -95,6 +96,12 @@ function RouteComponent() {
     handle,
     collection,
     rkey,
+  );
+
+  useDocumentTitle(
+    repoInfo
+      ? `${repoInfo?.handle ? `${repoInfo.handle} | ` : ""}${collection} | atp.tools`
+      : "atp.tools",
   );
 
   if (error) {
