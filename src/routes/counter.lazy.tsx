@@ -9,7 +9,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Clock, TrendingUp, TriangleAlert } from "lucide-react";
 import AnimatedCounter from "@/components/animatedCounter";
-import { Link } from "@tanstack/react-router";
 import ParticlesComponent from "@/components/particles";
 
 //const UPDATE_INTERVAL = 60000;

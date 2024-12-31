@@ -8,6 +8,7 @@ import { QtClient, QtContext } from "@/providers/qtprovider";
 import { ThemeProvider } from "@/providers/themeProvider";
 import { createRootRoute, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
+import { env } from "process";
 
 // It's the layout component
 export const Route = createRootRoute({
@@ -24,7 +25,9 @@ export const Route = createRootRoute({
           </SidebarProvider>
         </QtContext.Provider>
       </ThemeProvider>
-      <TanStackRouterDevtools position="bottom-right" />
+      {process.env.NODE_ENV === "development" && (
+        <TanStackRouterDevtools position="bottom-right" />
+      )}
     </>
   ),
 });
