@@ -1,5 +1,7 @@
+import { getComponent } from "./json/getComponent";
+
 // lazy dumb component. redo this ASAP
-export function RenderJson(props: { data: any; depth?: number }) {
+export function RenderJson(props: { data: any; depth?: number; did: string }) {
   if (!props.depth) {
     props.depth = 0;
   }
@@ -15,13 +17,28 @@ export function RenderJson(props: { data: any; depth?: number }) {
 
     return <span>{props.data}</span>;
   }
+  // if the data is an object we have a custom component for, use that instead
+  if (props.data.$type) {
+    const Component = getComponent(props.data.$type);
+    if (Component) {
+      return (
+        <div style={{ marginLeft: `${20}px` }}>
+          {props.data.$type}: <Component did={props.did} {...props.data} />
+        </div>
+      );
+    }
+  }
   return (
     <div>
       {Object.keys(props.data).map((k) => {
         return (
-          <div style={{ marginLeft: `${(props.depth ?? 0) * 20}px` }}>
+          <div style={{ marginLeft: `${20}px` }}>
             {k}:{" "}
-            <RenderJson data={props.data[k]} depth={(props.depth ?? 0) + 1} />
+            <RenderJson
+              data={props.data[k]}
+              depth={(props.depth ?? 0) + 1}
+              did={props.did}
+            />
           </div>
         );
       })}

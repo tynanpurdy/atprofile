@@ -119,7 +119,6 @@ function RouteComponent() {
           </h1>
           <code>{identity?.id}</code>
         </Link>
-
         <div>
           PDS: {identity?.pds.hostname.includes("bsky.network") && "🍄"}{" "}
           {identity?.pds.hostname}
@@ -129,7 +128,9 @@ function RouteComponent() {
           repo type
         </div>
         <div className="border-b" />
-        <RenderJson data={data} />
+        <div className="w-full overflow-x-auto">
+          <RenderJson data={data} did={identity?.id ?? ""} />
+        </div>
       </div>
     </div>
   );
