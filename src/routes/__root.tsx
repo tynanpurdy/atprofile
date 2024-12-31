@@ -8,7 +8,6 @@ import { QtClient, QtContext } from "@/providers/qtprovider";
 import { ThemeProvider } from "@/providers/themeProvider";
 import { createRootRoute, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
-import { env } from "process";
 
 // It's the layout component
 export const Route = createRootRoute({
