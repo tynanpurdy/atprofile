@@ -110,7 +110,7 @@ function RouteComponent() {
     return <div>Error: {error.message}</div>;
   }
 
-  if (isLoading || !records) {
+  if ((isLoading && !cursor) || !records) {
     return (
       <div className="flex flex-row justify-center w-full min-h-screen">
         (throbber here)
@@ -147,12 +147,12 @@ function RouteComponent() {
             className="flex flex-row justify-center h-10 -pt-16"
           >
             {isLoading && (
-              <div className="text-center text-sm text-muted-foreground mt-10">
+              <div className="text-center text-sm text-muted-foreground mx-10">
                 Loading more...
               </div>
             )}
             {!isLoading && !cursor && (
-              <div className="text-center text-sm text-muted-foreground mt-10">
+              <div className="text-center text-sm text-muted-foreground mx-10">
                 that's all, folks!
               </div>
             )}

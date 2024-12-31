@@ -148,7 +148,11 @@ function RouteComponent() {
 
         {data?.collections && (
           <div className="flex flex-row pb-2">
-            <RepoIcons collections={data?.collections} />
+            <RepoIcons
+              collections={data?.collections}
+              handle={data?.handle}
+              did={identity?.id}
+            />
           </div>
         )}
         <code>{data?.did}</code>
@@ -169,7 +173,6 @@ function RouteComponent() {
             ))}
           </ul>
         </div>
-        <div>{handle}</div>
       </div>
     </div>
   );

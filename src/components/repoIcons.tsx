@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import {
   ClipboardPaste,
   File,
@@ -16,6 +17,9 @@ interface IconMapping {
   icon: string | React.ReactNode;
   // The label to display on icon hover
   label: string;
+  // The link template to use for this icon. will find and replace {handle} or {did}.
+  // e.g. https://bsky.app/profile/{handle/did}
+  linkTemplate?: string;
 }
 
 function svgB64ify(svg: string) {
@@ -23,23 +27,35 @@ function svgB64ify(svg: string) {
 }
 
 const iconMappings: Record<string, IconMapping> = {
-  "app.bsky": { icon: svgB64ify(siBluesky.svg), label: "Bluesky" },
+  "app.bsky": {
+    icon: svgB64ify(siBluesky.svg),
+    label: "Bluesky",
+    linkTemplate: "https://bsky.app/profile/{did}",
+  },
   "blue.zio.atfile": {
     icon: <File />,
     label: "Atfile",
   },
   "com.shinolabs.pinksea": {
-    icon: <Waves />,
+    icon: <img src="/assets/services/pinksea.svg" alt="Frontpage" />,
     label: "Pinksea",
   },
-  "com.whtwnd.blog.entry": { icon: <Pen />, label: "Blog" },
+  "com.whtwnd.blog": { icon: <Pen />, label: "WhiteWind" },
   "fyi.unravel.frontpage": {
-    icon: svgB64ify(siReddit.svg),
+    icon: <img src="/assets/services/frontpage.svg" alt="Frontpage" />,
     label: "Frontpage",
+    linkTemplate: "https://frontpage.fyi/profile/{handle}",
   },
   "events.smokesignal": {
-    icon: svgB64ify(siMediafire.svg),
+    icon: (
+      <img
+        src="/assets/services/smokesignal.png"
+        className="rounded-full"
+        alt="Frontpage"
+      />
+    ),
     label: "Smokesignal",
+    linkTemplate: "https://smokesignal.events/{did}",
   },
   "link.pastesphere": { icon: <ClipboardPaste />, label: "Pastesphere" },
   "my.skylights": { icon: <Star />, label: "Skylights" },
@@ -55,13 +71,22 @@ function getIconForCollection(collection: string) {
   return matchingKey ? iconMappings[matchingKey] : null;
 }
 
-function RepoIcons({ collections }: { collections: string[] }) {
+function RepoIcons({
+  collections,
+  did,
+  handle,
+}: {
+  collections: string[];
+  did?: string;
+  handle?: string;
+}) {
   let uniqueTypes = Array.from(
     collections
       .map((collection) => ({
         id: collection,
         Icon: getIconForCollection(collection)?.icon ?? <ShieldQuestionIcon />,
         displayName: getIconForCollection(collection)?.label ?? "Unknown",
+        linkTemplate: getIconForCollection(collection)?.linkTemplate,
       }))
       .reduce((acc, current) => {
         if (
@@ -81,16 +106,19 @@ function RepoIcons({ collections }: { collections: string[] }) {
   );
 
   console.log(uniqueTypes);
-  return uniqueTypes.map(({ id, Icon, displayName }) => (
-    <div key={id}>
+  return uniqueTypes.map(({ id, Icon, displayName, linkTemplate }) => (
+    <a
+      href={linkTemplate?.replace("{handle}", handle).replace("{did}", did)}
+      key={id}
+    >
       <div className="w-8 h-8 p-1 mr-2 rounded-full bg-neutral-500 text-white">
         {typeof Icon === "string" ? (
-          <img src={Icon} alt={displayName} />
+          <img className="pt-[1px]" src={Icon} alt={displayName} />
         ) : (
           <>{Icon}</>
         )}
       </div>
-    </div>
+    </a>
   ));
 }
 
