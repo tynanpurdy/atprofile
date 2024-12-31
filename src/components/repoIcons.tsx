@@ -1,16 +1,4 @@
-import { Link } from "@tanstack/react-router";
-import {
-  ClipboardPaste,
-  File,
-  MessageSquare,
-  Pen,
-  ShieldQuestionIcon,
-  Star,
-  ThumbsUp,
-  Waves,
-} from "lucide-react";
-
-import { siBluesky, siMediafire, siReddit } from "simple-icons";
+import { ShieldQuestionIcon } from "lucide-react";
 
 interface IconMapping {
   // The icon to display, a url to an image or a component (Lucide icon)
@@ -22,25 +10,34 @@ interface IconMapping {
   linkTemplate?: string;
 }
 
-function svgB64ify(svg: string) {
-  return "data:image/svg+xml;base64," + btoa(svg);
-}
-
+// A mapping of collections to icons
+// To add a new icon, the project must have a logo (svg), and a 'profile' url.
 const iconMappings: Record<string, IconMapping> = {
   "app.bsky": {
-    icon: svgB64ify(siBluesky.svg),
+    icon: (
+      <img
+        src="/assets/services/bluesky.png"
+        className="mt-[2px]"
+        alt="Bluesky"
+      />
+    ),
     label: "Bluesky",
     linkTemplate: "https://bsky.app/profile/{did}",
   },
-  "blue.zio.atfile": {
-    icon: <File />,
-    label: "Atfile",
-  },
+  // "blue.zio.atfile": {
+  //   icon: <File />,
+  //   label: "Atfile",
+  // },
   "com.shinolabs.pinksea": {
-    icon: <img src="/assets/services/pinksea.svg" alt="Frontpage" />,
+    icon: <img src="/assets/services/pinksea.svg" alt="Pinksea" />,
     label: "Pinksea",
+    linkTemplate: "https://pinksea.art/{did}",
   },
-  "com.whtwnd.blog": { icon: <Pen />, label: "WhiteWind" },
+  "com.whtwnd.blog": {
+    icon: <img src="/assets/services/whtwnd.svg" alt="WhiteWind" />,
+    label: "WhiteWind",
+    linkTemplate: "https://whtwnd.com/{handle}",
+  },
   "fyi.unravel.frontpage": {
     icon: <img src="/assets/services/frontpage.svg" alt="Frontpage" />,
     label: "Frontpage",
@@ -57,10 +54,10 @@ const iconMappings: Record<string, IconMapping> = {
     label: "Smokesignal",
     linkTemplate: "https://smokesignal.events/{did}",
   },
-  "link.pastesphere": { icon: <ClipboardPaste />, label: "Pastesphere" },
-  "my.skylights": { icon: <Star />, label: "Skylights" },
-  "social.psky": { icon: <MessageSquare />, label: "Psky" },
-  "xyz.statusphere": { icon: <ThumbsUp />, label: "Statusphere example app" },
+  //"link.pastesphere": { icon: <ClipboardPaste />, label: "Pastesphere" },
+  //"my.skylights": { icon: <Star />, label: "Skylights" },
+  //"social.psky": { icon: <MessageSquare />, label: "Psky" },
+  //"xyz.statusphere": { icon: <ThumbsUp />, label: "Statusphere example app" },
 };
 
 function getIconForCollection(collection: string) {
@@ -111,7 +108,7 @@ function RepoIcons({
       href={linkTemplate?.replace("{handle}", handle).replace("{did}", did)}
       key={id}
     >
-      <div className="w-8 h-8 p-1 mr-2 rounded-full bg-neutral-500 text-white">
+      <div className="w-8 h-8 p-1 mr-2 rounded-full dark:bg-neutral-800 border border-neutral-500/50 text-white">
         {typeof Icon === "string" ? (
           <img className="pt-[1px]" src={Icon} alt={displayName} />
         ) : (

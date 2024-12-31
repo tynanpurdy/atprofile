@@ -1,5 +1,4 @@
 import { AppBskyEmbedImages } from "@atcute/client/lexicons";
-import { X } from "lucide-react";
 import { useState } from "preact/hooks";
 import { Dialog, DialogContent, DialogOverlay } from "@/components/ui/dialog";
 
