@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/sidebar";
 import { SmartSearchBar } from "./smartSearchBar";
 import { ColorToggle } from "./themeSwitcher";
+import { Link } from "@tanstack/react-router";
 
 // Menu items.
 const items = [
@@ -30,7 +31,7 @@ const items = [
   },
   {
     title: "Counter",
-    url: "https://bcounter.nat.vg",
+    url: "/counter",
     icon: Gauge,
   },
 ];
@@ -63,10 +64,10 @@ export function AppSidebar() {
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url}>
+                    <Link href={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
