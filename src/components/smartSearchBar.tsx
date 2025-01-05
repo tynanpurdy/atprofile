@@ -29,7 +29,8 @@ export function SmartSearchBar({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (input.trim()) {
-      navigate({ to: `/at:/${input}` });
+      // replace at:// with / to match the route correctly
+      navigate({ to: `/at:/${input.replace("at:/", "")}` });
       setOpen(false);
     }
   };
