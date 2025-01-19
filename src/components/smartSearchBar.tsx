@@ -80,15 +80,15 @@ export function SmartSearchBar({
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="sm:max-w-[800px] p-0">
-        <form onSubmit={handleSubmit} className="relative backdrop-blur-3xl">
+      <DialogContent className="sm:max-w-[800px] p-0 border-0 rounded-full bg-transparent">
+        <form onSubmit={handleSubmit} className="relative backdrop-blur-3xl rounded-full">
           <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
             type="text"
             placeholder="Enter a handle, at url, or PDS url"
             value={input}
             onChange={(e) => setInput(e.currentTarget.value)}
-            className="border-0 focus-visible:ring-0 focus-visible:ring-offset-0 pl-12 py-6 text-lg"
+            className="border focus-visible:ring-0 focus-visible:ring-offset-0 pl-12 py-6 text-lg rounded-xl shadow-lg dark:shadow-slate-950"
             autoFocus
           />
           <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-x-2">
