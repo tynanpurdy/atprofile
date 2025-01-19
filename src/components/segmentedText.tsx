@@ -24,9 +24,8 @@ export function SplitText({ text }: { text: string }) {
 
 export function SegmentedText({ text, facets }: SegmentedInput) {
   const segments = segmentize(text, facets);
-  console.log(segments);
   return (
-    <>
+    <span>
       {segments.map((segment, index) => {
         if (!segment.features || segment.features.length === 0) {
           return (
@@ -43,7 +42,7 @@ export function SegmentedText({ text, facets }: SegmentedInput) {
                 href={segment.features[0].uri}
                 target="_blank"
                 rel="noreferrer"
-                className="text-blue-500 font-bold"
+                className="text-blue-500 font-bold inline"
               >
                 <SplitText text={segment.text} />
               </a>
@@ -81,6 +80,6 @@ export function SegmentedText({ text, facets }: SegmentedInput) {
           }
         }
       })}
-    </>
+    </span>
   );
 }
