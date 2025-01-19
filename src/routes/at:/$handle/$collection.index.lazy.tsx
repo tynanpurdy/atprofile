@@ -1,3 +1,5 @@
+import ShowError from "@/components/error";
+import { Loader } from "@/components/ui/loader";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { QtClient } from "@/providers/qtprovider";
 import { ComAtprotoRepoListRecords } from "@atcute/client/lexicons";
@@ -110,15 +112,11 @@ function RouteComponent() {
   }, [cursor, isLoading, fetchMore]);
 
   if (error) {
-    return <div>Error: {error.message}</div>;
+    return <ShowError error={error} />;
   }
 
   if ((isLoading && !cursor) || !records) {
-    return (
-      <div className="flex flex-row justify-center w-full min-h-screen">
-        (throbber here)
-      </div>
-    );
+    return <Loader className="min-h-screen" />;
   }
 
   return (

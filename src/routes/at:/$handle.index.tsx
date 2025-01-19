@@ -1,4 +1,7 @@
+import ShowError from "@/components/error";
 import RepoIcons from "@/components/repoIcons";
+import { Button } from "@/components/ui/button";
+import { Loader } from "@/components/ui/loader";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { QtClient, useXrpc } from "@/providers/qtprovider";
 import "@atcute/bluesky/lexicons";
@@ -11,7 +14,7 @@ import {
   resolveFromIdentity,
 } from "@atcute/oauth-browser-client";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { AtSign } from "lucide-react";
+import { AtSign, CircleAlert } from "lucide-react";
 import { useState, useEffect } from "preact/compat";
 
 interface RepoData {
@@ -107,17 +110,12 @@ export const Route = createFileRoute("/at:/$handle/")({
 function RouteComponent() {
   const { handle } = Route.useParams();
   const { blueSkyData, data, identity, isLoading, error } = useRepoData(handle);
-
   if (error) {
-    return <div>Error: {error.message}</div>;
+    return <ShowError error={error} />;
   }
 
   if (isLoading && !blueSkyData) {
-    return (
-      <div className="flex flex-row justify-center align-middle w-full h-full min-h-screen">
-        (throbber here)
-      </div>
-    );
+    return <Loader className="min-h-screen" />;
   }
 
   return (
@@ -128,7 +126,7 @@ function RouteComponent() {
             <div className="relative mb-12 md:mb-16">
               <img
                 src={blueSkyData?.banner}
-                className="w-full rounded-lg scale-[108%] lg:scale-125 -z-10 border"
+                className="w-full lg:h-52 rounded-lg scale-[108%] lg:scale-125 -z-10 border object-cover"
               />
               <img
                 src={blueSkyData?.avatar}

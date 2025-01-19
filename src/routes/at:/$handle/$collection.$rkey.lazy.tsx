@@ -1,5 +1,7 @@
+import ShowError from "@/components/error";
 import { RenderJson } from "@/components/renderJson";
 import { SplitText } from "@/components/segmentedText";
+import { Loader } from "@/components/ui/loader";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import getView from "@/components/views/getView";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
@@ -108,15 +110,11 @@ function RouteComponent() {
   );
 
   if (error) {
-    return <div>Error: {error.message}</div>;
+    return <ShowError error={error} />;
   }
 
   if (isLoading && !data) {
-    return (
-      <div className="flex flex-row justify-center align-middle w-full h-full min-h-screen">
-        (throbber here)
-      </div>
-    );
+    return <Loader className="min-h-screen" />;
   }
 
   if (data === undefined) return <div>No data</div>;
