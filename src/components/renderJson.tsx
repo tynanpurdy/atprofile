@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import { getComponent } from "./json/getComponent";
 
 // lazy dumb component. redo this ASAP
@@ -9,22 +10,55 @@ export function RenderJson(props: { data: any; depth?: number; did: string }) {
   if (typeof props.data !== "object") {
     if (typeof props.data === "string") {
       if (props.data.startsWith("at://")) {
-        return (
-          <a
+        // have to do this b/c Link type safety. 
+        // there's only a set num of things it can be anyways
+        let parts = props.data.replace("at://", "").split('/')
+        switch (parts.length) {
+          case 1:
+            return <Link
+              className="text-blue-700 dark:text-blue-400"
+              to={"/at:/$handle"}
+              params={{
+                handle: parts[0]
+              }}
+            >
+              {props.data}
+            </Link>
+          case 2:
+            return <Link
             className="text-blue-700 dark:text-blue-400"
-            href={"/" + props.data}
+            to={"/at:/$handle/$collection"}
+            params={{
+              handle: parts[0],
+              collection: parts[1]
+            }}
           >
             {props.data}
-          </a>
-        );
+          </Link>
+          case 3:
+            return <Link
+            className="text-blue-700 dark:text-blue-400"
+            to={"/at:/$handle/$collection/$rkey"}
+            params={{
+              handle: parts[0],
+              collection: parts[1],
+              rkey: parts[2]
+            }}
+          >
+            {props.data}
+          </Link>
+        }
       } else if (props.data.startsWith("did:")) {
         return (
-          <a
+          <Link
             className="text-blue-700 dark:text-blue-400"
-            href={"/at://" + props.data}
+            to={"/at:/$handle"}
+            params={{
+              handle: props.data
+            }}
           >
             {props.data}
-          </a>
+          </Link>
         );
       }
     }
