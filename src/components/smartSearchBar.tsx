@@ -73,7 +73,7 @@ export function SmartSearchBar({
           <Search className="mr-2 h-4 w-4" />
           <span className="flex-1 text-left">Search...</span>
           {!isMobile() && (
-            <div className="flex items-center -mr-2">
+            <div className="md:flex items-center -mr-2 hidden">
               <KbdKey keys={[isOnMac() ? "cmd" : "ctrl", "k"]} />
             </div>
           )}
