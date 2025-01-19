@@ -1,4 +1,5 @@
 import { SmartSearchBar } from "@/components/smartSearchBar";
+import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { createLazyFileRoute, Link } from "@tanstack/react-router";
 import { AtSign, Star } from "lucide-react";
 
@@ -7,6 +8,7 @@ export const Route = createLazyFileRoute("/")({
 });
 
 export default function Index() {
+  useDocumentTitle("atp.tools");
   return (
     <main className="min-h-screen relative max-w-[100vw]">
       <div className="container mx-auto px-4 py-16">
@@ -26,7 +28,7 @@ export default function Index() {
             <div className="flex flex-row gap-x-1 text-muted-foreground">
               <Star /> Try:
             </div>
-            <div className="md:flex md:flex-row space-y-1 md:space-x-1 md:space-y-0">
+            <div className="flex flex-col gap-1 md:flex-row">
               <Link href="/at:/danabra.mov" className="text-blue-500">
                 <div className="bg-muted text-muted-foreground rounded-full px-2">
                   at://danabra.mov

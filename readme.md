@@ -2,7 +2,7 @@
 
 This is a web-based toolkit for viewing and working with ATProto data.
 
-[!WARNING] This is a work in progress and clearly not ready for use.
+>[!WARNING] This is a work in progress and clearly not ready for use.
 
 ## Development
 

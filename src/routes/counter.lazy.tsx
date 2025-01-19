@@ -10,6 +10,7 @@ import { Progress } from "@/components/ui/progress";
 import { Clock, TrendingUp, TriangleAlert } from "lucide-react";
 import AnimatedCounter from "@/components/animatedCounter";
 import ParticlesComponent from "@/components/particles";
+import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 
 //const UPDATE_INTERVAL = 60000;
 const UPDATE_TIME = 60000;
@@ -39,6 +40,7 @@ interface StatsState {
 }
 
 export default function RouteComponent() {
+  useDocumentTitle("Counter | atp.tools");
   const [isConfettiActive, setIsConfettiActive] = useState(false);
   const [stats, setStats] = useState<StatsState>({
     hasConfettid: false,
