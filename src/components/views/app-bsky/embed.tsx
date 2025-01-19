@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import {
   AppBskyFeedPost,
-  AppBskyEmbedImages,
   AppBskyActorGetProfile,
 } from "@atcute/client/lexicons";
-import { ArrowRight, X } from "lucide-react";
+import { ArrowRight} from "lucide-react";
 import { SegmentedText } from "@/components/segmentedText";
 import { QtClient } from "@/providers/qtprovider";
 import { Link } from "@tanstack/react-router";

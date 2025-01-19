@@ -1,6 +1,5 @@
 import ShowError from "@/components/error";
 import RepoIcons from "@/components/repoIcons";
-import { Button } from "@/components/ui/button";
 import { Loader } from "@/components/ui/loader";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { QtClient, useXrpc } from "@/providers/qtprovider";
@@ -14,7 +13,7 @@ import {
   resolveFromIdentity,
 } from "@atcute/oauth-browser-client";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { AtSign, CircleAlert } from "lucide-react";
+import { AtSign } from "lucide-react";
 import { useState, useEffect } from "preact/compat";
 
 interface RepoData {
