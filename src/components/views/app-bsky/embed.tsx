@@ -53,7 +53,7 @@ const BlueskyEmbed = ({
           <AppBskyEmbedImagesLayout did={did} images={embed.images} />
         </div>
       ) : embed.$type === "app.bsky.embed.recordWithMedia" ? (
-        <div className="flex flex-col items-center justify-center gap-2">
+        <div className="flex flex-col items-center justify-center gap-2 mt-2">
           <BlueskyEmbed embed={embed.media} did={did} hasBorder={true} />
           <Link
             to="/at:/$handle/$collection/$rkey"
@@ -64,6 +64,19 @@ const BlueskyEmbed = ({
             }}
           >
             <PostWithoutEmbed uri={embed.record.record.uri} />
+          </Link>
+        </div>
+      ) : embed.$type === "app.bsky.embed.record" ? (
+        <div className="flex flex-col items-left justify-center gap-2 mt-2">
+          <Link
+            to="/at:/$handle/$collection/$rkey"
+            params={{
+              handle: embed.record.uri.split("/")[2],
+              collection: embed.record.uri.split("/")[3],
+              rkey: embed.record.uri.split("/")[4],
+            }}
+          >
+            <PostWithoutEmbed uri={embed.record.uri} />
           </Link>
         </div>
       ) : (
