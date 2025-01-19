@@ -53,9 +53,7 @@ const AppBskyFeedPostView: CollectionViewComponent<CollectionViewProps> = ({
               </div>
               <SegmentedText text={post.text} facets={post.facets ?? []} />
               {post.embed && (
-                <Link to="/" className="mt-2">
-                  <BlueskyEmbed embed={post.embed} did={repoData?.did || ""} />
-                </Link>
+                <BlueskyEmbed embed={post.embed} did={repoData?.did || ""} />
               )}
             </div>
           </div>
