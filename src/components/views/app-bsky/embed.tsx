@@ -28,7 +28,7 @@ const BlueskyEmbed = ({
     <div className={`rounded-lg`}>
       {embed.$type === "app.bsky.embed.external" ? (
         <div
-          className={`flex flex-col items-left justify-center ${hasBorder && "border border-neutral-500/50 rounded-lg"}`}
+          className={`flex flex-col items-left justify-center mt-2 ${hasBorder && "border border-neutral-500/50 rounded-lg"}`}
         >
           {embed.external.thumb && (
             <img
@@ -48,7 +48,7 @@ const BlueskyEmbed = ({
         </div>
       ) : embed.$type === "app.bsky.embed.images" ? (
         <div
-          className={`flex flex-col items-center justify-center ${hasBorder && "border border-neutral-500/50"}`}
+          className={`flex flex-col items-center justify-center mt-2 ${hasBorder && "border border-neutral-500/50 rounded-lg"}`}
         >
           <AppBskyEmbedImagesLayout did={did} images={embed.images} />
         </div>
@@ -67,7 +67,7 @@ const BlueskyEmbed = ({
           </Link>
         </div>
       ) : embed.$type === "app.bsky.embed.record" ? (
-        <div className="flex flex-col items-left justify-center gap-2 mt-2">
+        <div className="flex flex-col items-left justify-center gap-2 mt-2 rounded-lg">
           <Link
             to="/at:/$handle/$collection/$rkey"
             params={{
