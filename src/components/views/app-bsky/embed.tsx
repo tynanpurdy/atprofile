@@ -7,7 +7,10 @@ import { ArrowRight } from "lucide-react";
 import { SegmentedText } from "@/components/segmentedText";
 import { QtClient } from "@/providers/qtprovider";
 import { Link } from "@tanstack/react-router";
-import { AppBskyEmbedImagesLayout } from "@/components/json/appBskyEmbedImages";
+import {
+  AppBskyEmbedImagesLayout,
+  getBlueskyCdnLink,
+} from "@/components/json/appBskyEmbedImages";
 
 type BlueskyPost = AppBskyFeedPost.Record;
 
@@ -25,17 +28,23 @@ const BlueskyEmbed = ({
     <div className={`rounded-lg`}>
       {embed.$type === "app.bsky.embed.external" ? (
         <div
-          className={`flex flex-col items-center justify-center ${hasBorder && "border border-neutral-500/50"}`}
+          className={`flex flex-col items-left justify-center ${hasBorder && "border border-neutral-500/50 rounded-lg"}`}
         >
           {embed.external.thumb && (
             <img
-              src={embed.external.thumb.ref.$link}
+              src={getBlueskyCdnLink(
+                did,
+                embed.external.thumb.ref.$link,
+                "jpeg",
+              )}
               alt={embed.external.title}
-              className="w-full h-40 object-cover rounded-lg mb-2"
+              className="w-full object-cover rounded-lg mb-2"
             />
           )}
-          <h3 className="font-bold">{embed.external.title}</h3>
-          <p className="text-gray-600 text-sm">{embed.external.description}</p>
+          <h3 className="font-bold pl-2">{embed.external.title}</h3>
+          <p className="text-gray-600 text-sm pl-2 pb-1">
+            {embed.external.description}
+          </p>
         </div>
       ) : embed.$type === "app.bsky.embed.images" ? (
         <div

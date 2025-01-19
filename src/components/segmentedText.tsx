@@ -1,5 +1,6 @@
 import { segmentize } from "@atcute/bluesky-richtext-segmenter";
 import { AppBskyRichtextFacet } from "@atcute/client/lexicons";
+import { Link } from "@tanstack/react-router";
 import React from "preact/compat";
 
 interface SegmentedInput {
@@ -42,6 +43,7 @@ export function SegmentedText({ text, facets }: SegmentedInput) {
                 href={segment.features[0].uri}
                 target="_blank"
                 rel="noreferrer"
+                className="text-blue-500 font-bold"
               >
                 <SplitText text={segment.text} />
               </a>
@@ -49,9 +51,25 @@ export function SegmentedText({ text, facets }: SegmentedInput) {
           }
           case "app.bsky.richtext.facet#mention": {
             return (
-              <span key={index} className="text-blue-500 font-bold">
+              <Link
+                to={`/at:/$handle`}
+                params={{ handle: segment.features[0].did }}
+                key={index}
+                className="text-blue-500 font-bold"
+              >
                 <SplitText text={segment.text} />
-              </span>
+              </Link>
+            );
+          }
+          case "app.bsky.richtext.facet#tag": {
+            return (
+              <a
+                href={`https://bsky.app/hashtag/${segment.features[0].tag}`}
+                key={index}
+                className="text-blue-500 font-bold"
+              >
+                <SplitText text={segment.text} />
+              </a>
             );
           }
           default: {
