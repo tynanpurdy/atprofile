@@ -17,6 +17,16 @@ import { Button } from "./ui/button";
 //   return "unknown";
 // }
 
+function isOnMac() {
+  return navigator.userAgent.toUpperCase().indexOf("MAC") >= 0;
+}
+
+function isMobile() {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    navigator.userAgent,
+  );
+}
+
 export function SmartSearchBar({
   isKeybindEnabled = false,
 }: {
@@ -36,6 +46,7 @@ export function SmartSearchBar({
   };
 
   useEffect(() => {
+    if (isMobile()) return;
     const handleKeyDown = (e: KeyboardEvent) => {
       if (
         (e.metaKey || e.ctrlKey) &&
@@ -61,9 +72,11 @@ export function SmartSearchBar({
         >
           <Search className="mr-2 h-4 w-4" />
           <span className="flex-1 text-left">Search...</span>
-          <div className="flex items-center -mr-2">
-            <KbdKey keys={["cmd", "k"]} />
-          </div>
+          {!isMobile() && (
+            <div className="flex items-center -mr-2">
+              <KbdKey keys={[isOnMac() ? "cmd" : "ctrl", "k"]} />
+            </div>
+          )}
         </Button>
       </DialogTrigger>
 
@@ -79,7 +92,7 @@ export function SmartSearchBar({
             autoFocus
           />
           <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-x-2">
-            <KbdKey keys={["esc"]} />
+            {!isMobile() && <KbdKey keys={["esc"]} />}
             <X
               className="h-4 w-4 text-muted-foreground"
               onClick={() => setOpen(false)}
