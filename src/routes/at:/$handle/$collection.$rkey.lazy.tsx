@@ -154,8 +154,8 @@ function RouteComponent() {
         <Tabs defaultValue={View ? "view" : "json"} className="w-full">
           <TabsList>
             {View && <TabsTrigger value="view">View</TabsTrigger>}
-            <TabsTrigger value="json">Json</TabsTrigger>
-            <TabsTrigger value="text">Json (Text)</TabsTrigger>
+            <TabsTrigger value="json">JSON</TabsTrigger>
+            <TabsTrigger value="text">JSON (Text)</TabsTrigger>
           </TabsList>
           {View && (
             <TabsContent value="view" className="w-full overflow-x-auto">
