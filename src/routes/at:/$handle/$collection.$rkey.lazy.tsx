@@ -1,4 +1,7 @@
 import { RenderJson } from "@/components/renderJson";
+import { SplitText } from "@/components/segmentedText";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import getView from "@/components/views/getView";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { QtClient, useXrpc } from "@/providers/qtprovider";
 import "@atcute/bluesky/lexicons";
@@ -116,6 +119,11 @@ function RouteComponent() {
     );
   }
 
+  if (data === undefined) return <div>No data</div>;
+
+  // doing 'as any' here but $type is guaranteed to be on here.
+  const View = getView((data.value as any).$type);
+
   return (
     <div className="flex flex-row justify-center w-full min-h-screen">
       <div className="max-w-2xl w-screen p-4 md:mt-16 space-y-2">
@@ -130,14 +138,33 @@ function RouteComponent() {
           PDS: {identity?.pds.hostname.includes("bsky.network") && "🍄"}{" "}
           {identity?.pds.hostname}
         </div>
-        <div className="text-muted-foreground text-xs">
-          if you see this message please bug me to add a custom view for this
-          repo type
-        </div>
+        {!View && (
+          <div className="text-muted-foreground text-xs">
+            if you see this message please bug me to add a custom view for this
+            repo type
+          </div>
+        )}
         <div className="border-b" />
-        <div className="w-full overflow-x-auto">
-          <RenderJson data={data} did={identity?.id ?? ""} />
-        </div>
+        <Tabs defaultValue={View ? "view" : "json"} className="w-full">
+          <TabsList>
+            {View && <TabsTrigger value="view">View</TabsTrigger>}
+            <TabsTrigger value="json">Json</TabsTrigger>
+            <TabsTrigger value="text">Json (Text)</TabsTrigger>
+          </TabsList>
+          {View && (
+            <TabsContent value="view" className="w-full overflow-x-auto">
+              <View data={data} repoData={repoInfo} />
+            </TabsContent>
+          )}
+          <TabsContent value="json" className="w-full overflow-x-auto">
+            <RenderJson data={data} did={identity?.id ?? ""} />
+          </TabsContent>
+          <TabsContent value="text" className="w-full overflow-x-auto">
+            <div className="whitespace-pre-wrap font-mono">
+              <SplitText text={JSON.stringify(data, null, 4)} />
+            </div>
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );

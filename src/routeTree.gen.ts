@@ -76,7 +76,7 @@ const AtHandleCollectionRkeyLazyRoute = AtHandleCollectionRkeyLazyImport.update(
     getParentRoute: () => rootRoute,
   } as any,
 ).lazy(() =>
-  import('./routes/at:/$handle.$collection.$rkey.lazy').then((d) => d.Route),
+  import('./routes/at:/$handle/$collection.$rkey.lazy').then((d) => d.Route),
 )
 
 // Populate the FileRoutesByPath interface
@@ -254,7 +254,7 @@ export const routeTree = rootRoute
       "filePath": "at:/$handle.index.tsx"
     },
     "/at:/$handle/$collection/$rkey": {
-      "filePath": "at:/$handle.$collection.$rkey.lazy.tsx"
+      "filePath": "at:/$handle/$collection.$rkey.lazy.tsx"
     },
     "/at:/$handle/$collection/": {
       "filePath": "at:/$handle/$collection.index.lazy.tsx"

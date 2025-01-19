@@ -1,6 +1,6 @@
 import { AppBskyEmbedImages } from "@atcute/client/lexicons";
+import { X } from "lucide-react";
 import { useState } from "preact/hooks";
-import { Dialog, DialogContent, DialogOverlay } from "@/components/ui/dialog";
 
 const getBlueskyCdnLink = (did: string, cid: string, ext: string) => {
   return `https://cdn.bsky.app/img/feed_fullsize/plain/${did}/${cid}@${ext}`;
@@ -16,6 +16,7 @@ export const AppBskyEmbedImagesLayout = ({
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
   const imageCount = images.length;
 
+  // Different grid layouts based on number of images
   const gridClassName =
     {
       1: "grid-cols-1",
@@ -38,7 +39,7 @@ export const AppBskyEmbedImagesLayout = ({
             <img
               src={getBlueskyCdnLink(did, image.image.ref.$link, "jpeg")}
               alt=""
-              className="w-full h-full cursor-pointer object-cover transition-transform duration-300 hover:scale-105 max-h-64"
+              className={`w-full h-full cursor-pointer object-cover transition-transform duration-300 hover:scale-[101%] ${imageCount > 1 && "max-h-64"}`}
               style={{
                 aspectRatio: imageCount === 1 ? "" : "1/1",
               }}
@@ -48,34 +49,37 @@ export const AppBskyEmbedImagesLayout = ({
         ))}
       </div>
 
-      <Dialog
-        open={selectedImage !== null}
-        onOpenChange={() => setSelectedImage(null)}
-      >
-        <DialogOverlay className="bg-black/80" />
-        <DialogContent className="max-w-[90vw] max-h-[90vh] p-0 border-none bg-transparent">
-          <div className="relative inline-block">
-            {selectedImage !== null && (
-              <>
-                <img
-                  src={getBlueskyCdnLink(
-                    did,
-                    images[selectedImage].image.ref.$link,
-                    "png",
-                  )}
-                  className="max-h-[90vh] max-w-[90vw] object-contain"
-                  onClick={(e) => e.stopPropagation()}
-                />
-                {images[selectedImage].alt && (
-                  <div className="text-white text-center mt-2">
-                    Alt text: {images[selectedImage].alt}
-                  </div>
-                )}
-              </>
+      {selectedImage !== null && (
+        <>
+          {/* Image Preview */}
+          <div
+            className="fixed inset-0 bg-black/80 flex flex-col gap-2 items-center justify-center z-50"
+            onClick={() => setSelectedImage(null)}
+          >
+            <img
+              src={getBlueskyCdnLink(
+                did,
+                images[selectedImage].image.ref.$link,
+                "png",
+              )}
+              className="max-h-[90vh] max-w-[90vw] object-contain"
+            />
+            {images[selectedImage].alt && (
+              <div className="text-white">
+                Alt text: {images[selectedImage].alt}
+              </div>
             )}
           </div>
-        </DialogContent>
-      </Dialog>
+          <div className="fixed top-2 right-2 z-50">
+            <button
+              className="text-blue-100 hover:text-red-400 transition-colors duration-300"
+              onClick={() => setSelectedImage(null)}
+            >
+              <X />
+            </button>
+          </div>
+        </>
+      )}
     </>
   );
 };
