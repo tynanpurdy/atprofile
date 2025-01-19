@@ -3,7 +3,7 @@ import {
   AppBskyFeedPost,
   AppBskyActorGetProfile,
 } from "@atcute/client/lexicons";
-import { ArrowRight} from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { SegmentedText } from "@/components/segmentedText";
 import { QtClient } from "@/providers/qtprovider";
 import { Link } from "@tanstack/react-router";
@@ -46,7 +46,14 @@ const BlueskyEmbed = ({
       ) : embed.$type === "app.bsky.embed.recordWithMedia" ? (
         <div className="flex flex-col items-center justify-center gap-2">
           <BlueskyEmbed embed={embed.media} did={did} hasBorder={true} />
-          <Link href={`/${embed.record.record.uri}`}>
+          <Link
+            to="/at:/$handle/$collection/$rkey"
+            params={{
+              handle: embed.record.record.uri.split("/")[2],
+              collection: embed.record.record.uri.split("/")[3],
+              rkey: embed.record.record.uri.split("/")[4],
+            }}
+          >
             <PostWithoutEmbed uri={embed.record.record.uri} />
           </Link>
         </div>

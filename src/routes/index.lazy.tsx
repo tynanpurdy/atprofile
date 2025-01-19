@@ -29,13 +29,22 @@ export default function Index() {
               <Star /> Try:
             </div>
             <div className="flex flex-col gap-1 md:flex-row">
-              <Link href="/at:/danabra.mov" className="text-blue-500">
+              <Link
+                to="/at:/$handle"
+                params={{ handle: "danabra.mov" }}
+                className="text-blue-500"
+              >
                 <div className="bg-muted text-muted-foreground rounded-full px-2">
                   at://danabra.mov
                 </div>
               </Link>
+
               <Link
-                href="/at://kot.pink/app.bsky.feed.post"
+                to="/at:/$handle/$collection"
+                params={{
+                  handle: "kot.pink",
+                  collection: "app.bsky.feed.post",
+                }}
                 className="text-blue-500"
               >
                 <div className="bg-muted text-muted-foreground rounded-full px-2">

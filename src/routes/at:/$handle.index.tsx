@@ -170,7 +170,15 @@ function RouteComponent() {
           <ul>
             {data?.collections.map((c) => (
               <li key={c} className="text-blue-500">
-                <Link href={`/at:/${handle}/${c}`}>{c}</Link>
+                <Link
+                  to="/at:/$handle/$collection"
+                  params={{
+                    handle: handle,
+                    collection: c,
+                  }}
+                >
+                  {c}
+                </Link>
               </li>
             ))}
           </ul>

@@ -125,12 +125,20 @@ function RouteComponent() {
   return (
     <div className="flex flex-row justify-center w-full min-h-screen">
       <div className="max-w-2xl w-screen p-4 md:mt-16 space-y-2">
-        <Link href={`/at:/${identity?.raw}`} className="">
-          <h1 className="text-2xl md:text-3xl text-muted-foreground font-normal">
-            @{repoInfo?.handle}
-            {repoInfo?.handleIsCorrect ? "" : " (invalid handle)"}
-          </h1>
-          <code>{identity?.id}</code>
+        <Link
+          to={`/at:/$handle`}
+          params={{
+            handle: repoInfo?.did || "",
+          }}
+          className=""
+        >
+          <div>
+            <h1 className="text-2xl md:text-3xl text-muted-foreground font-normal">
+              @{repoInfo?.handle}
+              {repoInfo?.handleIsCorrect ? "" : " (invalid handle)"}
+            </h1>
+            <code>{identity?.id}</code>
+          </div>
         </Link>
         <div>
           PDS: {identity?.pds.hostname.includes("bsky.network") && "🍄"}{" "}

@@ -23,13 +23,13 @@ const AppBskyFeedPostView: CollectionViewComponent<CollectionViewProps> = ({
       {post.reply?.root && post.reply?.root.uri !== post.reply.parent.uri && (
         <div className="text-sm text-muted-foreground">
           Root post:{" "}
-          <Link href={"/" + post.reply?.root.uri}>{post.reply?.root.uri}</Link>
+          <Link to={"/" + post.reply?.root.uri}>{post.reply?.root.uri}</Link>
         </div>
       )}
       {post.reply?.parent && (
         <div className="text-sm text-muted-foreground mb-3">
           Parent post:{" "}
-          <Link href={"/" + post.reply?.parent.uri}>
+          <Link to={"/" + post.reply?.parent.uri}>
             {post.reply?.parent.uri}
           </Link>
         </div>
@@ -53,7 +53,7 @@ const AppBskyFeedPostView: CollectionViewComponent<CollectionViewProps> = ({
               </div>
               <SegmentedText text={post.text} facets={post.facets ?? []} />
               {post.embed && (
-                <Link className="mt-2">
+                <Link to="/" className="mt-2">
                   <BlueskyEmbed embed={post.embed} did={repoData?.did || ""} />
                 </Link>
               )}
