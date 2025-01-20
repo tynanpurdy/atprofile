@@ -10,43 +10,49 @@ export function RenderJson(props: { data: any; depth?: number; did: string }) {
   if (typeof props.data !== "object") {
     if (typeof props.data === "string") {
       if (props.data.startsWith("at://")) {
-        // have to do this b/c Link type safety. 
+        // have to do this b/c Link type safety.
         // there's only a set num of things it can be anyways
-        let parts = props.data.replace("at://", "").split('/')
+        let parts = props.data.replace("at://", "").split("/");
         switch (parts.length) {
           case 1:
-            return <Link
-              className="text-blue-700 dark:text-blue-400"
-              to={"/at:/$handle"}
-              params={{
-                handle: parts[0]
-              }}
-            >
-              {props.data}
-            </Link>
+            return (
+              <Link
+                className="text-blue-700 dark:text-blue-400"
+                to={"/at:/$handle"}
+                params={{
+                  handle: parts[0],
+                }}
+              >
+                {props.data}
+              </Link>
+            );
           case 2:
-            return <Link
-            className="text-blue-700 dark:text-blue-400"
-            to={"/at:/$handle/$collection"}
-            params={{
-              handle: parts[0],
-              collection: parts[1]
-            }}
-          >
-            {props.data}
-          </Link>
+            return (
+              <Link
+                className="text-blue-700 dark:text-blue-400"
+                to={"/at:/$handle/$collection"}
+                params={{
+                  handle: parts[0],
+                  collection: parts[1],
+                }}
+              >
+                {props.data}
+              </Link>
+            );
           case 3:
-            return <Link
-            className="text-blue-700 dark:text-blue-400"
-            to={"/at:/$handle/$collection/$rkey"}
-            params={{
-              handle: parts[0],
-              collection: parts[1],
-              rkey: parts[2]
-            }}
-          >
-            {props.data}
-          </Link>
+            return (
+              <Link
+                className="text-blue-700 dark:text-blue-400"
+                to={"/at:/$handle/$collection/$rkey"}
+                params={{
+                  handle: parts[0],
+                  collection: parts[1],
+                  rkey: parts[2],
+                }}
+              >
+                {props.data}
+              </Link>
+            );
         }
       } else if (props.data.startsWith("did:")) {
         return (
@@ -54,7 +60,7 @@ export function RenderJson(props: { data: any; depth?: number; did: string }) {
             className="text-blue-700 dark:text-blue-400"
             to={"/at:/$handle"}
             params={{
-              handle: props.data
+              handle: props.data,
             }}
           >
             {props.data}
@@ -69,9 +75,15 @@ export function RenderJson(props: { data: any; depth?: number; did: string }) {
   if (props.data.$type) {
     const Component = getComponent(props.data.$type);
     if (Component) {
+      console.log("props.data", props.data);
       return (
         <div style={{ marginLeft: `${20}px` }}>
-          {props.data.$type}: <Component did={props.did} {...props.data} />
+          {props.data.$type}:{" "}
+          <Component
+            did={props.did}
+            dollar_link={props.data.ref.$link || undefined}
+            {...props.data}
+          />
         </div>
       );
     }
