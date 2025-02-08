@@ -4,6 +4,9 @@ import {
   ComAtprotoRepoDescribeRepo,
   ComAtprotoRepoGetRecord,
 } from "@atcute/client/lexicons";
+import { AppBskyFeedRepostView } from "./app-bsky/feedRepost";
+import { AppBskyFeedLikeView } from "./app-bsky/feedLike";
+import { AppBskyActorProfileView } from "./app-bsky/actorProfile";
 
 export type CollectionViewComponent<T = {}> = (
   props: React.HTMLAttributes<HTMLDivElement> & T,
@@ -20,6 +23,9 @@ const viewMap: Record<
   CollectionViewComponent<CollectionViewProps> | undefined
 > = {
   "app.bsky.feed.post": AppBskyFeedPostView,
+  "app.bsky.feed.repost": AppBskyFeedRepostView,
+  "app.bsky.feed.like": AppBskyFeedLikeView,
+  "app.bsky.actor.profile": AppBskyActorProfileView,
 };
 
 const getView = (

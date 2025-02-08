@@ -36,7 +36,7 @@ const AppBskyFeedPostView: CollectionViewComponent<CollectionViewProps> = ({
       )}
       <div className="flex items-center">
         {actorProfile === undefined ? (
-          <div className="w-14 h-1 rounded-full mr-3 bg-gray-500 animate-pulse" />
+          <div className="w-14 h-1 rounded-full mr-3 bg-muted-foreground animate-pulse" />
         ) : (
           <div className="flex flex-row items-start">
             <img
@@ -47,7 +47,7 @@ const AppBskyFeedPostView: CollectionViewComponent<CollectionViewProps> = ({
             <div className="flex flex-col">
               <div className="font-bold">
                 {actorProfile?.displayName}{" "}
-                <span className="font-normal text-gray-500">
+                <span className="font-normal text-muted-foreground">
                   @{actorProfile?.handle}
                 </span>
               </div>
@@ -59,7 +59,7 @@ const AppBskyFeedPostView: CollectionViewComponent<CollectionViewProps> = ({
           </div>
         )}
       </div>
-      <div className="text-sm text-gray-500 mt-3 pl-[4.25rem]">
+      <div className="text-sm text-muted-foreground mt-3 pl-[4.25rem]">
         <a
           href={`https://bsky.app/profile/${repoData?.did}/post/${data.uri.split("/").pop()}`}
         >

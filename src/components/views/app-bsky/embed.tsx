@@ -55,6 +55,7 @@ const BlueskyEmbed = ({
       ) : embed.$type === "app.bsky.embed.recordWithMedia" ? (
         <div className="flex flex-col items-center justify-center gap-2 mt-2">
           <BlueskyEmbed embed={embed.media} did={did} hasBorder={true} />
+          <BlueskyPostWithoutEmbed uri={embed.record.record.uri} />
           <Link
             to="/at:/$handle/$collection/$rkey"
             params={{
@@ -62,22 +63,15 @@ const BlueskyEmbed = ({
               collection: embed.record.record.uri.split("/")[3],
               rkey: embed.record.record.uri.split("/")[4],
             }}
+            className="w-full text-left text-muted-foreground text-sm"
           >
-            <PostWithoutEmbed uri={embed.record.record.uri} />
+            Visit embed{" "}
+            <ArrowRight height="1rem" className="inline-block mb-0.5" />
           </Link>
         </div>
       ) : embed.$type === "app.bsky.embed.record" ? (
         <div className="flex flex-col items-left justify-center gap-2 mt-2 rounded-lg">
-          <Link
-            to="/at:/$handle/$collection/$rkey"
-            params={{
-              handle: embed.record.uri.split("/")[2],
-              collection: embed.record.uri.split("/")[3],
-              rkey: embed.record.uri.split("/")[4],
-            }}
-          >
-            <PostWithoutEmbed uri={embed.record.uri} />
-          </Link>
+          <BlueskyPostWithoutEmbed uri={embed.record.uri} />
         </div>
       ) : (
         <div className="border rounded-lg p-3 mb-3">
@@ -95,7 +89,14 @@ interface PostWithoutEmbedData {
   post: AppBskyFeedPost.Record | null;
 }
 
-const PostWithoutEmbed = ({ uri }: { uri: string }) => {
+/// A post without an embedded post inside. Will link to the embedded post but will not show it.
+export const BlueskyPostWithoutEmbed = ({
+  uri,
+  showEmbeddedPost = false,
+}: {
+  uri: string;
+  showEmbeddedPost?: boolean;
+}) => {
   const [data, setData] = useState<PostWithoutEmbedData>({
     actorProfile: null,
     post: null,
@@ -147,34 +148,129 @@ const PostWithoutEmbed = ({ uri }: { uri: string }) => {
   if (data.post === null || !data.actorProfile === null) return null;
 
   const { post, actorProfile } = data;
+  const embed = post.embed;
 
   return (
-    <div className="border p-6 py-3 rounded-md">
+    <div className="border p-6 pl-3 py-3 rounded-md">
       <div className="flex items-center">
         {actorProfile === undefined ? (
-          <div className="w-14 h-1 rounded-full mr-3 bg-gray-500 animate-pulse" />
+          <div className="w-14 h-1 rounded-full mr-3 bg-muted-foreground animate-pulse" />
         ) : (
           <div className="flex flex-row items-start">
             <img
               src={actorProfile?.avatar}
               alt={actorProfile?.displayName + "'s avatar"}
-              className="w-14 h-14 rounded-full mr-3 transition-opacity duration-300"
+              className="w-12 h-12 rounded-full mr-3 transition-opacity duration-300"
             />
             <div className="flex flex-col">
               <div className="font-bold">
                 {actorProfile?.displayName}{" "}
-                <span className="font-normal text-gray-500">
+                <span className="font-normal text-muted-foreground">
                   @{actorProfile?.handle}
                 </span>
               </div>
               <SegmentedText text={post.text} facets={post.facets ?? []} />
+              <div className={`rounded-lg`}>
+                {embed &&
+                  (embed.$type === "app.bsky.embed.external" ? (
+                    <div
+                      className={`flex flex-col items-left justify-center mt-2`}
+                    >
+                      {embed.external.thumb && (
+                        <img
+                          src={getBlueskyCdnLink(
+                            actorProfile?.did!,
+                            embed.external.thumb.ref.$link,
+                            "jpeg",
+                          )}
+                          alt={embed.external.title}
+                          className="w-full object-cover rounded-lg mb-2"
+                        />
+                      )}
+                      <h3 className="font-bold pl-2">{embed.external.title}</h3>
+                      <p className="text-gray-600 text-sm pl-2 pb-1">
+                        {embed.external.description}
+                      </p>
+                    </div>
+                  ) : embed.$type === "app.bsky.embed.images" ? (
+                    <div
+                      className={`flex flex-col items-center justify-center mt-2`}
+                    >
+                      <AppBskyEmbedImagesLayout
+                        did={actorProfile?.did!}
+                        images={embed.images}
+                      />
+                    </div>
+                  ) : embed.$type === "app.bsky.embed.recordWithMedia" ? (
+                    <div className="flex flex-col items-center justify-center gap-2 mt-2">
+                      <BlueskyEmbed
+                        embed={embed.media}
+                        did={actorProfile?.did!}
+                        hasBorder={true}
+                      />
+                      {showEmbeddedPost ? (
+                        <BlueskyPostWithoutEmbed
+                          uri={embed.record.record.uri}
+                        />
+                      ) : (
+                        <Link
+                          to="/at:/$handle/$collection/$rkey"
+                          params={{
+                            handle: embed.record.record.uri.split("/")[2],
+                            collection: embed.record.record.uri.split("/")[3],
+                            rkey: embed.record.record.uri.split("/")[4],
+                          }}
+                        >
+                          <p className="text-left w-full text-sm text-muted-foreground">
+                            There's an embedded post here. Visit it?
+                            <ArrowRight
+                              height="1rem"
+                              className="inline-block mb-0.5"
+                            />
+                          </p>
+                        </Link>
+                      )}
+                    </div>
+                  ) : embed.$type === "app.bsky.embed.record" ? (
+                    <div className="flex flex-col items-left justify-center gap-2 mt-2 rounded-lg">
+                      {showEmbeddedPost ? (
+                        <BlueskyPostWithoutEmbed uri={embed.record.uri} />
+                      ) : (
+                        <Link
+                          to="/at:/$handle/$collection/$rkey"
+                          params={{
+                            handle: embed.record.uri.split("/")[2],
+                            collection: embed.record.uri.split("/")[3],
+                            rkey: embed.record.uri.split("/")[4],
+                          }}
+                        >
+                          <p className="text-left w-full text-sm text-muted-foreground">
+                            There's an embedded post here. Visit it?
+                            <ArrowRight
+                              height="1rem"
+                              className="inline-block mb-0.5"
+                            />
+                          </p>
+                        </Link>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="border rounded-lg p-3 mb-3">
+                      This embed type ({embed.$type}) is not yet implemented. If
+                      you have a need, state your case{" "}
+                      <Link to="/at:/$handle" params={{ handle: "natalie.sh" }}>
+                        @natalie.sh
+                      </Link>
+                    </div>
+                  ))}
+              </div>
             </div>
           </div>
         )}
       </div>
-      <div className="text-sm text-gray-500 mt-3 pl-[4.25rem]">
+      <div className="text-sm text-muted-foreground mt-3 pl-[4.25rem]">
         <a
-          href={`https://bsky.app/profile/${uri.replace("atp://", "").replace("app.bsky.feed.post", "post")}`}
+          href={`https://bsky.app/profile/${uri.replace("at://", "").replace("app.bsky.feed.post", "post")}`}
         >
           View on{" "}
           <img
