@@ -207,7 +207,7 @@ export default function RouteComponent() {
   } = stats;
 
   return (
-    <div className="container mx-auto max-w-screen h-screen">
+    <div className="container mx-auto max-w-screen max-h-[calc(100vh-5rem)] h-screen">
       <ParticlesComponent
         isAnimating={isConfettiActive}
         setIsAnimating={setIsConfettiActive}

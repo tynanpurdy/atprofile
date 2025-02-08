@@ -1,14 +1,18 @@
 import ShowError from "@/components/error";
+import { RenderJson } from "@/components/renderJson";
 import RepoIcons from "@/components/repoIcons";
 import { Loader } from "@/components/ui/loader";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
+import getDidDoc from "@/lib/getDidDoc";
 import { QtClient, useXrpc } from "@/providers/qtprovider";
 import "@atcute/bluesky/lexicons";
 import {
   AppBskyActorGetProfile,
   ComAtprotoRepoDescribeRepo,
 } from "@atcute/client/lexicons";
+import { DidDocument } from "@atcute/client/utils/did";
 import {
+  AuthorizationServerMetadata,
   IdentityMetadata,
   resolveFromIdentity,
 } from "@atcute/oauth-browser-client";
@@ -19,8 +23,12 @@ import { useState, useEffect } from "preact/compat";
 interface RepoData {
   data?: ComAtprotoRepoDescribeRepo.Output;
   blueSkyData?: AppBskyActorGetProfile.Output | null;
-  identity?: IdentityMetadata;
+  identity?: {
+    identity: IdentityMetadata;
+    metadata: AuthorizationServerMetadata;
+  };
   isLoading: boolean;
+  didDoc?: DidDocument;
   error: Error | null;
 }
 
@@ -53,6 +61,7 @@ function useRepoData(handle: string): RepoData {
             params: { repo: id.identity.id },
             signal: abortController.signal,
           });
+        let doc = await getDidDoc(id.identity.id);
         // can we get bsky data?
         if (response.data.collections.includes("app.bsky.actor.profile")) {
           // reuse client dumbass
@@ -67,16 +76,18 @@ function useRepoData(handle: string): RepoData {
           setState({
             blueSkyData: bskyData.data,
             data: response.data,
-            identity: id.identity,
+            identity: id,
             isLoading: false,
+            didDoc: doc,
             error: null,
           });
         } else {
           setState({
             blueSkyData: null,
             data: response.data,
-            identity: id.identity,
+            identity: id,
             isLoading: false,
+            didDoc: doc,
             error: null,
           });
         }
@@ -108,17 +119,18 @@ export const Route = createFileRoute("/at:/$handle/")({
 
 function RouteComponent() {
   const { handle } = Route.useParams();
-  const { blueSkyData, data, identity, isLoading, error } = useRepoData(handle);
+  const { blueSkyData, data, identity, isLoading, error, didDoc } =
+    useRepoData(handle);
   if (error) {
     return <ShowError error={error} />;
   }
 
   if (isLoading && !blueSkyData) {
-    return <Loader className="min-h-screen" />;
+    return <Loader className="max-h-[calc(100vh-5rem)] h-screen" />;
   }
 
   return (
-    <div className="flex flex-row justify-center w-full min-h-screen">
+    <div className="flex flex-row justify-center w-full">
       <div className="max-w-2xl w-screen p-4 md:mt-16 space-y-2">
         {blueSkyData ? (
           blueSkyData?.banner ? (
@@ -132,8 +144,12 @@ function RouteComponent() {
                 className="absolute -bottom-12 md:-bottom-16 w-24 lg:w-32 aspect-square rounded-full border"
               />
             </div>
-          ) : (
+          ) : blueSkyData.avatar ? (
             <img src={blueSkyData?.avatar} className="w-32 h-32 rounded-full" />
+          ) : (
+            <div className="w-32 h-32 bg-neutral-500 rounded-full grid place-items-center">
+              <AtSign className="w-16 h-16" />
+            </div>
           )
         ) : (
           <div className="w-32 h-32 bg-neutral-500 rounded-full grid place-items-center">
@@ -153,7 +169,7 @@ function RouteComponent() {
             <RepoIcons
               collections={data?.collections}
               handle={data?.handle}
-              did={identity?.id}
+              did={identity?.identity.id}
             />
           </div>
         )}
@@ -161,8 +177,9 @@ function RouteComponent() {
         <br />
 
         <div>
-          PDS: {identity?.pds.hostname.includes("bsky.network") && "🍄"}{" "}
-          {identity?.pds.hostname}
+          PDS:{" "}
+          {identity?.identity.pds.hostname.includes("bsky.network") && "🍄"}{" "}
+          {identity?.identity.pds.hostname}
         </div>
 
         <div>
@@ -182,6 +199,10 @@ function RouteComponent() {
               </li>
             ))}
           </ul>
+        </div>
+        <div className="pt-2">
+          <h2 className="text-xl font-bold">DID Document</h2>
+          <RenderJson data={didDoc} did={identity?.identity.id!} />
         </div>
       </div>
     </div>

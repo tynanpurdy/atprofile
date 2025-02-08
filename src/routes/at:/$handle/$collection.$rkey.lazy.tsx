@@ -114,7 +114,7 @@ function RouteComponent() {
   }
 
   if (isLoading && !data) {
-    return <Loader className="min-h-screen" />;
+    return <Loader className="max-h-[calc(100vh-5rem)] h-screen" />;
   }
 
   if (data === undefined) return <div>No data</div>;
@@ -146,16 +146,62 @@ function RouteComponent() {
         </div>
         {!View && (
           <div className="text-muted-foreground text-xs">
-            if you see this message please bug me to add a custom view for this
-            repo type
+            This View is not yet implemented. If you have a need, state your
+            case{" "}
+            <Link
+              to="/at:/$handle"
+              params={{ handle: "natalie.sh" }}
+              className="text-blue-700 dark:text-blue-400"
+            >
+              @natalie.sh
+            </Link>
           </div>
         )}
+        <div className="text-muted-foreground group">
+          <Link
+            to={`/at:/$handle`}
+            params={{
+              handle: repoInfo?.did || "",
+            }}
+            className="dark:hover:text-blue-400 group-hover:text-blue-500 transition-colors duration-300"
+          >
+            at://{handle}
+          </Link>
+          <Link
+            to={`/at:/$handle/$collection`}
+            params={{
+              handle: repoInfo?.did || "",
+              collection,
+            }}
+            className="dark:hover:text-blue-400 group-hover:text-blue-500 transition-colors duration-300"
+          >
+            /{collection}
+          </Link>
+          /{rkey}
+        </div>
         <div className="border-b" />
         <Tabs defaultValue={View ? "view" : "json"} className="w-full">
           <TabsList>
-            {View && <TabsTrigger value="view">View</TabsTrigger>}
-            <TabsTrigger value="json">JSON</TabsTrigger>
-            <TabsTrigger value="text">JSON (Text)</TabsTrigger>
+            {View && (
+              <TabsTrigger
+                value="view"
+                className="dark:hover:text-gray-300 hover:text-gray-700 transition-colors duration-300"
+              >
+                View
+              </TabsTrigger>
+            )}
+            <TabsTrigger
+              value="json"
+              className="dark:hover:text-gray-300 hover:text-gray-700 transition-colors duration-300"
+            >
+              JSON
+            </TabsTrigger>
+            <TabsTrigger
+              value="text"
+              className="dark:hover:text-gray-300 hover:text-gray-700 transition-colors duration-300"
+            >
+              JSON (Text)
+            </TabsTrigger>
           </TabsList>
           {View && (
             <TabsContent value="view" className="w-full overflow-x-auto">

@@ -116,7 +116,7 @@ function RouteComponent() {
   }
 
   if ((isLoading && !cursor) || !records) {
-    return <Loader className="min-h-screen" />;
+    return <Loader className="max-h-[calc(100vh-5rem)] h-screen" />;
   }
 
   return (
