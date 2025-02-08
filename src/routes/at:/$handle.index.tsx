@@ -202,7 +202,11 @@ function RouteComponent() {
         </div>
         <div className="pt-2">
           <h2 className="text-xl font-bold">DID Document</h2>
-          <RenderJson data={didDoc} did={identity?.identity.id!} />
+          <RenderJson
+            data={didDoc}
+            did={identity?.identity.id!}
+            pds={identity?.identity.pds.toString()!}
+          />
         </div>
       </div>
     </div>

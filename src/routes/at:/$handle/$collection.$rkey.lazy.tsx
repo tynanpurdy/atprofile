@@ -209,7 +209,11 @@ function RouteComponent() {
             </TabsContent>
           )}
           <TabsContent value="json" className="w-full overflow-x-auto">
-            <RenderJson data={data} did={identity?.id ?? ""} />
+            <RenderJson
+              data={data}
+              did={identity?.id ?? ""}
+              pds={identity?.pds.toString()!}
+            />
           </TabsContent>
           <TabsContent value="text" className="w-full overflow-x-auto">
             <div className="whitespace-pre-wrap font-mono">

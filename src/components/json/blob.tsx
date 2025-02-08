@@ -2,14 +2,17 @@ import { X } from "lucide-react";
 import { useState } from "preact/hooks";
 import { getBlueskyCdnLink } from "./appBskyEmbedImages";
 
-export default function BlobLayout(balls: {
+export default function BlobLayout({
+  did,
+  dollar_link: ref,
+  mimeType,
+  author_pds: pds,
+}: {
   did: string;
   dollar_link?: string;
   mimeType?: string;
+  author_pds?: string;
 }) {
-  const { did, dollar_link: ref, mimeType } = balls;
-  console.log(balls);
-  console.log(ref);
   if (mimeType === undefined || ref === undefined)
     return <>Unsupported blob type</>;
   if (mimeType?.includes("image")) {
@@ -21,7 +24,15 @@ export default function BlobLayout(balls: {
       ],
     });
   }
-  return <a href={ref}>{did}</a>;
+  return (
+    <a
+      className="text-blue-700 dark:text-blue-400"
+      href={`${pds}xrpc/com.atproto.sync.getBlob?did=${did}&cid=${ref}`}
+    >
+      Download {mimeType} file at{" "}
+      {pds?.replace("https://", "").replace("/", "")} ({ref})
+    </a>
+  );
 }
 
 interface ImageInfo {

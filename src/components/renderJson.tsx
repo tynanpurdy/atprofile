@@ -2,7 +2,13 @@ import { Link } from "@tanstack/react-router";
 import { getComponent } from "./json/getComponent";
 
 // lazy dumb component. redo this ASAP
-export function RenderJson(props: { data: any; depth?: number; did: string }) {
+export function RenderJson(props: {
+  data: any;
+  depth?: number;
+  did: string;
+  pds: string;
+}) {
+  console.log(props.pds);
   if (!props.depth) {
     props.depth = 0;
   }
@@ -82,6 +88,7 @@ export function RenderJson(props: { data: any; depth?: number; did: string }) {
           <Component
             did={props.did}
             dollar_link={props.data?.ref?.$link || undefined}
+            author_pds={props.pds}
             {...props.data}
           />
         </div>
@@ -98,6 +105,7 @@ export function RenderJson(props: { data: any; depth?: number; did: string }) {
               data={props.data[k]}
               depth={(props.depth ?? 0) + 1}
               did={props.did}
+              pds={props.pds}
             />
           </div>
         );
