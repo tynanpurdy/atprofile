@@ -28,6 +28,8 @@ const items = [
     title: "Firehose",
     url: "#",
     icon: FireExtinguisher,
+    className:
+      "opacity-60 hover:opacity-50 duration-150 transition-opacity cursor-not-allowed",
   },
   {
     title: "Counter",
@@ -63,7 +65,7 @@ export function AppSidebar() {
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
+                  <SidebarMenuButton asChild className={item.className}>
                     <Link to={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
