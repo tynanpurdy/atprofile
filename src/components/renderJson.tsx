@@ -81,7 +81,7 @@ export function RenderJson(props: { data: any; depth?: number; did: string }) {
           {props.data.$type}:{" "}
           <Component
             did={props.did}
-            dollar_link={props.data.ref.$link || undefined}
+            dollar_link={props.data?.ref?.$link || undefined}
             {...props.data}
           />
         </div>
