@@ -14,6 +14,7 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as FirehoseIndexImport } from './routes/firehose/index'
+import { Route as PdsUrlIndexImport } from './routes/pds/$url.index'
 import { Route as AtHandleIndexImport } from './routes/at:/$handle.index'
 
 // Create Virtual Routes
@@ -51,6 +52,12 @@ const IndexLazyRoute = IndexLazyImport.update({
 const FirehoseIndexRoute = FirehoseIndexImport.update({
   id: '/firehose/',
   path: '/firehose/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const PdsUrlIndexRoute = PdsUrlIndexImport.update({
+  id: '/pds/$url/',
+  path: '/pds/$url/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -118,6 +125,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AtHandleIndexImport
       parentRoute: typeof rootRoute
     }
+    '/pds/$url/': {
+      id: '/pds/$url/'
+      path: '/pds/$url'
+      fullPath: '/pds/$url'
+      preLoaderRoute: typeof PdsUrlIndexImport
+      parentRoute: typeof rootRoute
+    }
     '/at:/$handle/$collection/$rkey': {
       id: '/at:/$handle/$collection/$rkey'
       path: '/at:/$handle/$collection/$rkey'
@@ -143,6 +157,7 @@ export interface FileRoutesByFullPath {
   '/counter': typeof CounterLazyRoute
   '/firehose': typeof FirehoseIndexRoute
   '/at:/$handle': typeof AtHandleIndexRoute
+  '/pds/$url': typeof PdsUrlIndexRoute
   '/at:/$handle/$collection/$rkey': typeof AtHandleCollectionRkeyLazyRoute
   '/at:/$handle/$collection': typeof AtHandleCollectionIndexLazyRoute
 }
@@ -153,6 +168,7 @@ export interface FileRoutesByTo {
   '/counter': typeof CounterLazyRoute
   '/firehose': typeof FirehoseIndexRoute
   '/at:/$handle': typeof AtHandleIndexRoute
+  '/pds/$url': typeof PdsUrlIndexRoute
   '/at:/$handle/$collection/$rkey': typeof AtHandleCollectionRkeyLazyRoute
   '/at:/$handle/$collection': typeof AtHandleCollectionIndexLazyRoute
 }
@@ -164,6 +180,7 @@ export interface FileRoutesById {
   '/counter': typeof CounterLazyRoute
   '/firehose/': typeof FirehoseIndexRoute
   '/at:/$handle/': typeof AtHandleIndexRoute
+  '/pds/$url/': typeof PdsUrlIndexRoute
   '/at:/$handle/$collection/$rkey': typeof AtHandleCollectionRkeyLazyRoute
   '/at:/$handle/$collection/': typeof AtHandleCollectionIndexLazyRoute
 }
@@ -176,6 +193,7 @@ export interface FileRouteTypes {
     | '/counter'
     | '/firehose'
     | '/at:/$handle'
+    | '/pds/$url'
     | '/at:/$handle/$collection/$rkey'
     | '/at:/$handle/$collection'
   fileRoutesByTo: FileRoutesByTo
@@ -185,6 +203,7 @@ export interface FileRouteTypes {
     | '/counter'
     | '/firehose'
     | '/at:/$handle'
+    | '/pds/$url'
     | '/at:/$handle/$collection/$rkey'
     | '/at:/$handle/$collection'
   id:
@@ -194,6 +213,7 @@ export interface FileRouteTypes {
     | '/counter'
     | '/firehose/'
     | '/at:/$handle/'
+    | '/pds/$url/'
     | '/at:/$handle/$collection/$rkey'
     | '/at:/$handle/$collection/'
   fileRoutesById: FileRoutesById
@@ -205,6 +225,7 @@ export interface RootRouteChildren {
   CounterLazyRoute: typeof CounterLazyRoute
   FirehoseIndexRoute: typeof FirehoseIndexRoute
   AtHandleIndexRoute: typeof AtHandleIndexRoute
+  PdsUrlIndexRoute: typeof PdsUrlIndexRoute
   AtHandleCollectionRkeyLazyRoute: typeof AtHandleCollectionRkeyLazyRoute
   AtHandleCollectionIndexLazyRoute: typeof AtHandleCollectionIndexLazyRoute
 }
@@ -215,6 +236,7 @@ const rootRouteChildren: RootRouteChildren = {
   CounterLazyRoute: CounterLazyRoute,
   FirehoseIndexRoute: FirehoseIndexRoute,
   AtHandleIndexRoute: AtHandleIndexRoute,
+  PdsUrlIndexRoute: PdsUrlIndexRoute,
   AtHandleCollectionRkeyLazyRoute: AtHandleCollectionRkeyLazyRoute,
   AtHandleCollectionIndexLazyRoute: AtHandleCollectionIndexLazyRoute,
 }
@@ -234,6 +256,7 @@ export const routeTree = rootRoute
         "/counter",
         "/firehose/",
         "/at:/$handle/",
+        "/pds/$url/",
         "/at:/$handle/$collection/$rkey",
         "/at:/$handle/$collection/"
       ]
@@ -252,6 +275,9 @@ export const routeTree = rootRoute
     },
     "/at:/$handle/": {
       "filePath": "at:/$handle.index.tsx"
+    },
+    "/pds/$url/": {
+      "filePath": "pds/$url.index.tsx"
     },
     "/at:/$handle/$collection/$rkey": {
       "filePath": "at:/$handle/$collection.$rkey.lazy.tsx"

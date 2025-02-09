@@ -33,7 +33,7 @@ function useCollectionRecords(
     fetchMore: async () => {},
   });
 
-  const fetchRepoData = async (cursor?: string) => {
+  async function fetchRepoData(cursor?: string) {
     try {
       if (state.isLoading) return;
 
@@ -70,7 +70,7 @@ function useCollectionRecords(
         error: err instanceof Error ? err : new Error("An error occurred"),
       }));
     }
-  };
+  }
 
   const fetchMore = async (cursor: string) => {
     if (cursor && !state.isLoading) {
@@ -168,7 +168,7 @@ function RouteComponent() {
               </div>
             )}
             {!isLoading && !cursor && (
-              <div className="text-center text-sm text-muted-foreground mx-10">
+              <div className="text-center text-sm text-muted-foreground mx-10 mt-2">
                 that's all, folks!
               </div>
             )}

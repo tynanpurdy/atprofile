@@ -40,7 +40,18 @@ export function SmartSearchBar({
     e.preventDefault();
     if (input.trim()) {
       // replace at:// with / to match the route correctly
-      navigate({ to: `/at:/${input.replace("at:/", "")}` });
+      if (input.startsWith("pds/") || input.startsWith("https:/")) {
+        navigate({
+          to: "/pds/$url",
+          params: {
+            url: input.replace("https:/", "").replace("pds/", ""),
+          },
+        });
+      } else {
+        navigate({
+          to: `/at:/${input.replace("at:/", "")}`,
+        });
+      }
       setOpen(false);
     }
   };
@@ -81,7 +92,10 @@ export function SmartSearchBar({
       </DialogTrigger>
 
       <DialogContent className="sm:max-w-[800px] p-0 border-0 rounded-full bg-transparent">
-        <form onSubmit={handleSubmit} className="relative backdrop-blur-3xl rounded-full">
+        <form
+          onSubmit={handleSubmit}
+          className="relative backdrop-blur-3xl rounded-full"
+        >
           <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
             type="text"

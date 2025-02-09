@@ -2,8 +2,13 @@ import { AppBskyEmbedImages } from "@atcute/client/lexicons";
 import { X } from "lucide-react";
 import { useState } from "preact/hooks";
 
-export const getBlueskyCdnLink = (did: string, cid: string, ext: string) => {
-  return `https://cdn.bsky.app/img/feed_fullsize/plain/${did}/${cid}@${ext}`;
+export const getBlueskyCdnLink = (
+  did: string,
+  cid: string,
+  ext: string,
+  type: string = "feed_fullsize",
+) => {
+  return `https://cdn.bsky.app/img/${type}/plain/${did}/${cid}@${ext}`;
 };
 
 export const AppBskyEmbedImagesLayout = ({

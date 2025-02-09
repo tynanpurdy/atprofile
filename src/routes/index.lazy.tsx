@@ -48,11 +48,41 @@ const examples = [
   <Link
     key="jay"
     to="/at:/$handle"
-    params={{ handle: "jay.bsky.social" }}
+    params={{ handle: "jay.bsky.team" }}
     className="text-blue-500"
   >
     <div className="bg-muted text-muted-foreground rounded-full px-3 py-1 hover:bg-muted/80 transition-colors">
-      at://jay.bsky.social
+      at://jay.bsky.team
+    </div>
+  </Link>,
+  <Link
+    key="apenwarr"
+    to="/at:/$handle"
+    params={{ handle: "apenwarr.ca" }}
+    className="text-blue-500"
+  >
+    <div className="bg-muted text-muted-foreground rounded-full px-3 py-1 hover:bg-muted/80 transition-colors">
+      at://apenwarr.ca
+    </div>
+  </Link>,
+  <Link
+    key="mraow-pds"
+    to="/pds/$url"
+    params={{ url: "mraow.party" }}
+    className="text-blue-500"
+  >
+    <div className="bg-muted text-muted-foreground rounded-full px-3 py-1 hover:bg-muted/80 transition-colors">
+      pds/mraow.party
+    </div>
+  </Link>,
+  <Link
+    key="millipds-test"
+    to="/at:/$handle"
+    params={{ handle: "david.dev.retr0.id" }}
+    className="text-blue-500"
+  >
+    <div className="bg-muted text-muted-foreground rounded-full px-3 py-1 hover:bg-muted/80 transition-colors">
+      at://david.dev.retr0.id
     </div>
   </Link>,
   <Link

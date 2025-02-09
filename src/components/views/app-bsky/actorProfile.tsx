@@ -44,6 +44,7 @@ export const AppBskyActorProfileView: CollectionViewComponent<
                 repoData?.did!,
                 profile?.banner?.ref.$link,
                 "jpeg",
+                "banner",
               )}
               className="w-full rounded-lg -z-10 border object-cover -mb-16"
             />
