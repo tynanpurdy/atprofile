@@ -80,7 +80,7 @@ export const AppBskyActorProfileView: CollectionViewComponent<
       ) : (
         <div> Nothing doing!</div>
       )}
-      <div className="ml-12 mt-2">
+      <div className="px-4 mt-2">
         <h1 className="text-2xl">
           {profile.displayName}{" "}
           <span className="text-muted-foreground">
