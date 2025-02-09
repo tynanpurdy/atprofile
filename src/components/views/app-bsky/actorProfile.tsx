@@ -80,7 +80,7 @@ export const AppBskyActorProfileView: CollectionViewComponent<
       ) : (
         <div> Nothing doing!</div>
       )}
-      <div className="px-4 mt-2">
+      <div className="ml-12 mt-2">
         <h1 className="text-2xl">
           {profile.displayName}{" "}
           <span className="text-muted-foreground">
@@ -98,6 +98,7 @@ export const AppBskyActorProfileView: CollectionViewComponent<
         {profile.labels?.values.map((l) => (
           <div className="bg-blue-400 dark:bg-blue-700">{l.val}</div>
         ))}
+        </div><div className="px-4 mt-2">
         {profile.pinnedPost && (
           <>
             <div className="text-muted-foreground text-sm mt-4 mb-1">
