@@ -1,33 +1,35 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>atp.tools</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
-  <script>
-    (function () {
-      function getInitialColorMode() {
-        const persistedColorPreference = window.localStorage.getItem("theme");
-        const hasPersistedPreference =
-          typeof persistedColorPreference === "string";
-        if (hasPersistedPreference) {
-          return persistedColorPreference;
-        }
-        const mql = window.matchMedia("(prefers-color-scheme: dark)");
-        const hasMediaQueryPreference = typeof mql.matches === "boolean";
-        if (hasMediaQueryPreference) {
-          return mql.matches ? "dark" : "light";
-        }
-        return "light";
-      }
-      const colorMode = getInitialColorMode();
-      document.documentElement.className = colorMode;
-    })();
-  </script>
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="icon" type="image/svg+xml" href="/atpt.png" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>atp.tools</title>
+    </head>
+    <body>
+        <div id="app"></div>
+        <script type="module" src="/src/main.tsx"></script>
+    </body>
+    <script>
+        (function () {
+            function getInitialColorMode() {
+                const persistedColorPreference =
+                    window.localStorage.getItem("theme");
+                const hasPersistedPreference =
+                    typeof persistedColorPreference === "string";
+                if (hasPersistedPreference) {
+                    return persistedColorPreference;
+                }
+                const mql = window.matchMedia("(prefers-color-scheme: dark)");
+                const hasMediaQueryPreference =
+                    typeof mql.matches === "boolean";
+                if (hasMediaQueryPreference) {
+                    return mql.matches ? "dark" : "light";
+                }
+                return "light";
+            }
+            const colorMode = getInitialColorMode();
+            document.documentElement.className = colorMode;
+        })();
+    </script>
 </html>
