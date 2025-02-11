@@ -110,24 +110,6 @@ const useWpmTracker = (
   return { wpmData, resetWpmData };
 };
 
-const useErrorTracker = (errors: TypingError[]) => {
-  const [errorDistribution, setErrorDistribution] = useState<
-    { position: number; count: number }[]
-  >([]);
-
-  useEffect(() => {
-    const distribution = new Array(SAMPLE_TEXT.length).fill(0);
-    errors.forEach(({ position }) => distribution[position]++);
-    setErrorDistribution(
-      distribution
-        .map((count, position) => ({ position, count }))
-        .filter((d) => d.count > 0),
-    );
-  }, [errors]);
-
-  return errorDistribution;
-};
-
 const useTypingTest = () => {
   const [state, setState] = useState({
     userInput: "",
@@ -321,11 +303,6 @@ const TextDisplay = ({ userInput }: { userInput: string }) => (
 );
 
 // Helper components
-
-const CustomErrorDot = (props: any) =>
-  props.payload.errors >= 1 ? (
-    <circle cx={props.cx} cy={props.cy} r={4} fill="#ff4757" stroke="none" />
-  ) : null;
 
 const ResetButton = ({ onClick }: { onClick: () => void }) => (
   <button
