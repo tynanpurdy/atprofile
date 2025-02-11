@@ -14,7 +14,6 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as FirehoseIndexImport } from './routes/firehose/index'
-import { Route as PdsUrlIndexImport } from './routes/pds/$url.index'
 import { Route as AtHandleIndexImport } from './routes/at:/$handle.index'
 
 // Create Virtual Routes
@@ -22,6 +21,9 @@ import { Route as AtHandleIndexImport } from './routes/at:/$handle.index'
 const CounterLazyImport = createFileRoute('/counter')()
 const AboutLazyImport = createFileRoute('/about')()
 const IndexLazyImport = createFileRoute('/')()
+const RnfgrerttIndexLazyImport = createFileRoute('/rnfgrertt/')()
+const RnfgrerttTypingLazyImport = createFileRoute('/rnfgrertt/typing')()
+const PdsUrlIndexLazyImport = createFileRoute('/pds/$url/')()
 const AtHandleCollectionIndexLazyImport = createFileRoute(
   '/at:/$handle/$collection/',
 )()
@@ -49,17 +51,35 @@ const IndexLazyRoute = IndexLazyImport.update({
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
 
+const RnfgrerttIndexLazyRoute = RnfgrerttIndexLazyImport.update({
+  id: '/rnfgrertt/',
+  path: '/rnfgrertt/',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() =>
+  import('./routes/rnfgrertt/index.lazy').then((d) => d.Route),
+)
+
 const FirehoseIndexRoute = FirehoseIndexImport.update({
   id: '/firehose/',
   path: '/firehose/',
   getParentRoute: () => rootRoute,
 } as any)
 
-const PdsUrlIndexRoute = PdsUrlIndexImport.update({
+const RnfgrerttTypingLazyRoute = RnfgrerttTypingLazyImport.update({
+  id: '/rnfgrertt/typing',
+  path: '/rnfgrertt/typing',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() =>
+  import('./routes/rnfgrertt/typing.lazy').then((d) => d.Route),
+)
+
+const PdsUrlIndexLazyRoute = PdsUrlIndexLazyImport.update({
   id: '/pds/$url/',
   path: '/pds/$url/',
   getParentRoute: () => rootRoute,
-} as any)
+} as any).lazy(() =>
+  import('./routes/pds/$url.index.lazy').then((d) => d.Route),
+)
 
 const AtHandleIndexRoute = AtHandleIndexImport.update({
   id: '/at:/$handle/',
@@ -111,11 +131,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CounterLazyImport
       parentRoute: typeof rootRoute
     }
+    '/rnfgrertt/typing': {
+      id: '/rnfgrertt/typing'
+      path: '/rnfgrertt/typing'
+      fullPath: '/rnfgrertt/typing'
+      preLoaderRoute: typeof RnfgrerttTypingLazyImport
+      parentRoute: typeof rootRoute
+    }
     '/firehose/': {
       id: '/firehose/'
       path: '/firehose'
       fullPath: '/firehose'
       preLoaderRoute: typeof FirehoseIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/rnfgrertt/': {
+      id: '/rnfgrertt/'
+      path: '/rnfgrertt'
+      fullPath: '/rnfgrertt'
+      preLoaderRoute: typeof RnfgrerttIndexLazyImport
       parentRoute: typeof rootRoute
     }
     '/at:/$handle/': {
@@ -129,7 +163,7 @@ declare module '@tanstack/react-router' {
       id: '/pds/$url/'
       path: '/pds/$url'
       fullPath: '/pds/$url'
-      preLoaderRoute: typeof PdsUrlIndexImport
+      preLoaderRoute: typeof PdsUrlIndexLazyImport
       parentRoute: typeof rootRoute
     }
     '/at:/$handle/$collection/$rkey': {
@@ -155,9 +189,11 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
   '/about': typeof AboutLazyRoute
   '/counter': typeof CounterLazyRoute
+  '/rnfgrertt/typing': typeof RnfgrerttTypingLazyRoute
   '/firehose': typeof FirehoseIndexRoute
+  '/rnfgrertt': typeof RnfgrerttIndexLazyRoute
   '/at:/$handle': typeof AtHandleIndexRoute
-  '/pds/$url': typeof PdsUrlIndexRoute
+  '/pds/$url': typeof PdsUrlIndexLazyRoute
   '/at:/$handle/$collection/$rkey': typeof AtHandleCollectionRkeyLazyRoute
   '/at:/$handle/$collection': typeof AtHandleCollectionIndexLazyRoute
 }
@@ -166,9 +202,11 @@ export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
   '/about': typeof AboutLazyRoute
   '/counter': typeof CounterLazyRoute
+  '/rnfgrertt/typing': typeof RnfgrerttTypingLazyRoute
   '/firehose': typeof FirehoseIndexRoute
+  '/rnfgrertt': typeof RnfgrerttIndexLazyRoute
   '/at:/$handle': typeof AtHandleIndexRoute
-  '/pds/$url': typeof PdsUrlIndexRoute
+  '/pds/$url': typeof PdsUrlIndexLazyRoute
   '/at:/$handle/$collection/$rkey': typeof AtHandleCollectionRkeyLazyRoute
   '/at:/$handle/$collection': typeof AtHandleCollectionIndexLazyRoute
 }
@@ -178,9 +216,11 @@ export interface FileRoutesById {
   '/': typeof IndexLazyRoute
   '/about': typeof AboutLazyRoute
   '/counter': typeof CounterLazyRoute
+  '/rnfgrertt/typing': typeof RnfgrerttTypingLazyRoute
   '/firehose/': typeof FirehoseIndexRoute
+  '/rnfgrertt/': typeof RnfgrerttIndexLazyRoute
   '/at:/$handle/': typeof AtHandleIndexRoute
-  '/pds/$url/': typeof PdsUrlIndexRoute
+  '/pds/$url/': typeof PdsUrlIndexLazyRoute
   '/at:/$handle/$collection/$rkey': typeof AtHandleCollectionRkeyLazyRoute
   '/at:/$handle/$collection/': typeof AtHandleCollectionIndexLazyRoute
 }
@@ -191,7 +231,9 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/counter'
+    | '/rnfgrertt/typing'
     | '/firehose'
+    | '/rnfgrertt'
     | '/at:/$handle'
     | '/pds/$url'
     | '/at:/$handle/$collection/$rkey'
@@ -201,7 +243,9 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/counter'
+    | '/rnfgrertt/typing'
     | '/firehose'
+    | '/rnfgrertt'
     | '/at:/$handle'
     | '/pds/$url'
     | '/at:/$handle/$collection/$rkey'
@@ -211,7 +255,9 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/counter'
+    | '/rnfgrertt/typing'
     | '/firehose/'
+    | '/rnfgrertt/'
     | '/at:/$handle/'
     | '/pds/$url/'
     | '/at:/$handle/$collection/$rkey'
@@ -223,9 +269,11 @@ export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
   AboutLazyRoute: typeof AboutLazyRoute
   CounterLazyRoute: typeof CounterLazyRoute
+  RnfgrerttTypingLazyRoute: typeof RnfgrerttTypingLazyRoute
   FirehoseIndexRoute: typeof FirehoseIndexRoute
+  RnfgrerttIndexLazyRoute: typeof RnfgrerttIndexLazyRoute
   AtHandleIndexRoute: typeof AtHandleIndexRoute
-  PdsUrlIndexRoute: typeof PdsUrlIndexRoute
+  PdsUrlIndexLazyRoute: typeof PdsUrlIndexLazyRoute
   AtHandleCollectionRkeyLazyRoute: typeof AtHandleCollectionRkeyLazyRoute
   AtHandleCollectionIndexLazyRoute: typeof AtHandleCollectionIndexLazyRoute
 }
@@ -234,9 +282,11 @@ const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
   AboutLazyRoute: AboutLazyRoute,
   CounterLazyRoute: CounterLazyRoute,
+  RnfgrerttTypingLazyRoute: RnfgrerttTypingLazyRoute,
   FirehoseIndexRoute: FirehoseIndexRoute,
+  RnfgrerttIndexLazyRoute: RnfgrerttIndexLazyRoute,
   AtHandleIndexRoute: AtHandleIndexRoute,
-  PdsUrlIndexRoute: PdsUrlIndexRoute,
+  PdsUrlIndexLazyRoute: PdsUrlIndexLazyRoute,
   AtHandleCollectionRkeyLazyRoute: AtHandleCollectionRkeyLazyRoute,
   AtHandleCollectionIndexLazyRoute: AtHandleCollectionIndexLazyRoute,
 }
@@ -254,7 +304,9 @@ export const routeTree = rootRoute
         "/",
         "/about",
         "/counter",
+        "/rnfgrertt/typing",
         "/firehose/",
+        "/rnfgrertt/",
         "/at:/$handle/",
         "/pds/$url/",
         "/at:/$handle/$collection/$rkey",
@@ -270,14 +322,20 @@ export const routeTree = rootRoute
     "/counter": {
       "filePath": "counter.lazy.tsx"
     },
+    "/rnfgrertt/typing": {
+      "filePath": "rnfgrertt/typing.lazy.tsx"
+    },
     "/firehose/": {
       "filePath": "firehose/index.tsx"
+    },
+    "/rnfgrertt/": {
+      "filePath": "rnfgrertt/index.lazy.tsx"
     },
     "/at:/$handle/": {
       "filePath": "at:/$handle.index.tsx"
     },
     "/pds/$url/": {
-      "filePath": "pds/$url.index.tsx"
+      "filePath": "pds/$url.index.lazy.tsx"
     },
     "/at:/$handle/$collection/$rkey": {
       "filePath": "at:/$handle/$collection.$rkey.lazy.tsx"

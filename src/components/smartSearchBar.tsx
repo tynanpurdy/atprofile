@@ -47,6 +47,8 @@ export function SmartSearchBar({
             url: input.replace("https:/", "").replace("pds/", ""),
           },
         });
+      } else if (input === "typing") {
+        navigate({ to: "/rnfgrertt/typing" });
       } else {
         navigate({
           to: `/at:/${input.replace("at:/", "")}`,

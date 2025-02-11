@@ -50,7 +50,7 @@ const KbdKey = React.forwardRef<
     <div
       ref={ref}
       className={cn(
-        "inline-flex items-center justify-center rounded-md border bg-muted px-2 py-1 text-xs font-mono shadow",
+        "inline-flex items-center justify-center rounded-md border bg-muted px-2 py-1 text-xs font-mono shadow transition-colors duration-150",
         keys ? "gap-x-[0.062rem]" : "gap-x-1",
         allKeysPressed && "bg-green-300/50",
         className,
