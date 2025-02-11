@@ -17,12 +17,6 @@ import { SmartSearchBar } from "./smartSearchBar";
 import { ColorToggle } from "./themeSwitcher";
 import { Link } from "@tanstack/react-router";
 import { ForwardRefExoticComponent, ReactNode } from "preact/compat";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "./ui/tooltip";
 
 type BaseMenuItem = {
   url: string;
