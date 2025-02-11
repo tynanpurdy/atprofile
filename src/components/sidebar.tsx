@@ -16,22 +16,58 @@ import {
 import { SmartSearchBar } from "./smartSearchBar";
 import { ColorToggle } from "./themeSwitcher";
 import { Link } from "@tanstack/react-router";
+import { ForwardRefExoticComponent, ReactNode } from "preact/compat";
+
+type BaseMenuItem = {
+  url: string;
+};
+
+type IconMenuItem = BaseMenuItem & {
+  type: "icon";
+  title: string;
+  icon: ForwardRefExoticComponent<any>;
+  className?: string;
+};
+
+type ComponentMenuItem = BaseMenuItem & {
+  type: "component";
+  component: ReactNode;
+};
+
+type MenuItem = IconMenuItem | ComponentMenuItem;
 
 // Menu items.
-const items = [
+const items: MenuItem[] = [
   {
+    type: "icon",
     title: "Home",
     url: "/",
     icon: Home,
   },
   {
-    title: "Firehose",
+    type: "component",
     url: "#",
-    icon: FireExtinguisher,
-    className:
-      "opacity-60 hover:opacity-50 duration-150 transition-opacity cursor-not-allowed",
+    component: (
+      <div className="group/tooltip relative flex opacity-80 hover:opacity-90 transition-opacity duration-150">
+        <div className="group-hover/tooltip:bg-muted flex w-full items-center gap-1 p-1 py-1.5 rounded-lg cursor-not-allowed">
+          <div className="inline-flex items-center gap-1">
+            <FireExtinguisher height={16} />
+            <span>Firehose</span>
+          </div>
+        </div>
+        {/* Tooltip */}
+        <div className="invisible opacity-0 group-hover/tooltip:visible group-hover/tooltip:opacity-100 absolute left-1/2 -translate-x-1/2 bottom-full mb-2 transition-all duration-200">
+          <div className="bg-gray-800 text-white text-sm px-2 py-1 rounded-md whitespace-nowrap">
+            Coming soon
+            {/* Arrow */}
+            <div className="absolute left-1/2 -translate-x-1/2 top-full w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[6px] border-t-gray-800"></div>
+          </div>
+        </div>
+      </div>
+    ),
   },
   {
+    type: "icon",
     title: "Counter",
     url: "/counter",
     icon: Gauge,
@@ -63,16 +99,22 @@ export function AppSidebar() {
           <SidebarGroupLabel>Application</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild className={item.className}>
-                    <Link to={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
+              {items.map((item) =>
+                item.type === "component" ? (
+                  <SidebarMenuItem key={item.url}>
+                    <Link to={item.url}>{item.component}</Link>
+                  </SidebarMenuItem>
+                ) : (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton asChild className={item.className}>
+                      <Link to={item.url}>
+                        <item.icon />
+                        <span>{item.title}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ),
+              )}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
