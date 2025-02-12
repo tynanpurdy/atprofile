@@ -1,29 +1,49 @@
 "use client";
 import { useTheme } from "@/providers/themeProvider";
 import { useEffect, useState } from "react";
-import { Circle, Moon, Sun } from "lucide-react";
+import { ChevronsUpDown, Circle, Moon, Sun } from "lucide-react";
 import { Button } from "./ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 
-export const ColorToggle = () => {
-  const { theme, setTheme } = useTheme();
+const THEMES: ("dark" | "light")[] = ["dark", "light"];
+
+export function ColorToggle() {
+  const { setTheme, theme } = useTheme();
+  const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
     setMounted(true);
   }, []);
-  const DarkLightIcon = () => {
-    if (!mounted) return <Circle />;
-    return theme === "dark" ? <Moon /> : <Sun />;
-  };
+
+  const DarkLightIcon = !mounted ? Circle : theme === "dark" ? Moon : Sun;
+
   return (
-    // tailwindcss button
-    <Button
-      className="flex items-center justify-center w-10 h-10 p-3 rounded-full bg-gray-200 dark:bg-gray-800 text-neutral-800 dark:text-neutral-300 cursor-pointer hover:bg-gray-300 dark:hover:bg-gray-700"
-      aria-label="button"
-      onClick={() => {
-        setTheme(theme === "dark" ? "light" : "dark");
-      }}
-    >
-      <DarkLightIcon />
-    </Button>
+    <Popover open={isOpen} onOpenChange={() => setIsOpen(!isOpen)}>
+      <PopoverTrigger asChild>
+        <Button
+          variant="outline"
+          className="gap-2 mr-0 rounded-l-none flex-row align-middle w-full"
+        >
+          <DarkLightIcon className="h-4 w-4" />
+          Theme
+          <ChevronsUpDown className="h-4 w-4 opacity-50" />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-[200px]">
+        <div className="grid gap-1 p-2">
+          {THEMES.map((t) => (
+            <button
+              onClick={() => {
+                setTheme(t);
+                setIsOpen(false);
+              }}
+              className="flex items-center justify-between rounded-sm p-2 text-sm hover:bg-accent"
+            >
+              {t}
+            </button>
+          ))}
+        </div>
+      </PopoverContent>
+    </Popover>
   );
-};
+}

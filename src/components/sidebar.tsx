@@ -121,8 +121,10 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
-        <FontPicker />
-        <ColorToggle />
+        <div className="flex min-w-full">
+          <FontPicker />
+          <ColorToggle />
+        </div>
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

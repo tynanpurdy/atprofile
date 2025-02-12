@@ -10,7 +10,7 @@ import {
 export type FontConfig = {
   name: string;
   category: "sans" | "serif" | "mono";
-  url: string;
+  url?: string;
 };
 
 export const GOOGLE_FONTS: FontConfig[] = [
@@ -28,6 +28,11 @@ export const GOOGLE_FONTS: FontConfig[] = [
     name: "IBM Plex Mono",
     category: "mono",
     url: "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700&display=swap",
+  },
+  {
+    name: "Jetbrains Mono",
+    category: "mono",
+    url: "https://fonts.googleapis.com/css2?family=Jetbrains+Mono:wght@400;700&display=swap",
   },
   {
     name: "Space Mono",
@@ -81,7 +86,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     (fonts: FontConfig[]) => {
       console.log("Loading multiple fonts");
       fonts.forEach((fontConfig) => {
-        if (!loadedFonts.has(fontConfig.url)) {
+        if (fontConfig.url && !loadedFonts.has(fontConfig.url)) {
           const link = document.createElement("link");
           link.rel = "stylesheet";
           link.href = fontConfig.url;
@@ -89,7 +94,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
           link.dataset.font = fontConfig.name;
           document.head.appendChild(link);
 
-          setLoadedFonts((prev) => new Set(prev).add(fontConfig.url));
+          setLoadedFonts((prev) => new Set(prev).add(fontConfig.url!));
         }
       });
     },
@@ -113,13 +118,16 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     existingLinks.forEach((link) => link.remove());
 
     // Create new font link
-    const link = document.createElement("link");
-    link.rel = "stylesheet";
-    link.href = font.url;
-    link.dataset.font = font.name;
-    document.head.appendChild(link);
+    if (font.url) {
+      const link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = font.url;
+      link.crossOrigin = "anonymous";
+      link.dataset.font = font.name;
+      document.head.appendChild(link);
 
-    setLoadedFonts(new Set(font.url));
+      setLoadedFonts(new Set(font.url));
+    }
 
     // Update CSS variables
     document.documentElement.style.setProperty(
@@ -143,7 +151,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   // Update theme class
   useEffect(() => {
-    document.documentElement.setAttribute("data-theme", theme);
+    document.documentElement.setAttribute("class", theme);
   }, [theme]);
 
   return (
