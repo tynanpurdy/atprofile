@@ -11,22 +11,26 @@ export const generateWords = (count: number): string => {
   );
 };
 
-export const getRandomText = (length: "short" | "med" | "long") => {
+export const getRandomText = (length: "short" | "med" | "long" | "xl") => {
   let minLen = 0;
   let maxLen = 0;
 
   switch (length) {
     case "short":
-      minLen = 50;
-      maxLen = 100;
+      minLen = 0;
+      maxLen = 75;
       break;
     case "med":
-      minLen = 100;
+      minLen = 75;
       maxLen = 200;
       break;
     case "long":
       minLen = 200;
       maxLen = 400;
+      break;
+    case "xl":
+      minLen = 400;
+      maxLen = 999;
       break;
   }
 

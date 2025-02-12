@@ -44,8 +44,6 @@ const KbdKey = React.forwardRef<
   // Check if all keys are pressed
   const allKeysPressed = keyStates.every((state) => state === true);
 
-  console.log(keyStates);
-
   return (
     <div
       ref={ref}

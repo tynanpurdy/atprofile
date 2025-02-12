@@ -17,7 +17,7 @@ import { Button } from "./ui/button";
 //   return "unknown";
 // }
 
-function isOnMac() {
+export function isOnMac() {
   return navigator.userAgent.toUpperCase().indexOf("MAC") >= 0;
 }
 

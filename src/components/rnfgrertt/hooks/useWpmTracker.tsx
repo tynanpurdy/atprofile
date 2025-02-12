@@ -15,7 +15,7 @@ export const useWpmTracker = (
 
   useEffect(() => {
     userInputRef.current = userInput;
-    if (userInputRef.current.length >= 5 && wpmData.length < 1) {
+    if (userInputRef.current.length >= 10 && wpmData.length < 1) {
       updateWPMData();
     }
   }, [userInput]);
@@ -51,7 +51,7 @@ export const useWpmTracker = (
       calculateMetrics(now);
 
     // Calculate errors per second
-    const timeDiff = (now - (lastUpdateRef.current || now)) / 250;
+    const timeDiff = (now - (lastUpdateRef.current || now)) / UPDATE_INTERVAL;
     const errorDelta = currentErrors - prevErrorsRef.current;
     const errorsPerSecond = timeDiff > 0 ? errorDelta / timeDiff : 0;
 

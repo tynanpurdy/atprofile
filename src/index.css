@@ -172,7 +172,7 @@
     animation-delay: -0.1s;
 }
 
-@keyframes invertBlink {
+@keyframes blink {
     0% {
         filter: invert(100%);
     }
@@ -191,7 +191,7 @@
 }
 
 .animate-blink {
-    animation: invertBlink 1s infinite;
+    animation: blink 1s infinite;
 }
 
 .scrollbar-hide {

@@ -21,14 +21,17 @@ export const calculateStats = (
     }
   }
 
+  let errorsMade = errors.length;
+  let correctKeystrokes = userInput.length - errorsMade;
+
   // Calculate WPM (only correct words)
-  const wpm = (correctChars / 5) * (60 / timeElapsed);
+  const wpm = (correctKeystrokes / 5) * (60 / timeElapsed);
 
   // Calculate Raw WPM (including incorrect words)
   const rawWpm = (userInput.length / 5) * (60 / timeElapsed);
 
   // Calculate accuracy
-  const accuracy = (correctChars / totalKeystrokes) * 100;
+  const accuracy = (correctKeystrokes / totalKeystrokes) * 100;
 
   // Calculate character ratio
   const incorrectChars = totalKeystrokes - correctChars;
@@ -38,12 +41,24 @@ export const calculateStats = (
   // Calculate consistency using coefficient of variation of raw WPM
   const rawWpmValues = wpmData.map((point) => point.wpm);
   const mean = rawWpmValues.reduce((a, b) => a + b, 0) / rawWpmValues.length;
-  const variance =
-    rawWpmValues.reduce((a, b) => a + Math.pow(b - mean, 2), 0) /
-    rawWpmValues.length;
-  const stdDev = Math.sqrt(variance);
-  const cv = (stdDev / mean) * 100;
-  const consistency = Math.max(0, Math.min(100, 100 - cv));
+
+  // Calculate weighted standard deviation
+  const weightedVariance =
+    rawWpmValues.reduce((acc, wpm) => {
+      const diff = wpm - mean;
+      // Apply smaller weight to variations at higher speeds
+      const weight = Math.max(0.5, 100 / mean);
+      return acc + diff * diff * weight;
+    }, 0) / rawWpmValues.length;
+
+  const weightedStdDev = Math.sqrt(weightedVariance);
+
+  // Adjust consistency calculation for higher WPM
+  const baseConsistency = Math.max(0, 100 - (weightedStdDev / mean) * 100);
+  const consistency = Math.min(
+    100,
+    baseConsistency * (1 + Math.log10(mean / 100)),
+  );
 
   return {
     wpm: wpm,

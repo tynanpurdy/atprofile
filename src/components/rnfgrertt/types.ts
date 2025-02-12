@@ -29,3 +29,5 @@ export type TextMeta = {
 };
 
 export type TimerOption = 15 | 30 | 60 | 120;
+
+export type CursorStyle = "block" | "line" | "underline";

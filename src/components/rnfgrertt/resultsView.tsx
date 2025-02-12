@@ -60,7 +60,7 @@ export const ResultsView = ({
         </h2>
         <div ref={resultsRef} className="bg-card text-base p-4">
           <div className="flex flex-col lg:flex-row">
-            <div className=" flex flex-row lg:flex-col justify-start lg:justify-center">
+            <div className=" flex flex-row lg:flex-col justify-start lg:justify-around">
               <StatBox label="wpm" value={stats.wpm} />
               <StatBox label="accuracy" value={stats.accuracy} following="%" />
             </div>
@@ -144,7 +144,7 @@ const StatBox = ({
   <div className="rounded text-left mx-4">
     <div className="">
       <div className="text-muted-foreground">{label}</div>
-      <div className="text-6xl">
+      <div className="text-7xl">
         {typeof value === "number" ? value.toFixed(0) : value}
         {following}
       </div>
@@ -203,7 +203,7 @@ const PerformanceChart = ({ wpmData }: { wpmData: WPMDataPoint[] }) => (
         dataKey="time"
         type="number"
         label={{ value: "Time (seconds)", position: "bottom" }}
-        domain={[0, "max"]}
+        domain={[1, "max"]}
         tickCount={Math.max(Math.ceil(wpmData.length / 8), 10)}
       />
       <YAxis
@@ -262,7 +262,7 @@ const CustomTooltip = ({ active, payload }: any) => {
       <div className="bg-muted p-2 border rounded shadow">
         <p className="text-sm">time: {data.time}s</p>
         <p className="text-sm text-blue-500">wpm: {data.wpm}</p>
-        <p className="text-sm text-blue-500">raw: {data.wpm}</p>
+        <p className="text-sm text-blue-500">raw: {data.rawWpm}</p>
         <p className="text-sm text-red-500">errors: {data.errorsPerSecond}</p>
       </div>
     );
