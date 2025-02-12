@@ -78,7 +78,7 @@ export const TypingArea = ({
         <TextDisplay userInput={userInput} sampleText={sampleText} />
         <textarea
           ref={textareaRef}
-          className="absolute top-12 left-0 w-full h-full p-4 resize-none bg-transparent text-transparent caret-transparent outline-none"
+          className="absolute top-12 left-0 w-full h-full p-4 resize-none bg-transparent text-transparent caret-transparent outline-none scrollbar-hide"
           value={userInput}
           onChange={handleInput}
           spellcheck={false}
