@@ -79,7 +79,7 @@ export const TypingArea = ({
           </div>
           <div className="my-auto pb-4">{timeRemaining?.toFixed(0)}</div>
         </div>
-        <div className="max-h-[70vh] overflow-y-auto bg-muted p-4 rounded-lg">
+        <div className="relative overflow-y-visible bg-muted p-4 rounded-lg h-full max-h-max">
           <TextDisplay
             userInput={userInput}
             sampleText={sampleText}
@@ -87,7 +87,7 @@ export const TypingArea = ({
           />
           <textarea
             ref={textareaRef}
-            className="absolute top-12 left-0 w-full h-full p-4 resize-none bg-transparent text-transparent caret-transparent outline-none scrollbar-hide"
+            className="absolute top-12 left-0 w-full h-max p-4 resize-none bg-transparent text-transparent caret-transparent select-none outline-none scrollbar-hide"
             value={userInput}
             onChange={handleInput}
             spellcheck={false}
@@ -214,7 +214,7 @@ const TextDisplay = ({
       <div
         ref={containerRef}
         style={{ height: `${LINE_HEIGHT * VISIBLE_LINES}px` }}
-        className="whitespace-pre-wrap break-words text-xl leading-[30px] absolute w-full transition-transform duration-100 overflow-y-scroll scrollbar-hide"
+        className="whitespace-pre-wrap break-words text-xl leading-[30px] absolute w-full transition-transform duration-100 overflow-y-hidden scrollbar-hide"
       >
         {/* Cursor */}
         <div
