@@ -266,9 +266,9 @@ function RouteComponent() {
   );
   const loading = Object.values(loadingStates).some(Boolean);
   return (
-    <main className="h-screen w-screen relative max-h-[calc(100vh-5rem)]">
-      <div className="container mx-auto py-16 gap-4 flex flex-col">
-        <div className="px-4 lg:px-8 gap-4 flex flex-col w-screen">
+    <main className="h-screen w-full relative max-h-[calc(100vh-5rem)]">
+      <div className="max-w-screen-xl mx-auto py-16 gap-4 flex flex-col">
+        <div className="px-4 lg:px-8 gap-4 flex flex-col w-full">
           <div className="flex flex-col md:flex-row">
             <div className="flex flex-row gap-4">
               <h1 className="text-4xl">Jetstream</h1>
@@ -305,8 +305,8 @@ function RouteComponent() {
             <div className="flex items-center">
               <div
                 className={`
-                overflow-hidden transition-all duration-200 ease-in-out
-                ${isMoreExpanded ? "w-[200px] opacity-100 mr-2 h-auto mt-2 md:mt-auto" : "w-0 h-0 opacity-0"}
+                overflow-hidden transition-all duration-200 ease-in-out md:ml-2 pb-0.5
+                ${isMoreExpanded ? "w-[200px] opacity-100 h-auto mt-2 md:mt-auto pr-2" : "w-0 h-0 opacity-0"}
               `}
               >
                 <Input
@@ -322,7 +322,7 @@ function RouteComponent() {
               <Button
                 size="icon"
                 variant="ghost"
-                className="hidden md:block h-0 md:h-auto"
+                className="hidden md:flex aspect-square h-0 md:h-auto"
                 onClick={() => setMoreExpanded(!isMoreExpanded)}
               >
                 <ChevronRight
@@ -396,14 +396,16 @@ function RouteComponent() {
             </div>
           )}
         </div>
-        <div className="gap-8 flex flex-col max-w-[100vw] overflow-scroll scrollbar-hide">
+        <div className="gap-8 flex flex-col max-w-[100vw] w-full overflow-scroll scrollbar-hide">
           {jet.records.map((r) => (
             <RenderJson pds="" did={r.did} data={r} />
           ))}
-          <div className="px-4">{jet.records.length} records in cache.</div>
+          <div className="px-4 lg:px-8 ">
+            {jet.records.length} records in cache.
+          </div>
         </div>
         {jet.records.length < 1 && (
-          <div className="px-4">Nothing here. Start to see stuff.</div>
+          <div className="px-4 lg:px-8 ">Nothing here. Start to see stuff.</div>
         )}
       </div>
     </main>
