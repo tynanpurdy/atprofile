@@ -30,6 +30,11 @@ export const GOOGLE_FONTS: FontConfig[] = [
     url: "https://fonts.googleapis.com/css2?family=Mona+Sans:wght@400;500;700&display=swap",
   },
   {
+    name: "Shippori Mincho",
+    category: "serif",
+    url: "https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;700&display=swap",
+  },
+  {
     name: "Comic Neue",
     category: "sans",
     url: "https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;500;700&display=swap",
@@ -74,6 +79,16 @@ export const GOOGLE_FONTS: FontConfig[] = [
     category: "mono",
     url: "https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;700&display=swap",
   },
+  {
+    name: "Monaspace Neon",
+    category: "mono",
+    url: "/css/monaspace/neon.css",
+  },
+  {
+    name: "Monaspace Xenon",
+    category: "mono",
+    url: "/css/monaspace/xenon.css",
+  },
 ];
 
 export type ThemeState = {
@@ -88,8 +103,8 @@ export type ThemeState = {
 const ThemeContext = createContext<ThemeState>({} as ThemeState);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<"light" | "dark">("light");
-  const [font, setFont] = useState<FontConfig>(GOOGLE_FONTS[0]);
+  const [theme, setTheme] = useState<"light" | "dark">("dark");
+  const [font, setFont] = useState<FontConfig>(GOOGLE_FONTS[2]);
   const [loadedFonts, setLoadedFonts] = useState<Set<string>>(new Set());
 
   const loadFonts = useCallback(
@@ -114,9 +129,9 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   // Load saved theme/font from localStorage
   useEffect(() => {
     const savedTheme =
-      (localStorage.getItem("theme") as "light" | "dark") || "light";
+      (localStorage.getItem("theme") as "light" | "dark") || "dark";
     const savedFont =
-      JSON.parse(localStorage.getItem("font") || "null") || GOOGLE_FONTS[0];
+      JSON.parse(localStorage.getItem("font") || "null") || GOOGLE_FONTS[2];
     setTheme(savedTheme);
     setFont(savedFont);
   }, []);
