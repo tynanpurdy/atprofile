@@ -46,26 +46,10 @@ const items: MenuItem[] = [
     icon: Home,
   },
   {
-    type: "component",
-    url: "#",
-    component: (
-      <div className="group/tooltip relative flex opacity-80 hover:opacity-90 transition-opacity duration-150">
-        <div className="group-hover/tooltip:bg-muted flex w-full items-center gap-1 p-1 py-1.5 rounded-lg cursor-not-allowed">
-          <div className="inline-flex items-center gap-1">
-            <FireExtinguisher height={16} />
-            <span>Firehose</span>
-          </div>
-        </div>
-        {/* Tooltip */}
-        <div className="invisible opacity-0 group-hover/tooltip:visible group-hover/tooltip:opacity-100 absolute left-1/2 -translate-x-1/2 bottom-full mb-2 transition-all duration-200">
-          <div className="bg-gray-800 text-white text-sm px-2 py-1 rounded-md whitespace-nowrap">
-            Coming soon
-            {/* Arrow */}
-            <div className="absolute left-1/2 -translate-x-1/2 top-full w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[6px] border-t-gray-800"></div>
-          </div>
-        </div>
-      </div>
-    ),
+    type: "icon",
+    title: "Jetstream",
+    url: "/jetstream",
+    icon: FireExtinguisher,
   },
   {
     type: "icon",

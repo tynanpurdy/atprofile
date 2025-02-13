@@ -24,6 +24,7 @@ export default function BlobLayout({
       ],
     });
   }
+  if (pds == "") return `blob from ${did} with cid ${ref}`;
   return (
     <a
       className="text-blue-700 dark:text-blue-400"
