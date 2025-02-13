@@ -306,7 +306,10 @@ const jetstream = new Jetstream({
    * @param event The event to listen for.
    * @param listener The callback function, called when the event is emitted.
    */
-  override on(event: string, listener: (...args: any[]) => void) {
+  override on(
+    event: keyof JetstreamEvents<ResolvedCollections>,
+    listener: (...args: any[]) => void,
+  ) {
     return super.on(event, listener as never);
   }
 }
