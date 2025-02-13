@@ -396,7 +396,7 @@ function RouteComponent() {
             </div>
           )}
         </div>
-        <div className="gap-8 flex flex-col w-screen overflow-scroll">
+        <div className="gap-8 flex flex-col w-screen overflow-scroll scrollbar-hide">
           {jet.records.map((r) => (
             <RenderJson pds="" did={r.did} data={r} />
           ))}
