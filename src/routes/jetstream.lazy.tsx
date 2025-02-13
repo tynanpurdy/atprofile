@@ -396,7 +396,7 @@ function RouteComponent() {
             </div>
           )}
         </div>
-        <div className="w-full max-w-2xl overflow-x-auto">
+        <div className="w-full max-w-2xl overflow-x-auto lg:px-4">
           {jet.records.map((r) => (
             <div className="max-w-min text-wrap mb-8">
               <RenderJson pds="" did={r.did} data={r} />
