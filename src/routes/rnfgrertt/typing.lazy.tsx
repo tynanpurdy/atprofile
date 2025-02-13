@@ -16,8 +16,7 @@ import {
   TypingStats,
 } from "@/components/rnfgrertt/types";
 import { TypingArea } from "@/components/rnfgrertt/typingArea";
-import { isOnMac } from "@/components/smartSearchBar";
-import { KbdKey } from "@/components/ui/kbdKey";
+
 import { useStoredState } from "@/hooks/useStoredState";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { useState, useMemo, useEffect } from "preact/hooks";
