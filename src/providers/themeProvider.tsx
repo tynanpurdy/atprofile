@@ -25,6 +25,11 @@ export const GOOGLE_FONTS: FontConfig[] = [
     url: "https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap",
   },
   {
+    name: "Mona Sans",
+    category: "sans",
+    url: "https://fonts.googleapis.com/css2?family=Mona+Sans:wght@400;500;700&display=swap",
+  },
+  {
     name: "Comic Neue",
     category: "sans",
     url: "https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;500;700&display=swap",
