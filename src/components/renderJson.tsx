@@ -8,6 +8,7 @@ export function RenderJson(props: {
   did: string;
   pds: string;
 }) {
+  if (props.data === null) return null;
   console.log(props.pds);
   if (!props.depth) {
     props.depth = 0;
@@ -79,7 +80,7 @@ export function RenderJson(props: {
   }
   // if the data is an object we have a custom component for, use that instead
   if (props.data.$type) {
-    const Component = getComponent(props.data.$type);
+    const Component = getComponent(props.data?.$type);
     if (Component) {
       console.log("props.data", props.data);
       return (
