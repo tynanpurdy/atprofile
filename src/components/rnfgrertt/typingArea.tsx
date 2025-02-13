@@ -127,21 +127,21 @@ const TextDisplay = ({
         return {
           width: `${spanRect.width + 0.5}px`,
           height: `${spanRect.height}px`,
-          backgroundColor: "hsl(var(--card))",
+          backgroundColor: "hsl(0 0 100)",
           mixBlendMode: "difference",
         };
       case "line":
         return {
           width: "2px",
           height: `${spanRect.height}px`,
-          backgroundColor: "hsl(var(--card))",
+          backgroundColor: "hsl(0 0 100)",
           mixBlendMode: "difference",
         };
       case "underline":
         return {
           width: `${spanRect.width}px`,
           height: "2px",
-          backgroundColor: "hsl(var(--card))", // Use white for inversion
+          backgroundColor: "hsl(0 0 100)",
           mixBlendMode: "difference",
         };
       default:
@@ -150,7 +150,7 @@ const TextDisplay = ({
   };
 
   const getTopOffset = () => {
-    if (cursorStyle == "underline") return LINE_HEIGHT - 8;
+    if (cursorStyle == "underline") return LINE_HEIGHT - 6;
     else return 0;
   };
 
@@ -223,7 +223,7 @@ const TextDisplay = ({
         {/* Cursor */}
         <div
           ref={cursorRef}
-          className="absolute w-[2px] bg-primary transition-all duration-100 animate-blink"
+          className="absolute w-[2px] transition-all duration-100 animate-blink"
           style={{
             left: 0,
             top: 0,
