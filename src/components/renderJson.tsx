@@ -97,7 +97,7 @@ export function RenderJson(props: {
     }
   }
   return (
-    <div>
+    <>
       {Object.keys(props.data).map((k) => {
         return (
           <div style={{ marginLeft: `${20}px` }}>
@@ -111,6 +111,6 @@ export function RenderJson(props: {
           </div>
         );
       })}
-    </div>
+    </>
   );
 }

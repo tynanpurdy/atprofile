@@ -267,7 +267,7 @@ function RouteComponent() {
   const loading = Object.values(loadingStates).some(Boolean);
   return (
     <main className="h-screen w-full relative max-h-[calc(100vh-5rem)]">
-      <div className="max-w-screen-xl mx-auto py-16 gap-4 flex flex-col">
+      <div className="w-full max-w-screen-xl mx-auto py-16 gap-4 flex flex-col">
         <div className="px-4 lg:px-8 gap-4 flex flex-col w-full">
           <div className="flex flex-col md:flex-row">
             <div className="flex flex-row gap-4">
@@ -396,9 +396,11 @@ function RouteComponent() {
             </div>
           )}
         </div>
-        <div className="gap-8 flex flex-col max-w-[100vw] w-full overflow-scroll scrollbar-hide">
+        <div className="max-w-2xl w-full">
           {jet.records.map((r) => (
-            <RenderJson pds="" did={r.did} data={r} />
+            <div className="max-w-min text-wrap overflow-x-auto mb-8">
+              <RenderJson pds="" did={r.did} data={r} />
+            </div>
           ))}
           <div className="px-4 lg:px-8 ">
             {jet.records.length} records in cache.

@@ -44,7 +44,7 @@ export const AppBskyEmbedImagesLayout = ({
             <img
               src={getBlueskyCdnLink(did, image.image.ref.$link, "jpeg")}
               alt=""
-              className={`w-full h-full cursor-pointer object-cover transition-transform duration-300 hover:scale-[101%] ${imageCount > 1 && "max-h-64"}`}
+              className={`w-full max-w-96 h-full cursor-pointer object-cover transition-transform duration-300 hover:scale-[101%] ${imageCount > 1 && "max-h-64"}`}
               style={{
                 aspectRatio: imageCount === 1 ? "" : "1/1",
               }}
