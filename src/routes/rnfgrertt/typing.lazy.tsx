@@ -43,7 +43,7 @@ const useKeyboardShortcuts = (
         e.preventDefault();
         resetCallback();
       }
-      if (e.key === "-") {
+      if (e.shiftKey && e.key === "_") {
         e.preventDefault();
         if (cursorStyle === "block") toggleCursorStyle("line");
         else if (cursorStyle === "line") toggleCursorStyle("underline");

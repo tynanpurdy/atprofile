@@ -28,7 +28,9 @@ export const HelpModal = ({
           </div>
           <div className="flex justify-between">
             <span>rotate cursor style</span>
-            <kbd className="px-2 py-1 bg-muted rounded">-</kbd>
+            <kbd className="px-2 py-1 bg-muted rounded">
+              <ArrowUp className="inline mb-0.5" height={16} width={16} /> + -
+            </kbd>
           </div>
           <div className="flex justify-between">
             <span>help menu (this page)</span>
