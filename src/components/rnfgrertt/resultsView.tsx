@@ -58,7 +58,7 @@ export const ResultsView = ({
         <h2 className="text-2xl text-muted-foreground -mb-4 text-start ml-8">
           Results
         </h2>
-        <div ref={resultsRef} className="bg-card text-base p-4">
+        <div ref={resultsRef} className="bg-card text-base px-4 py-2">
           <div className="flex flex-col lg:flex-row">
             <div className=" flex flex-row lg:flex-col justify-start lg:justify-around">
               <StatBox label="wpm" value={stats.wpm} />
@@ -141,7 +141,7 @@ const StatBox = ({
   value: string | number;
   following?: string;
 }) => (
-  <div className="rounded text-left mx-4">
+  <div className="rounded text-left ml-4 w-36">
     <div className="">
       <div className="text-muted-foreground">{label}</div>
       <div className="text-7xl">
@@ -202,23 +202,32 @@ const PerformanceChart = ({ wpmData }: { wpmData: WPMDataPoint[] }) => (
       <XAxis
         dataKey="time"
         type="number"
+        scale="linear"
+        allowDecimals={false}
         label={{ value: "Time (seconds)", position: "bottom" }}
         domain={[1, "max"]}
         tickCount={Math.max(Math.ceil(wpmData.length / 8), 10)}
       />
       <YAxis
         yAxisId="left"
+        orientation="left"
         label={{
           value: "words/min",
           angle: -90,
-          position: "left",
-          offset: -20,
+          position: "insideBottomLeft",
+          offset: 25,
         }}
       />
       <YAxis
         yAxisId="right"
         orientation="right"
-        label={{ value: "Errors", angle: 90, position: "center" }}
+        allowDecimals={false}
+        label={{
+          value: "Errors",
+          angle: 90,
+          position: "insideTopLeft",
+          offset: 30,
+        }}
         domain={[0, Math.max(...wpmData.map((d) => d.errorsPerSecond || 0), 1)]}
       />
       <Tooltip content={<CustomTooltip />} />
@@ -247,7 +256,7 @@ const PerformanceChart = ({ wpmData }: { wpmData: WPMDataPoint[] }) => (
         type="monotone"
         dataKey="errorsPerSecond"
         stroke="#ff4757"
-        name="Errors/sec"
+        name="Errors"
         strokeWidth={0}
         dot={<CustomDot />}
       />
