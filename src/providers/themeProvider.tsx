@@ -25,6 +25,11 @@ export const GOOGLE_FONTS: FontConfig[] = [
     url: "https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap",
   },
   {
+    name: "Comic Neue",
+    category: "sans",
+    url: "https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;500;700&display=swap",
+  },
+  {
     name: "IBM Plex Mono",
     category: "mono",
     url: "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700&display=swap",
@@ -32,7 +37,7 @@ export const GOOGLE_FONTS: FontConfig[] = [
   {
     name: "Jetbrains Mono",
     category: "mono",
-    url: "https://fonts.googleapis.com/css2?family=Jetbrains+Mono:wght@400;700&display=swap",
+    url: "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap",
   },
   {
     name: "Space Mono",
