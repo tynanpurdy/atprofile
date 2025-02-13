@@ -143,11 +143,15 @@ const TextDisplay = ({
           height: "2px",
           backgroundColor: "hsl(var(--card))", // Use white for inversion
           mixBlendMode: "difference",
-          top: `${spanRect.height - 2}px`,
         };
       default:
         return {};
     }
+  };
+
+  const getTopOffset = () => {
+    if (cursorStyle == "underline") return LINE_HEIGHT - 8;
+    else return 0;
   };
 
   useEffect(() => {
@@ -194,7 +198,7 @@ const TextDisplay = ({
     const cursorStyles = getCursorStyles(currentSpan);
     Object.assign(cursor.style, {
       left: `${relativeLeft}px`,
-      top: `${currentSpan.offsetTop}px`,
+      top: `${currentSpan.offsetTop + getTopOffset()}px`,
       ...cursorStyles,
     });
 
