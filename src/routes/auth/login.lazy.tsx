@@ -21,16 +21,10 @@ function RouteComponent() {
     try {
       const resolved = await qt.client.resolveHandle(user);
       if (qt.accounts.includes(resolved.identity.id)) {
-        // switch to user
-        try {
-          qt.client.switchAccount(resolved.identity.id);
-          // redirect to dashboard
-          window.location.href = "/";
-          return;
-        } catch (error) {
-          console.error(error);
-          throw error;
-        }
+        qt.client.switchAccount(resolved.identity.id);
+        // redirect to dashboard
+        window.location.href = "/";
+        return;
       }
       const uri = await qt.client.getOAuthRedirectUri(resolved);
       window.location.href = uri.toString();
