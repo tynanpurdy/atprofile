@@ -115,7 +115,11 @@ export class QtClient {
       | `did:${string}`
       | null;
 
-    this.attemptResumeSession();
+    // Only attempt to resume session if it's the default service
+    // attempt to avoid one-shots from making irrelevant calls
+    if (service.toString() === "https://bsky.social") {
+      this.attemptResumeSession();
+    }
   }
   private updateState() {
     if (this.onStateChange) {
