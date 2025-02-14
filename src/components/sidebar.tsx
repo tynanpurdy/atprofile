@@ -18,6 +18,7 @@ import { ColorToggle } from "./themeSwitcher";
 import { Link } from "@tanstack/react-router";
 import { ForwardRefExoticComponent, ReactNode } from "preact/compat";
 import { FontPicker } from "./fontPicker";
+import { NavUser } from "./auth/navUser";
 
 type BaseMenuItem = {
   url: string;
@@ -105,6 +106,7 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
+        <NavUser />
         <div className="flex min-w-full">
           <FontPicker />
           <ColorToggle />

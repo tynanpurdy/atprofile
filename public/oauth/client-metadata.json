@@ -1,0 +1,12 @@
+{
+  "redirect_uris": ["https://atp.tools/auth/callback"],
+  "response_types": ["code"],
+  "grant_types": ["authorization_code", "refresh_token"],
+  "scope": "atproto transition:generic",
+  "token_endpoint_auth_method": "none",
+  "application_type": "web",
+  "client_id": "https://atp.tools/oauth/client-metadata.json",
+  "client_name": "atproto tools",
+  "client_uri": "https://atp.tools",
+  "dpop_bound_access_tokens": true
+}

@@ -23,6 +23,8 @@ const AboutLazyImport = createFileRoute('/about')()
 const IndexLazyImport = createFileRoute('/')()
 const RnfgrerttIndexLazyImport = createFileRoute('/rnfgrertt/')()
 const RnfgrerttTypingLazyImport = createFileRoute('/rnfgrertt/typing')()
+const AuthLoginLazyImport = createFileRoute('/auth/login')()
+const AuthCallbackLazyImport = createFileRoute('/auth/callback')()
 const PdsUrlIndexLazyImport = createFileRoute('/pds/$url/')()
 const AtHandleCollectionIndexLazyImport = createFileRoute(
   '/at:/$handle/$collection/',
@@ -72,6 +74,18 @@ const RnfgrerttTypingLazyRoute = RnfgrerttTypingLazyImport.update({
 } as any).lazy(() =>
   import('./routes/rnfgrertt/typing.lazy').then((d) => d.Route),
 )
+
+const AuthLoginLazyRoute = AuthLoginLazyImport.update({
+  id: '/auth/login',
+  path: '/auth/login',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/auth/login.lazy').then((d) => d.Route))
+
+const AuthCallbackLazyRoute = AuthCallbackLazyImport.update({
+  id: '/auth/callback',
+  path: '/auth/callback',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/auth/callback.lazy').then((d) => d.Route))
 
 const PdsUrlIndexLazyRoute = PdsUrlIndexLazyImport.update({
   id: '/pds/$url/',
@@ -138,6 +152,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof JetstreamLazyImport
       parentRoute: typeof rootRoute
     }
+    '/auth/callback': {
+      id: '/auth/callback'
+      path: '/auth/callback'
+      fullPath: '/auth/callback'
+      preLoaderRoute: typeof AuthCallbackLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/auth/login': {
+      id: '/auth/login'
+      path: '/auth/login'
+      fullPath: '/auth/login'
+      preLoaderRoute: typeof AuthLoginLazyImport
+      parentRoute: typeof rootRoute
+    }
     '/rnfgrertt/typing': {
       id: '/rnfgrertt/typing'
       path: '/rnfgrertt/typing'
@@ -190,6 +218,8 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutLazyRoute
   '/counter': typeof CounterLazyRoute
   '/jetstream': typeof JetstreamLazyRoute
+  '/auth/callback': typeof AuthCallbackLazyRoute
+  '/auth/login': typeof AuthLoginLazyRoute
   '/rnfgrertt/typing': typeof RnfgrerttTypingLazyRoute
   '/rnfgrertt': typeof RnfgrerttIndexLazyRoute
   '/at:/$handle': typeof AtHandleIndexRoute
@@ -203,6 +233,8 @@ export interface FileRoutesByTo {
   '/about': typeof AboutLazyRoute
   '/counter': typeof CounterLazyRoute
   '/jetstream': typeof JetstreamLazyRoute
+  '/auth/callback': typeof AuthCallbackLazyRoute
+  '/auth/login': typeof AuthLoginLazyRoute
   '/rnfgrertt/typing': typeof RnfgrerttTypingLazyRoute
   '/rnfgrertt': typeof RnfgrerttIndexLazyRoute
   '/at:/$handle': typeof AtHandleIndexRoute
@@ -217,6 +249,8 @@ export interface FileRoutesById {
   '/about': typeof AboutLazyRoute
   '/counter': typeof CounterLazyRoute
   '/jetstream': typeof JetstreamLazyRoute
+  '/auth/callback': typeof AuthCallbackLazyRoute
+  '/auth/login': typeof AuthLoginLazyRoute
   '/rnfgrertt/typing': typeof RnfgrerttTypingLazyRoute
   '/rnfgrertt/': typeof RnfgrerttIndexLazyRoute
   '/at:/$handle/': typeof AtHandleIndexRoute
@@ -232,6 +266,8 @@ export interface FileRouteTypes {
     | '/about'
     | '/counter'
     | '/jetstream'
+    | '/auth/callback'
+    | '/auth/login'
     | '/rnfgrertt/typing'
     | '/rnfgrertt'
     | '/at:/$handle'
@@ -244,6 +280,8 @@ export interface FileRouteTypes {
     | '/about'
     | '/counter'
     | '/jetstream'
+    | '/auth/callback'
+    | '/auth/login'
     | '/rnfgrertt/typing'
     | '/rnfgrertt'
     | '/at:/$handle'
@@ -256,6 +294,8 @@ export interface FileRouteTypes {
     | '/about'
     | '/counter'
     | '/jetstream'
+    | '/auth/callback'
+    | '/auth/login'
     | '/rnfgrertt/typing'
     | '/rnfgrertt/'
     | '/at:/$handle/'
@@ -270,6 +310,8 @@ export interface RootRouteChildren {
   AboutLazyRoute: typeof AboutLazyRoute
   CounterLazyRoute: typeof CounterLazyRoute
   JetstreamLazyRoute: typeof JetstreamLazyRoute
+  AuthCallbackLazyRoute: typeof AuthCallbackLazyRoute
+  AuthLoginLazyRoute: typeof AuthLoginLazyRoute
   RnfgrerttTypingLazyRoute: typeof RnfgrerttTypingLazyRoute
   RnfgrerttIndexLazyRoute: typeof RnfgrerttIndexLazyRoute
   AtHandleIndexRoute: typeof AtHandleIndexRoute
@@ -283,6 +325,8 @@ const rootRouteChildren: RootRouteChildren = {
   AboutLazyRoute: AboutLazyRoute,
   CounterLazyRoute: CounterLazyRoute,
   JetstreamLazyRoute: JetstreamLazyRoute,
+  AuthCallbackLazyRoute: AuthCallbackLazyRoute,
+  AuthLoginLazyRoute: AuthLoginLazyRoute,
   RnfgrerttTypingLazyRoute: RnfgrerttTypingLazyRoute,
   RnfgrerttIndexLazyRoute: RnfgrerttIndexLazyRoute,
   AtHandleIndexRoute: AtHandleIndexRoute,
@@ -305,6 +349,8 @@ export const routeTree = rootRoute
         "/about",
         "/counter",
         "/jetstream",
+        "/auth/callback",
+        "/auth/login",
         "/rnfgrertt/typing",
         "/rnfgrertt/",
         "/at:/$handle/",
@@ -324,6 +370,12 @@ export const routeTree = rootRoute
     },
     "/jetstream": {
       "filePath": "jetstream.lazy.tsx"
+    },
+    "/auth/callback": {
+      "filePath": "auth/callback.lazy.tsx"
+    },
+    "/auth/login": {
+      "filePath": "auth/login.lazy.tsx"
     },
     "/rnfgrertt/typing": {
       "filePath": "rnfgrertt/typing.lazy.tsx"

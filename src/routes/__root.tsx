@@ -4,7 +4,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { QtClient, QtContext } from "@/providers/qtprovider";
+import { QtProvider } from "@/providers/qtprovider";
 import { ThemeProvider } from "@/providers/themeProvider";
 import { createRootRoute, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
@@ -14,7 +14,7 @@ export const Route = createRootRoute({
   component: () => (
     <>
       <ThemeProvider>
-        <QtContext.Provider value={new QtClient()}>
+        <QtProvider>
           <SidebarProvider>
             <AppSidebar />
             <SidebarInset>
@@ -22,7 +22,7 @@ export const Route = createRootRoute({
               <Outlet />
             </SidebarInset>
           </SidebarProvider>
-        </QtContext.Provider>
+        </QtProvider>
       </ThemeProvider>
       {process.env.NODE_ENV === "development" && (
         <TanStackRouterDevtools position="bottom-right" />
