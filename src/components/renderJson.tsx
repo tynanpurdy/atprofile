@@ -9,7 +9,6 @@ export function RenderJson(props: {
   pds: string;
 }) {
   if (props.data === null) return null;
-  console.log(props.pds);
   if (!props.depth) {
     props.depth = 0;
   }
