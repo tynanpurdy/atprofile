@@ -3,6 +3,7 @@ import { RenderJson } from "@/components/renderJson";
 import { SplitText } from "@/components/segmentedText";
 import { Loader } from "@/components/ui/loader";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import LexiconResolver from "@/components/verifyLexicon";
 import getView from "@/components/views/getView";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { QtClient, useXrpc } from "@/providers/qtprovider";
@@ -157,13 +158,13 @@ function RouteComponent() {
             </Link>
           </div>
         )}
-        <div className="text-muted-foreground group">
+        <div className="text-muted-foreground group truncate">
           <Link
             to={`/at:/$handle`}
             params={{
               handle: repoInfo?.did || "",
             }}
-            className="dark:hover:text-blue-400 group-hover:text-blue-500 transition-colors duration-300"
+            className="inline dark:hover:text-blue-400 group-hover:text-blue-500 transition-colors duration-300"
           >
             at://{handle}
           </Link>
@@ -173,12 +174,15 @@ function RouteComponent() {
               handle: repoInfo?.did || "",
               collection,
             }}
-            className="dark:hover:text-blue-400 group-hover:text-blue-500 transition-colors duration-300"
+            className="inline dark:hover:text-blue-400 group-hover:text-blue-500 transition-colors duration-300"
           >
             /{collection}
           </Link>
           /{rkey}
         </div>
+        {collection === "com.atproto.lexicon.schema" && (
+          <LexiconResolver did={repoInfo?.did || ""} lexiconId={rkey} />
+        )}
         <div className="border-b" />
         <Tabs defaultValue={View ? "view" : "json"} className="w-full">
           <TabsList>
