@@ -117,7 +117,7 @@ export class QtClient {
 
     // Only attempt to resume session if it's the default service
     // attempt to avoid one-shots from making irrelevant calls
-    if (service.toString() === "https://bsky.social") {
+    if (service === new URL("https://bsky.social")) {
       this.attemptResumeSession();
     }
   }
