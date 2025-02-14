@@ -14,6 +14,7 @@ function RouteComponent() {
   let qt = useContext(QtContext);
   let [user, setUser] = useState("");
   let [isResolving, setIsResolving] = useState(false);
+  let [error, setError] = useState<Error | null>(null);
   if (!qt) return null;
   const onRedirectIntent = async () => {
     setIsResolving(true);
@@ -27,6 +28,9 @@ function RouteComponent() {
         return;
       } catch (error) {
         console.error(error);
+        setError(error as Error);
+        setIsResolving(false);
+        return;
       }
     }
     const uri = await qt.client.getOAuthRedirectUri(resolved);
@@ -51,6 +55,7 @@ function RouteComponent() {
             }}
             onSubmitCapture={onRedirectIntent}
           />
+          {error && <p className="text-red-500">{error.message}</p>}
           <Button onClick={onRedirectIntent} disabled={isResolving}>
             {isResolving ? "Loading..." : "Log In"}
           </Button>
