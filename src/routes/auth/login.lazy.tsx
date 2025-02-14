@@ -18,23 +18,26 @@ function RouteComponent() {
   if (!qt) return null;
   const onRedirectIntent = async () => {
     setIsResolving(true);
-    const resolved = await qt.client.resolveHandle(user);
-    if (qt.accounts.includes(resolved.identity.id)) {
-      // switch to user
-      try {
-        qt.client.switchAccount(resolved.identity.id);
-        // redirect to dashboard
-        window.location.href = "/";
-        return;
-      } catch (error) {
-        console.error(error);
-        setError(error as Error);
-        setIsResolving(false);
-        return;
+    try {
+      const resolved = await qt.client.resolveHandle(user);
+      if (qt.accounts.includes(resolved.identity.id)) {
+        // switch to user
+        try {
+          qt.client.switchAccount(resolved.identity.id);
+          // redirect to dashboard
+          window.location.href = "/";
+          return;
+        } catch (error) {
+          console.error(error);
+          throw error;
+        }
       }
+      const uri = await qt.client.getOAuthRedirectUri(resolved);
+      window.location.href = uri.toString();
+    } catch (error) {
+      console.error(error);
+      setError(error as Error);
     }
-    const uri = await qt.client.getOAuthRedirectUri(resolved);
-    window.location.href = uri.toString();
     setIsResolving(false);
   };
   return (
