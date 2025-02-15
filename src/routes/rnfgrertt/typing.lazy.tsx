@@ -17,13 +17,9 @@ import {
 } from "@/components/rnfgrertt/types";
 import { TypingArea } from "@/components/rnfgrertt/typingArea";
 
-import { ToolsAtpTypingTest } from "@atcute/client/lexicons";
-
 import { useStoredState } from "@/hooks/useStoredState";
-import { QtContext } from "@/providers/qtprovider";
 import { createLazyFileRoute } from "@tanstack/react-router";
-import { useState, useMemo, useEffect, useContext } from "preact/hooks";
-import { generateTid } from "@/lib/tid";
+import { useState, useMemo, useEffect } from "preact/hooks";
 
 export const Route = createLazyFileRoute("/rnfgrertt/typing")({
   component: TypingTest,
@@ -81,44 +77,6 @@ const INITIAL_WORD_COUNT = {
   time: 100,
   random: 100,
 };
-
-const EXAMPLE_TEST_RESULT: ToolsAtpTypingTest.Record = {
-  $type: "tools.atp.typing.test",
-  mode: {
-    $type: "tools.atp.typing.test#quoteMode",
-    mode: "quotes",
-    subMode: "short",
-  },
-  accuracy: 10,
-  ratio: "69:4:20",
-  wpm: 6,
-  rawWpm: 42,
-  timeMs: 12000,
-  textPrompted: {
-    $type: "tools.atp.typing.test#promptedTextWithSource",
-    text: "A towel, it says, is about the most massively useful thing an interstellar hitchhiker can have.",
-    source: "The Hitchhiker's Guide to the Galaxy",
-  },
-};
-
-function submitExampleResult() {
-  const qt = useContext(QtContext);
-  if (!qt) {
-    console.error("QtContext is not available");
-    return;
-  }
-  if (qt.currentAgent) {
-    qt.client.rpc.call("com.atproto.repo.putRecord", {
-      data: {
-        rkey: generateTid(),
-        repo: qt.currentAgent.sub,
-        validate: true,
-        record: EXAMPLE_TEST_RESULT,
-        collection: "tools.atp.typing.test",
-      },
-    });
-  }
-}
 
 function TypingTest() {
   // Group related state
@@ -258,7 +216,6 @@ function TypingTest() {
   }, [wpmData, typingTest.errors, typingTest.startTime]);
   return (
     <main className="h-screen relative max-h-[calc(100vh-5rem)] flex">
-      <div onClick={() => submitExampleResult()}>testSubmit</div>
       {typingTest.isFinished ? (
         <ResultsView
           stats={stats}

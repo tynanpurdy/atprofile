@@ -1,4 +1,10 @@
-import { Camera, Check, Loader2, RefreshCw } from "lucide-react";
+import {
+  Camera,
+  Check,
+  Clipboard,
+  Loader2,
+  RefreshCw,
+} from "lucide-react";
 import { useState, useRef, useEffect, useContext } from "preact/hooks";
 import {
   CartesianGrid,
@@ -16,7 +22,6 @@ import { ToolsAtpTypingTest } from "@atcute/client/lexicons";
 
 import { QtContext } from "@/providers/qtprovider";
 import { generateTid } from "@/lib/tid";
-import { Link } from "@tanstack/react-router";
 
 function AutoSubmitStats({
   stats,
@@ -143,18 +148,17 @@ function AutoSubmitStats({
   }
 
   if (record !== "") {
-    let split = record.split("/");
     return (
-      <Link
-        to="/at:/$handle/$collection/$rkey"
-        params={{
-          handle: split[split.length - 3],
-          rkey: split[split.length - 1],
-          collection: split[split.length - 2],
+      <button
+        className="relative group max-h-5 h-5 min-h-5"
+        onClick={() => {
+          // copy at uri to clipboard
+          navigator.clipboard.writeText(record);
         }}
       >
-        <Check />
-      </Link>
+        <Check className="absolute top-0.5 group-hover:h-0 transition-all duration-150 text-green-500" />
+        <Clipboard className="absolute top-0 group-hover:w-max mt-0.5 aspect-square group-hover:opacity-100 w-0 opacity-0 transition-all duration-150" />
+      </button>
     );
   }
 
@@ -256,41 +260,40 @@ export const ResultsView = ({
               following=" seconds"
             />
           </div>
-          {isSaving ? (
+          {isSaving && (
             <div className="text-end">
               type@tools - {new Date().toLocaleString()}
             </div>
-          ) : (
-            <>
-              <div className="text-end text-muted-foreground">
-                {typeof textData !== "string" &&
-                  "Excerpt from: " + textData.source}
-              </div>
-              <div className="mt-8 flex gap-4 justify-center">
-                <button
-                  onClick={resetTest}
-                  className="text-muted-foreground hover:text-foreground transition-all hover:rotate-180"
-                >
-                  <RefreshCw />
-                </button>
-                <button
-                  onClick={takeScreenshot}
-                  className="text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  <Camera />
-                </button>
-                <button className="text-muted-foreground hover:text-foreground transition-colors">
-                  <AutoSubmitStats
-                    stats={stats}
-                    testConfig={testConfig}
-                    textData={textData}
-                    userInput={userInput}
-                    wpmData={wpmData}
-                  />
-                </button>
-              </div>
-            </>
           )}
+          <div className={isSaving ? "hidden" : ""}>
+            <div className="text-end text-muted-foreground">
+              {typeof textData !== "string" &&
+                "Excerpt from: " + textData.source}
+            </div>
+            <div className="mt-8 flex gap-4 justify-center">
+              <button
+                onClick={resetTest}
+                className="text-muted-foreground hover:text-foreground transition-all hover:rotate-180"
+              >
+                <RefreshCw />
+              </button>
+              <button
+                onClick={takeScreenshot}
+                className="text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <Camera />
+              </button>
+              <button className="text-muted-foreground hover:text-foreground transition-colors">
+                <AutoSubmitStats
+                  stats={stats}
+                  testConfig={testConfig}
+                  textData={textData}
+                  userInput={userInput}
+                  wpmData={wpmData}
+                />
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -419,7 +422,7 @@ const PerformanceChart = ({ wpmData }: { wpmData: WPMDataPoint[] }) => (
       <Line
         yAxisId="right"
         type="monotone"
-        dataKey="errorsPerSecond"
+        dataKey="errors"
         stroke="#ff4757"
         name="Errors"
         strokeWidth={0}
@@ -437,7 +440,7 @@ const CustomTooltip = ({ active, payload }: any) => {
         <p className="text-sm">time: {data.time}s</p>
         <p className="text-sm text-blue-500">wpm: {data.wpm}</p>
         <p className="text-sm text-blue-500">raw: {data.rawWpm}</p>
-        <p className="text-sm text-red-500">errors: {data.errorsPerSecond}</p>
+        <p className="text-sm text-red-500">errors: {data.errors}</p>
       </div>
     );
   }
