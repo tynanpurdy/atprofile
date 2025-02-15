@@ -1,11 +1,11 @@
 import { useEffect, useState } from "preact/hooks";
 import { TypingError } from "../types";
 
-export const useTypingTest = (
+export function useTypingTest(
   sampleText: string,
   timerSeconds: number | null,
   onNeedMoreText: () => void,
-) => {
+) {
   const [state, setState] = useState({
     userInput: "",
     isFinished: false,
@@ -85,4 +85,4 @@ export const useTypingTest = (
   };
 
   return { ...state, handleInput, resetTest };
-};
+}

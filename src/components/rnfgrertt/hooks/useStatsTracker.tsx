@@ -2,14 +2,14 @@ import { useState, useEffect } from "preact/hooks";
 import { UPDATE_INTERVAL } from "../constants";
 import { TypingError, WPMDataPoint } from "../types";
 
-export const calculateTypingMetrics = (
+export function calculateTypingMetrics(
   userInput: string,
   sampleText: string,
   startTime: number | null,
   endTime: number | null,
   errors: TypingError[],
   timePoint?: number,
-): WPMDataPoint => {
+): WPMDataPoint {
   if (!startTime || userInput.length === 0) {
     return {
       time: 0,
@@ -58,7 +58,7 @@ export const calculateTypingMetrics = (
     rawWpm: Math.round(rawWpm),
     errors: errorsInWindow, // Direct count for 1-second window
   };
-};
+}
 
 export const useTypingMetricsTracker = (
   userInput: string,

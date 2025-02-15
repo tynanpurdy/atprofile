@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "preact/hooks";
-import { UPDATE_INTERVAL } from "../constants";
+import { TIME_THRESHOLD, UPDATE_INTERVAL } from "../constants";
 import { WPMDataPoint } from "../types";
 
 export const useWpmTracker = (
@@ -13,47 +13,75 @@ export const useWpmTracker = (
   const lastUpdateRef = useRef<number>(0);
   const prevErrorsRef = useRef<number>(0);
 
+  const lastProcessedIndexRef = useRef(0);
+  const correctCharsRef = useRef(0);
+  const currentErrorsRef = useRef(0);
+
   useEffect(() => {
     userInputRef.current = userInput;
-    if (userInputRef.current.length >= 10 && wpmData.length < 1) {
+
+    if (userInputRef.current.length > 0 && wpmData.length < 1) {
       updateWPMData();
     }
   }, [userInput]);
 
   const calculateMetrics = (currentTime: number) => {
-    if (startTime === null)
+    if (startTime === null || startTime > currentTime) {
       return { timeElapsed: 0, correctChars: 0, currentErrors: 0, rawWpm: 0 };
+    }
 
-    const timeElapsed = (currentTime - startTime) / 1000;
+    const timeElapsed = (currentTime - startTime) / 1000; // Convert to seconds
     const currentInput = userInputRef.current;
 
-    // Calculate correct characters and current errors
-    let correctChars = 0;
-    let currentErrors = 0;
+    let newCorrect = 0;
+    let newErrors = 0;
 
-    for (let i = 0; i < currentInput.length; i++) {
+    for (let i = lastProcessedIndexRef.current; i < currentInput.length; i++) {
       if (currentInput[i] === sampleText[i]) {
-        correctChars++;
+        newCorrect++;
       } else {
-        currentErrors++;
+        newErrors++;
       }
     }
+
+    // Update cumulative counts
+    correctCharsRef.current += newCorrect;
+    currentErrorsRef.current += newErrors;
+    lastProcessedIndexRef.current = currentInput.length;
 
     // Calculate raw WPM
     const rawWpm = (currentInput.length / 5) * (60 / timeElapsed);
 
-    return { timeElapsed, correctChars, currentErrors, rawWpm };
+    return {
+      timeElapsed,
+      correctChars: correctCharsRef.current,
+      currentErrors: currentErrorsRef.current,
+      rawWpm: rawWpm || 0, // Avoid NaN
+    };
   };
 
   const updateWPMData = () => {
     const now = Date.now();
+    if (!startTime) return;
+
+    // Initialize lastUpdateRef to startTime on first call
+    if (lastUpdateRef.current === 0) {
+      lastUpdateRef.current = startTime;
+    }
+
     const { timeElapsed, correctChars, currentErrors, rawWpm } =
       calculateMetrics(now);
 
+    // Skip early updates to avoid spikes
+    if (timeElapsed < TIME_THRESHOLD) {
+      return;
+    }
+
     // Calculate errors per second
-    const timeDiff = (now - (lastUpdateRef.current || now)) / UPDATE_INTERVAL;
+    const timeSinceLastUpdate = (now - lastUpdateRef.current) / 1000;
+    const timeDiff = Math.max(timeSinceLastUpdate, 0.001); // Minimum 1ms
     const errorDelta = currentErrors - prevErrorsRef.current;
-    const errorsPerSecond = timeDiff > 0 ? errorDelta / timeDiff : 0;
+    const errors = Math.max(errorDelta / timeDiff, 0);
 
     setWpmData((prev) => [
       ...prev,
@@ -61,7 +89,7 @@ export const useWpmTracker = (
         time: Number(timeElapsed.toFixed(1)),
         wpm: Math.round(correctChars / 5 / (timeElapsed / 60)),
         rawWpm: Math.round(rawWpm),
-        errors: Number(errorsPerSecond.toFixed(0)),
+        errors: Number(errors.toFixed(0)),
       },
     ]);
 
@@ -72,12 +100,18 @@ export const useWpmTracker = (
   useEffect(() => {
     if (!startTime || isFinished) return;
 
-    // Subsequent updates at interval
     const intervalId = setInterval(updateWPMData, UPDATE_INTERVAL);
-
     return () => clearInterval(intervalId);
-  }, [startTime, isFinished]);
+  }, [startTime, isFinished, UPDATE_INTERVAL]);
 
-  const resetWpmData = () => setWpmData([]);
+  const resetWpmData = () => {
+    setWpmData([]);
+    lastUpdateRef.current = 0;
+    prevErrorsRef.current = 0;
+    lastProcessedIndexRef.current = 0;
+    correctCharsRef.current = 0;
+    currentErrorsRef.current = 0;
+  };
+
   return { wpmData, resetWpmData };
 };
