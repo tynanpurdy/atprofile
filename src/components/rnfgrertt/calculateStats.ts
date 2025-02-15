@@ -46,9 +46,9 @@ export const calculateStats = (
   const weightedVariance =
     rawWpmValues.reduce((acc, wpm) => {
       const diff = wpm - mean;
-      // Apply smaller weight to variations at higher speeds
-      const weight = Math.max(0.5, 100 / mean);
-      return acc + diff * diff * weight;
+      // apply weight linearly based on distance from mean
+      const linearWeight = 1 + 0.5 * (Math.abs(diff) / mean);
+      return acc + diff * diff * linearWeight;
     }, 0) / rawWpmValues.length;
 
   const weightedStdDev = Math.sqrt(weightedVariance);
