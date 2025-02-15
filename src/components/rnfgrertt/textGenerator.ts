@@ -2,16 +2,16 @@
 import { WORD_LIST } from "@/lib/wordList";
 import engQuotes from "@/lib/quotes/english.json";
 
-export const generateWords = (count: number): string => {
+export function generateWords(count: number): string {
   return (
     Array(count)
       .fill(0)
       .map(() => WORD_LIST.en[Math.floor(Math.random() * WORD_LIST.en.length)])
       .join(" ") + " "
   );
-};
+}
 
-export const getRandomText = (length: "short" | "med" | "long" | "xl") => {
+export function getRandomText(length: "short" | "med" | "long" | "xl"): string {
   let minLen = 0;
   let maxLen = 0;
 
@@ -45,4 +45,4 @@ export const getRandomText = (length: "short" | "med" | "long" | "xl") => {
   }
 
   return quoteSelection[Math.floor(Math.random() * quoteSelection.length)];
-};
+}

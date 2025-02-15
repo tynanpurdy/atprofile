@@ -4,7 +4,7 @@ import { CursorStyle, TimerOption } from "./types";
 import { KbdKey } from "../ui/kbdKey";
 import { isOnMac } from "../smartSearchBar";
 
-export const TypingArea = ({
+export function TypingArea({
   userInput,
   handleInput,
   sampleText,
@@ -32,7 +32,7 @@ export const TypingArea = ({
   randomTextLen: TimerOption | null;
   onSelectRandomTextLen: (time: TimerOption) => void;
   cursorStyle: CursorStyle;
-}) => {
+}) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
@@ -102,9 +102,9 @@ export const TypingArea = ({
       </div>
     </div>
   );
-};
+}
 
-const TextDisplay = ({
+function TextDisplay({
   userInput,
   sampleText,
   cursorStyle = "block",
@@ -112,7 +112,7 @@ const TextDisplay = ({
   userInput: string;
   sampleText: string;
   cursorStyle?: CursorStyle;
-}) => {
+}) {
   const containerRef = useRef<HTMLDivElement>(null);
   const cursorRef = useRef<HTMLDivElement>(null);
   const [cursorPosition, setCursorPosition] = useState({ left: 0, top: 0 });
@@ -250,7 +250,7 @@ const TextDisplay = ({
       </div>
     </div>
   );
-};
+}
 
 const SelectorButtons = ({
   options,

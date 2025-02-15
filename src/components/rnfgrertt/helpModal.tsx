@@ -6,13 +6,13 @@ import {
 } from "@/components/ui/dialog";
 import { ArrowUp, ChevronUp, Command } from "lucide-react";
 
-export const HelpModal = ({
+export function HelpModal({
   isOpen,
   onClose,
 }: {
   isOpen: boolean;
   onClose: () => void;
-}) => {
+}) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md">
@@ -43,4 +43,4 @@ export const HelpModal = ({
       </DialogContent>
     </Dialog>
   );
-};
+}

@@ -1,14 +1,14 @@
 // utils/calculateStats.ts
 import { TypingError, TypingStats, WPMDataPoint } from "./types";
 
-export const calculateStats = (
+export function calculateStats(
   userInput: string,
   sampleText: string,
   errors: TypingError[],
   startTime: number,
   endTime: number,
   wpmData: WPMDataPoint[],
-): TypingStats => {
+): TypingStats {
   const timeElapsed = (endTime - startTime) / 1000;
 
   // Count correct and total characters
@@ -69,4 +69,4 @@ export const calculateStats = (
     time: timeElapsed,
     errorCount: errors.length,
   };
-};
+}
