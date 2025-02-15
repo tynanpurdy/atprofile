@@ -10,7 +10,7 @@ export type WPMDataPoint = {
   time: number;
   wpm: number;
   rawWpm: number;
-  errorsPerSecond?: number;
+  errors?: number;
 };
 
 export type TypingStats = {
@@ -28,6 +28,10 @@ export type TextMeta = {
   source?: string;
 };
 
+export type TypingTestMode = "text" | "timer" | "quote";
+
 export type TimerOption = 15 | 30 | 60 | 120;
+export type QuoteOption = "short" | "med" | "long" | "xl";
+export type TextOption = TimerOption;
 
 export type CursorStyle = "block" | "line" | "underline";

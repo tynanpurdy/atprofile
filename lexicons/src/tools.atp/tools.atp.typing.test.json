@@ -1,0 +1,192 @@
+{
+  "lexicon": 1,
+  "id": "tools.atp.typing.test",
+  "defs": {
+    "main": {
+      "type": "record",
+      "record": {
+        "type": "object",
+        "required": [
+          "wpm",
+          "rawWpm",
+          "accuracy",
+          "mode",
+          "ratio",
+          "timeMs",
+          "textPrompted"
+        ],
+        "properties": {
+          "wpm": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 10000,
+            "description": "Words per minute detected by the application. Formula: (correctKeystrokes / 5) * (60 / timeElapsed)"
+          },
+          "rawWpm": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 10000,
+            "description": "Raw words per minute detected by the application. Formula: (totalKeystrokes / 5) * (60 / timeElapsed)"
+          },
+          "accuracy": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100,
+            "description": "Accuracy of the typing test, percentage. Formula: (correctKeystrokes / totalKeystrokes) * 100"
+          },
+          "mode": {
+            "type": "union",
+            "refs": ["#textMode", "#timerMode", "#quoteMode"],
+            "description": "Mode of the typing test"
+          },
+          "consistency": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100,
+            "description": "Consistency of the typing test, percentage. Formula not currently available."
+          },
+          "ratio": {
+            "type": "string",
+            "description": "Ratio of total correct:total:fixed keystrokes."
+          },
+          "timeMs": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Time taken to complete the typing test in milliseconds"
+          },
+          "textPrompted": {
+            "type": "union",
+            "refs": [
+              "#promptedTextWithSource",
+              "#promptedTextClosed",
+              "#promptedTextOpen"
+            ],
+            "description": "Text prompted for the typing test."
+          },
+          "dataPoints": {
+            "type": "array",
+            "minLength": 1,
+            "items": {
+              "type": "ref",
+              "ref": "#dataPoint"
+            }
+          }
+        }
+      }
+    },
+    "textMode": {
+      "type": "object",
+      "properties": {
+        "mode": {
+          "type": "string",
+          "const": "text",
+          "description": "Type of the typing test mode"
+        },
+        "subMode": {
+          "type": "integer",
+          "enum": [15, 30, 60, 120],
+          "description": "The sub-mode setting of the text mode"
+        }
+      },
+      "description": "Mode of the typing test",
+      "required": ["mode", "subMode"]
+    },
+    "timerMode": {
+      "type": "object",
+      "properties": {
+        "mode": {
+          "type": "string",
+          "const": "timer",
+          "description": "Type of the typing test mode"
+        },
+        "subMode": {
+          "type": "integer",
+          "enum": [15, 30, 60, 120],
+          "description": "The sub-mode setting of the timer mode"
+        }
+      },
+      "required": ["mode", "subMode"]
+    },
+    "quoteMode": {
+      "type": "object",
+      "properties": {
+        "mode": {
+          "type": "string",
+          "const": "timer",
+          "description": "Type of the typing test mode"
+        },
+        "subMode": {
+          "type": "string",
+          "enum": ["short", "medium", "long", "xl"],
+          "description": "The sub-mode setting of the quote mode"
+        }
+      },
+      "required": ["mode", "subMode"]
+    },
+    "promptedTextWithSource": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "description": "Text to be typed"
+        },
+        "source": {
+          "type": "string",
+          "description": "Source of the text"
+        }
+      },
+      "required": ["text", "source"]
+    },
+    "promptedTextClosed": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "description": "Text to be typed"
+        }
+      },
+      "required": ["text"]
+    },
+    "promptedTextOpen": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "description": "Text to be typed"
+        },
+        "charsTyped": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of characters typed"
+        }
+      },
+      "required": ["text", "charsTyped"]
+    },
+    "dataPoint": {
+      "type": "object",
+      "properties": {
+        "time": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Time in milliseconds"
+        },
+        "wpm": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Words per minute"
+        },
+        "rawWpm": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Raw words per minute"
+        },
+        "errors": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of errors"
+        }
+      },
+      "required": ["time", "wpm", "errors"]
+    }
+  }
+}

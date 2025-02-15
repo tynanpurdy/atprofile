@@ -1,6 +1,6 @@
 import { useState, useEffect } from "preact/hooks";
 import { UPDATE_INTERVAL } from "../constants";
-import { TypingError } from "../types";
+import { TypingError, WPMDataPoint } from "../types";
 
 export const calculateTypingMetrics = (
   userInput: string,
@@ -9,13 +9,13 @@ export const calculateTypingMetrics = (
   endTime: number | null,
   errors: TypingError[],
   timePoint?: number,
-) => {
+): WPMDataPoint => {
   if (!startTime || userInput.length === 0) {
     return {
+      time: 0,
       wpm: 0,
       rawWpm: 0,
-      accuracy: 100,
-      errorsPerSecond: 0,
+      errors: 0,
     };
   }
 
@@ -38,7 +38,7 @@ export const calculateTypingMetrics = (
   const wpm = correctChars / 5 / timeElapsedMinutes;
 
   // Calculate accuracy
-  const accuracy = (correctChars / userInput.length) * 100;
+  //const accuracy = (correctChars / userInput.length) * 100;
 
   // Calculate interpolated errors per second
   const errorsInWindow =
@@ -53,10 +53,10 @@ export const calculateTypingMetrics = (
         ).length;
 
   return {
+    time: currentTime - startTime,
     wpm: Math.round(wpm),
     rawWpm: Math.round(rawWpm),
-    accuracy: Math.round(accuracy * 100) / 100,
-    errorsPerSecond: errorsInWindow, // Direct count for 1-second window
+    errors: errorsInWindow, // Direct count for 1-second window
   };
 };
 
@@ -106,6 +106,6 @@ export const useTypingMetricsTracker = (
     time: point.time,
     wpm: point.metrics.wpm,
     rawWpm: point.metrics.rawWpm,
-    errorsPerSecond: point.metrics.errorsPerSecond,
+    errors: point.metrics.errors,
   }));
 };

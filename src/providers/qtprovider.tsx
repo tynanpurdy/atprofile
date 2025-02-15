@@ -173,6 +173,7 @@ export class QtClient {
       if (this.currentAgentDid) {
         await this.switchAccount(this.currentAgentDid);
         console.log("Session resumed successfully");
+        return;
       } else {
         for (const did of this.accounts) {
           try {
@@ -198,7 +199,8 @@ export class QtClient {
     const agent = new OAuthUserAgent(sess);
     this.currentAgent = agent;
     this.currentAgentDid = agent.sub;
-    this.rpc = new XRPC({ handler: this.manager });
+    console.log();
+    this.rpc = new XRPC({ handler: this.currentAgent });
     this.updateState();
   }
 
@@ -242,14 +244,15 @@ export async function resolveBskyUser(did: `did:${string}`, qt: QtContextType) {
   return response;
 }
 
-export function useQt() {
-  const client = React.useContext(QtContext);
+export function useQt(client: QtContextType) {
+  console.log(client);
   if (!client) {
     throw new Error("useQtState must be used within a QtProvider");
   }
   return {
     currentAgent: client.currentAgent,
     accounts: client.accounts,
+    rpc: client.client.rpc,
   };
 }
 export function useUserCache() {

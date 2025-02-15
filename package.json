@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "lex": "lex lexicons/*"
   },
   "dependencies": {
     "@atcute/bluesky": "^1.0.12",
@@ -37,6 +38,7 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
+    "@atcute/lex-cli": "^1.0.4",
     "@preact/preset-vite": "^2.9.4",
     "@tanstack/router-devtools": "^1.97.3",
     "@tanstack/router-plugin": "^1.97.3",

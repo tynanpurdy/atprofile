@@ -61,7 +61,7 @@ export const useWpmTracker = (
         time: Number(timeElapsed.toFixed(1)),
         wpm: Math.round(correctChars / 5 / (timeElapsed / 60)),
         rawWpm: Math.round(rawWpm),
-        errorsPerSecond: Number(errorsPerSecond.toFixed(0)),
+        errors: Number(errorsPerSecond.toFixed(0)),
       },
     ]);
 
