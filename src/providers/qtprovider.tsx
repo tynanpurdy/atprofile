@@ -207,6 +207,8 @@ export class QtClient {
         console.log(oauth);
         // redirect to url
         redirect({ href: oauth.toString() });
+
+        window.location.href = oauth.toString();
       }
       return;
     }
