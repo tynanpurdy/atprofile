@@ -40,7 +40,35 @@ export function SmartSearchBar({
     e.preventDefault();
     if (input.trim()) {
       // replace at:// with / to match the route correctly
-      if (input.startsWith("pds/") || input.startsWith("https:/")) {
+      if (input.includes("bsky.app") || input.includes("main.bsky.dev")) {
+        try {
+          const url = new URL(input);
+          const pathParts = url.pathname.split("/");
+
+          if (pathParts[1] === "profile") {
+            const handle = pathParts[2];
+
+            if (pathParts[3] === "post") {
+              // Post URL: /profile/handle/post/postid
+              navigate({
+                to: `/at:/${handle}/app.bsky.feed.post/${pathParts[4]}`,
+              });
+            } else if (pathParts[3] === "lists") {
+              // List URL: /profile/handle/lists/listid
+              navigate({
+                to: `/at:/${handle}/app.bsky.graph.list/${pathParts[4]}`,
+              });
+            } else {
+              // Profile URL: /profile/handle
+              navigate({
+                to: `/at:/${handle}`,
+              });
+            }
+          }
+        } catch (e) {
+          console.error("Invalid Bluesky URL:", e);
+        }
+      } else if (input.startsWith("pds/") || input.startsWith("https:/")) {
         navigate({
           to: "/pds/$url",
           params: {
