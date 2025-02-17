@@ -1,66 +1,56 @@
-export const createRfc4648Encode = (
-  alphabet: string,
-  bitsPerChar: number,
-  pad: boolean,
-) => {
-  return (bytes: Uint8Array): string => {
-    const mask = (1 << bitsPerChar) - 1;
-    let str = "";
+/**
+ * TID (Transaction ID) implementation for ATProto
+ * Based on the original Go implementation from github.com/bluesky-social/indigo
+ */
 
-    let bits = 0; // Number of bits currently in the buffer
-    let buffer = 0; // Bits waiting to be written out, MSB first
-    for (let i = 0; i < bytes.length; ++i) {
-      // Slurp data into the buffer:
-      buffer = (buffer << 8) | bytes[i];
-      bits += 8;
+// Base32 alphabet used for sorting
+const BASE32_SORT_ALPHABET = "234567abcdefghijklmnopqrstuvwxyz";
 
-      // Write out as much as we can:
-      while (bits > bitsPerChar) {
-        bits -= bitsPerChar;
-        str += alphabet[mask & (buffer >> bits)];
-      }
+// Constants for bit operations
+const CLOCK_ID_MASK = 0x3ff;
+const MICROS_MASK = 0x1ffffffffffffn;
+const INTEGER_MASK = 0x7fffffffffffffffn;
+
+class TransactionId {
+  private readonly value: string;
+
+  constructor(value: string) {
+    this.value = value;
+  }
+
+  toString(): string {
+    return this.value;
+  }
+
+  static create(unixMicros: bigint, clockId: number): TransactionId {
+    const clockIdBig = BigInt(clockId & CLOCK_ID_MASK);
+    const v = ((unixMicros & MICROS_MASK) << 10n) | clockIdBig;
+    return TransactionId.fromInteger(v);
+  }
+
+  static createNow(clockId: number): TransactionId {
+    const nowMicros = BigInt(Date.now()) * 1000n; // Convert ms to μs
+    return TransactionId.create(nowMicros, clockId);
+  }
+
+  private static fromInteger(value: bigint): TransactionId {
+    value = INTEGER_MASK & value;
+    let result = "";
+
+    for (let i = 0; i < 13; i++) {
+      result = BASE32_SORT_ALPHABET[Number(value & 0x1fn)] + result;
+      value = value >> 5n;
     }
 
-    // Partial character:
-    if (bits !== 0) {
-      str += alphabet[mask & (buffer << (bitsPerChar - bits))];
-    }
-
-    // Add padding characters until we hit a byte boundary:
-    if (pad) {
-      while (((str.length * bitsPerChar) & 7) !== 0) {
-        str += "=";
-      }
-    }
-
-    return str;
-  };
-};
-
-const BASE32_SORTABLE_CHARSET = "234567abcdefghijklmnopqrstuvwxyz";
-
-export const toBase32Sortable = createRfc4648Encode(
-  BASE32_SORTABLE_CHARSET,
-  5,
-  false,
-);
-
-function intToArray(i: number) {
-  return Uint8Array.of(
-    (i & 0xff000000) >> 24,
-    (i & 0x00ff0000) >> 16,
-    (i & 0x0000ff00) >> 8,
-    (i & 0x000000ff) >> 0,
-  );
+    return new TransactionId(result);
+  }
 }
 
-/*
- * Generates an ATProto TID using the current timestamp.
- * Encoded as b32-sortable.
+/**
+ * Generates a new Transaction ID with a random clock ID
+ * @returns TransactionId
  */
-export function generateTid() {
-  let ms = new Date().getMilliseconds();
-  let bytes = intToArray(ms);
-
-  return toBase32Sortable(bytes);
+export function generateTid(): TransactionId {
+  const clockId = Math.floor(Math.random() * 64 + 512);
+  return TransactionId.createNow(clockId);
 }

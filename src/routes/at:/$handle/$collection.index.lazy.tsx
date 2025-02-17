@@ -120,8 +120,8 @@ function RouteComponent() {
   }
 
   return (
-    <div className="flex flex-row justify-center w-full min-h-screen">
-      <div className="max-w-2xl w-screen p-4 md:mt-16 space-y-2">
+    <div className="flex flex-row justify-center w-full min-h-[calc(100vh-5rem)]">
+      <div className="max-w-md lg:max-w-2xl w-[90vw] mx-4 md:mt-16 space-y-2">
         <Link
           to="/at:/$handle"
           params={{ handle: identity?.raw ?? "" }}

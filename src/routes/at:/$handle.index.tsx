@@ -130,8 +130,8 @@ function RouteComponent() {
   }
 
   return (
-    <div className="flex flex-row justify-center w-full">
-      <div className="max-w-2xl w-screen p-4 md:mt-16 space-y-2">
+    <div className="flex flex-row justify-center w-full max-h-[calc(100vh-5rem)]">
+      <div className="max-w-md lg:max-w-2xl w-[90vw] mx-4 md:mt-16 space-y-2">
         {blueSkyData ? (
           blueSkyData?.banner ? (
             <div className="relative mb-12 md:mb-16">
@@ -202,11 +202,13 @@ function RouteComponent() {
         </div>
         <div className="pt-2">
           <h2 className="text-xl font-bold">DID Document</h2>
-          <RenderJson
-            data={didDoc}
-            did={identity?.identity.id!}
-            pds={identity?.identity.pds.toString()!}
-          />
+          <div className="w-full overflow-x-auto">
+            <RenderJson
+              data={didDoc}
+              did={identity?.identity.id!}
+              pds={identity?.identity.pds.toString()!}
+            />
+          </div>
         </div>
       </div>
     </div>

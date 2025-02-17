@@ -1,10 +1,4 @@
-import {
-  Camera,
-  Check,
-  Clipboard,
-  Loader2,
-  RefreshCw,
-} from "lucide-react";
+import { Camera, Check, Clipboard, Loader2, RefreshCw } from "lucide-react";
 import { useState, useRef, useEffect, useContext } from "preact/hooks";
 import {
   CartesianGrid,
@@ -120,7 +114,7 @@ function AutoSubmitStats({
             "com.atproto.repo.putRecord",
             {
               data: {
-                rkey: generateTid(),
+                rkey: generateTid().toString(),
                 repo: qt.currentAgent.sub,
                 record: result,
                 collection: "tools.atp.typing.test",
@@ -169,7 +163,7 @@ function AutoSubmitStats({
   );
 }
 
-export const ResultsView = ({
+export function ResultsView({
   stats,
   wpmData,
   resetTest,
@@ -183,7 +177,7 @@ export const ResultsView = ({
   textData: string | TextMeta;
   testConfig: TestConfig;
   userInput: string;
-}) => {
+}) {
   const [isSaving, setIsSaving] = useState(false);
   const resultsRef = useRef<HTMLDivElement>(null);
 
@@ -298,7 +292,7 @@ export const ResultsView = ({
       </div>
     </div>
   );
-};
+}
 
 const StatBox = ({
   label,

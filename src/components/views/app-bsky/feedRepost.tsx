@@ -14,7 +14,13 @@ export const AppBskyFeedRepostView: CollectionViewComponent<
     <>
       <p className="py-1 text-muted-foreground">
         {" "}
-        <Repeat2 className="inline mb-0.5 mr-1" /> {repoData?.handle} reposted{" "}
+        <Repeat2 className="inline mb-0.5 mr-1" />{" "}
+        <span className="inline-flex">
+          <span className="max-w-64 lg:max-w-xl w-min pr-1 inline overflow-hidden text-ellipsis whitespace-nowrap">
+            {repoData?.handle}
+          </span>{" "}
+          reposted
+        </span>
       </p>
       <BlueskyPostWithoutEmbed showEmbeddedPost uri={post.subject.uri} />
     </>

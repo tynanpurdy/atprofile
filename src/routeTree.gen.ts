@@ -14,6 +14,8 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as AtHandleIndexImport } from './routes/at:/$handle.index'
+import { Route as ConstellationLinksCollectionImport } from './routes/constellation/links.$collection'
+import { Route as ConstellationDidsCollectionImport } from './routes/constellation/dids.$collection'
 
 // Create Virtual Routes
 
@@ -101,6 +103,20 @@ const AtHandleIndexRoute = AtHandleIndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const ConstellationLinksCollectionRoute =
+  ConstellationLinksCollectionImport.update({
+    id: '/constellation/links/$collection',
+    path: '/constellation/links/$collection',
+    getParentRoute: () => rootRoute,
+  } as any)
+
+const ConstellationDidsCollectionRoute =
+  ConstellationDidsCollectionImport.update({
+    id: '/constellation/dids/$collection',
+    path: '/constellation/dids/$collection',
+    getParentRoute: () => rootRoute,
+  } as any)
+
 const AtHandleCollectionIndexLazyRoute =
   AtHandleCollectionIndexLazyImport.update({
     id: '/at:/$handle/$collection/',
@@ -180,6 +196,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RnfgrerttIndexLazyImport
       parentRoute: typeof rootRoute
     }
+    '/constellation/dids/$collection': {
+      id: '/constellation/dids/$collection'
+      path: '/constellation/dids/$collection'
+      fullPath: '/constellation/dids/$collection'
+      preLoaderRoute: typeof ConstellationDidsCollectionImport
+      parentRoute: typeof rootRoute
+    }
+    '/constellation/links/$collection': {
+      id: '/constellation/links/$collection'
+      path: '/constellation/links/$collection'
+      fullPath: '/constellation/links/$collection'
+      preLoaderRoute: typeof ConstellationLinksCollectionImport
+      parentRoute: typeof rootRoute
+    }
     '/at:/$handle/': {
       id: '/at:/$handle/'
       path: '/at:/$handle'
@@ -222,6 +252,8 @@ export interface FileRoutesByFullPath {
   '/auth/login': typeof AuthLoginLazyRoute
   '/rnfgrertt/typing': typeof RnfgrerttTypingLazyRoute
   '/rnfgrertt': typeof RnfgrerttIndexLazyRoute
+  '/constellation/dids/$collection': typeof ConstellationDidsCollectionRoute
+  '/constellation/links/$collection': typeof ConstellationLinksCollectionRoute
   '/at:/$handle': typeof AtHandleIndexRoute
   '/pds/$url': typeof PdsUrlIndexLazyRoute
   '/at:/$handle/$collection/$rkey': typeof AtHandleCollectionRkeyLazyRoute
@@ -237,6 +269,8 @@ export interface FileRoutesByTo {
   '/auth/login': typeof AuthLoginLazyRoute
   '/rnfgrertt/typing': typeof RnfgrerttTypingLazyRoute
   '/rnfgrertt': typeof RnfgrerttIndexLazyRoute
+  '/constellation/dids/$collection': typeof ConstellationDidsCollectionRoute
+  '/constellation/links/$collection': typeof ConstellationLinksCollectionRoute
   '/at:/$handle': typeof AtHandleIndexRoute
   '/pds/$url': typeof PdsUrlIndexLazyRoute
   '/at:/$handle/$collection/$rkey': typeof AtHandleCollectionRkeyLazyRoute
@@ -253,6 +287,8 @@ export interface FileRoutesById {
   '/auth/login': typeof AuthLoginLazyRoute
   '/rnfgrertt/typing': typeof RnfgrerttTypingLazyRoute
   '/rnfgrertt/': typeof RnfgrerttIndexLazyRoute
+  '/constellation/dids/$collection': typeof ConstellationDidsCollectionRoute
+  '/constellation/links/$collection': typeof ConstellationLinksCollectionRoute
   '/at:/$handle/': typeof AtHandleIndexRoute
   '/pds/$url/': typeof PdsUrlIndexLazyRoute
   '/at:/$handle/$collection/$rkey': typeof AtHandleCollectionRkeyLazyRoute
@@ -270,6 +306,8 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/rnfgrertt/typing'
     | '/rnfgrertt'
+    | '/constellation/dids/$collection'
+    | '/constellation/links/$collection'
     | '/at:/$handle'
     | '/pds/$url'
     | '/at:/$handle/$collection/$rkey'
@@ -284,6 +322,8 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/rnfgrertt/typing'
     | '/rnfgrertt'
+    | '/constellation/dids/$collection'
+    | '/constellation/links/$collection'
     | '/at:/$handle'
     | '/pds/$url'
     | '/at:/$handle/$collection/$rkey'
@@ -298,6 +338,8 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/rnfgrertt/typing'
     | '/rnfgrertt/'
+    | '/constellation/dids/$collection'
+    | '/constellation/links/$collection'
     | '/at:/$handle/'
     | '/pds/$url/'
     | '/at:/$handle/$collection/$rkey'
@@ -314,6 +356,8 @@ export interface RootRouteChildren {
   AuthLoginLazyRoute: typeof AuthLoginLazyRoute
   RnfgrerttTypingLazyRoute: typeof RnfgrerttTypingLazyRoute
   RnfgrerttIndexLazyRoute: typeof RnfgrerttIndexLazyRoute
+  ConstellationDidsCollectionRoute: typeof ConstellationDidsCollectionRoute
+  ConstellationLinksCollectionRoute: typeof ConstellationLinksCollectionRoute
   AtHandleIndexRoute: typeof AtHandleIndexRoute
   PdsUrlIndexLazyRoute: typeof PdsUrlIndexLazyRoute
   AtHandleCollectionRkeyLazyRoute: typeof AtHandleCollectionRkeyLazyRoute
@@ -329,6 +373,8 @@ const rootRouteChildren: RootRouteChildren = {
   AuthLoginLazyRoute: AuthLoginLazyRoute,
   RnfgrerttTypingLazyRoute: RnfgrerttTypingLazyRoute,
   RnfgrerttIndexLazyRoute: RnfgrerttIndexLazyRoute,
+  ConstellationDidsCollectionRoute: ConstellationDidsCollectionRoute,
+  ConstellationLinksCollectionRoute: ConstellationLinksCollectionRoute,
   AtHandleIndexRoute: AtHandleIndexRoute,
   PdsUrlIndexLazyRoute: PdsUrlIndexLazyRoute,
   AtHandleCollectionRkeyLazyRoute: AtHandleCollectionRkeyLazyRoute,
@@ -353,6 +399,8 @@ export const routeTree = rootRoute
         "/auth/login",
         "/rnfgrertt/typing",
         "/rnfgrertt/",
+        "/constellation/dids/$collection",
+        "/constellation/links/$collection",
         "/at:/$handle/",
         "/pds/$url/",
         "/at:/$handle/$collection/$rkey",
@@ -382,6 +430,12 @@ export const routeTree = rootRoute
     },
     "/rnfgrertt/": {
       "filePath": "rnfgrertt/index.lazy.tsx"
+    },
+    "/constellation/dids/$collection": {
+      "filePath": "constellation/dids.$collection.tsx"
+    },
+    "/constellation/links/$collection": {
+      "filePath": "constellation/links.$collection.tsx"
     },
     "/at:/$handle/": {
       "filePath": "at:/$handle.index.tsx"

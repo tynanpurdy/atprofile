@@ -19,7 +19,12 @@ export const AppBskyFeedLikeView: CollectionViewComponent<
           stroke="#ba5678"
           className="inline mb-0.5 mr-1"
         />{" "}
-        {repoData?.handle} liked
+        <span className="inline-flex">
+          <span className="max-w-64 lg:max-w-xl w-min pr-1 inline overflow-hidden text-ellipsis whitespace-nowrap">
+            {repoData?.handle}
+          </span>{" "}
+          liked
+        </span>
       </p>
       <BlueskyPostWithoutEmbed showEmbeddedPost uri={post.subject.uri} />
       <div className="mt-4 text-muted-foreground text-sm flex align-center gap-2 border p-2 rounded-lg">

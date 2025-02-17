@@ -1,3 +1,4 @@
+import AllBacklinksViewer from "@/components/allBacklinksViewer";
 import ShowError from "@/components/error";
 import { RenderJson } from "@/components/renderJson";
 import { SplitText } from "@/components/segmentedText";
@@ -124,8 +125,8 @@ function RouteComponent() {
   const View = getView((data.value as any).$type);
 
   return (
-    <div className="flex flex-row justify-center w-full min-h-screen">
-      <div className="max-w-2xl w-screen p-4 md:mt-16 space-y-2">
+    <div className="flex flex-row justify-center w-full min-h-[calc(100vh-5rem)] max-w-[100vw]">
+      <div className="max-w-md lg:max-w-2xl w-[90vw] mx-4 md:mt-16 space-y-2">
         <Link
           to={`/at:/$handle`}
           params={{
@@ -134,7 +135,7 @@ function RouteComponent() {
           className=""
         >
           <div>
-            <h1 className="text-2xl md:text-3xl text-muted-foreground font-normal">
+            <h1 className="text-2xl md:text-3xl max-w-xs lg:max-w-2xl overflow-hidden text-ellipsis whitespace-nowrap text-muted-foreground font-normal">
               @{repoInfo?.handle}
               {repoInfo?.handleIsCorrect ? "" : " (invalid handle)"}
             </h1>
@@ -225,6 +226,7 @@ function RouteComponent() {
             </div>
           </TabsContent>
         </Tabs>
+        <AllBacklinksViewer aturi={`at://${handle}/${collection}/${rkey}`} />
       </div>
     </div>
   );

@@ -21,15 +21,23 @@ const AppBskyFeedPostView: CollectionViewComponent<CollectionViewProps> = ({
   return (
     <div className="border p-6 py-3 rounded-md">
       {post.reply?.root && post.reply?.root.uri !== post.reply.parent.uri && (
-        <div className="text-sm text-muted-foreground">
+        <div className="text-sm text-muted-foreground max-w-min">
           Root post:{" "}
-          <Link to={"/" + post.reply?.root.uri}>{post.reply?.root.uri}</Link>
+          <Link
+            className="overflow-hidden text-ellipsis whitespace-nowrap block"
+            to={"/" + post.reply?.root.uri}
+          >
+            {post.reply?.root.uri}
+          </Link>
         </div>
       )}
       {post.reply?.parent && (
-        <div className="text-sm text-muted-foreground mb-3">
+        <div className="text-sm text-muted-foreground mb-3 max-w-full">
           Parent post:{" "}
-          <Link to={"/" + post.reply?.parent.uri}>
+          <Link
+            to={"/" + post.reply?.parent.uri}
+            className="overflow-hidden text-ellipsis whitespace-nowrap block"
+          >
             {post.reply?.parent.uri}
           </Link>
         </div>
