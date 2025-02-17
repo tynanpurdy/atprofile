@@ -12,6 +12,7 @@ import {
   OAuthUserAgent,
   resolveFromIdentity,
 } from "@atcute/oauth-browser-client";
+import { redirect } from "@tanstack/react-router";
 import React, { useState, useEffect } from "preact/compat";
 
 configureOAuth({
@@ -161,7 +162,7 @@ export class QtClient {
     const agent = new OAuthUserAgent(sess);
     this.currentAgent = agent;
     this.currentAgentDid = agent.sub;
-    this.accounts.push(agent.sub);
+    if (!this.accounts.includes(agent.sub)) this.accounts.push(agent.sub);
     this.rpc = new XRPC({ handler: this.manager });
     this.updateState();
     console.log("Successfully logged in!");
@@ -192,9 +193,22 @@ export class QtClient {
   }
 
   async switchAccount(did: `did:${string}`) {
-    const sess = await getSession(did);
-    if (!sess) {
-      throw new Error(`No session found for ${did}`);
+    let sess;
+    try {
+      sess = await getSession(did);
+      if (!sess) {
+        throw new Error(`No session found for ${did}`);
+      }
+    } catch (error) {
+      console.error(`Error getting session for ${did}:`, error);
+      if ((error as Error).name === "TokenRefreshError") {
+        const resolved = await this.resolveHandle(did);
+        let oauth = await this.getOAuthRedirectUri(resolved);
+        console.log(oauth);
+        // redirect to url
+        redirect({ href: oauth.toString() });
+      }
+      return;
     }
     const agent = new OAuthUserAgent(sess);
     this.currentAgent = agent;
