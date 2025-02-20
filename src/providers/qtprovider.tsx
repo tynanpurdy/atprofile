@@ -194,23 +194,31 @@ export class QtClient {
 
   async switchAccount(did: `did:${string}`) {
     let sess;
+    console.log("Switching account to", did);
     try {
       sess = await getSession(did);
       if (!sess) {
         throw new Error(`No session found for ${did}`);
       }
-    } catch (error) {
-      console.error(`Error getting session for ${did}:`, error);
-      if ((error as Error).name === "TokenRefreshError") {
-        const resolved = await this.resolveHandle(did);
-        let oauth = await this.getOAuthRedirectUri(resolved);
-        console.log(oauth);
-        // log out before we redirect
-        await this.logout(did);
-        redirect({ href: oauth.toString() });
-
-        window.location.href = oauth.toString();
+    } catch (error: any) {
+      console.log(`Error getting session for ${did}:`, error);
+      if (
+        error.toString() === "TokenRefreshError: session deleted by another tab"
+      ) {
+        console.log(
+          "TokenRefreshError encountered but should be okay - we are refreshing said token",
+        );
+        return;
       }
+      const resolved = await this.resolveHandle(did);
+      let oauth = await this.getOAuthRedirectUri(resolved);
+      // log out before we redirect
+      deleteStoredSession(did);
+      this.accounts = this.accounts.filter((a) => a !== did);
+
+      redirect({ href: oauth.toString() });
+
+      window.location.href = oauth.toString();
       return;
     }
     const agent = new OAuthUserAgent(sess);
