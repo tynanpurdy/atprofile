@@ -205,7 +205,8 @@ export class QtClient {
         const resolved = await this.resolveHandle(did);
         let oauth = await this.getOAuthRedirectUri(resolved);
         console.log(oauth);
-        // redirect to url
+        // log out before we redirect
+        await this.logout(did);
         redirect({ href: oauth.toString() });
 
         window.location.href = oauth.toString();
