@@ -14,17 +14,6 @@ export function FontPicker() {
   const [isOpen, setIsOpen] = useState(false);
 
   const availableFonts = useMemo(() => {
-    if (isMacOS()) {
-      return [
-        {
-          name: "SF Pro",
-          category: "sans" as "sans",
-          url: "", // No URL needed as it's system font
-          isSystemFont: true,
-        },
-        ...GOOGLE_FONTS,
-      ];
-    }
     return GOOGLE_FONTS;
   }, []);
 
