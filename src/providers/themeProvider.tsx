@@ -184,7 +184,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     // assume we want everything to be this font
     document.documentElement.style.setProperty(
       `--font-sans`,
-      `'${font.name}', sans-serif`,
+      `${font.fontFamily || font.name}, sans-serif`,
     );
 
     if (font.category !== "mono") {
