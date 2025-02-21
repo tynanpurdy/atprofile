@@ -23,7 +23,7 @@ export function isOnMac() {
 
 function isMobile() {
   return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-    navigator.userAgent,
+    navigator.userAgent
   );
 }
 
@@ -38,11 +38,12 @@ export function SmartSearchBar({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (input.trim()) {
+    const value = input.trim();
+    if (value && value !== "@") {
       // replace at:// with / to match the route correctly
-      if (input.includes("bsky.app") || input.includes("main.bsky.dev")) {
+      if (value.includes("bsky.app") || value.includes("main.bsky.dev")) {
         try {
-          const url = new URL(input);
+          const url = new URL(value);
           const pathParts = url.pathname.split("/");
 
           if (pathParts[1] === "profile") {
@@ -68,18 +69,19 @@ export function SmartSearchBar({
         } catch (e) {
           console.error("Invalid Bluesky URL:", e);
         }
-      } else if (input.startsWith("pds/") || input.startsWith("https:/")) {
+      } else if (value.startsWith("pds/") || value.startsWith("https:/")) {
         navigate({
           to: "/pds/$url",
           params: {
-            url: input.replace("https:/", "").replace("pds/", ""),
+            url: value.replace("https:/", "").replace("pds/", ""),
           },
         });
-      } else if (input === "typing") {
+      } else if (value === "typing") {
         navigate({ to: "/rnfgrertt/typing" });
       } else {
+        // Allow handle lookups to start with @
         navigate({
-          to: `/at:/${input.replace("at:/", "")}`,
+          to: `/at:/${value.replace("at:/", "").replace(/^@/, "")}`,
         });
       }
       setOpen(false);
