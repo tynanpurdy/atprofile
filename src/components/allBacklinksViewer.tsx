@@ -158,7 +158,7 @@ export function AllBacklinksViewer({ aturi }: { aturi: string }) {
                 href={`https://constellation.microcosm.blue/links/all?target=${encodeURIComponent(aturi)}`}
                 className="text-blue-500 hover:underline"
               >
-                view the api response.
+                view the api response
               </a>
               .
             </span>
