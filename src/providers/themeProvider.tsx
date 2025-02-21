@@ -9,11 +9,19 @@ import {
 
 export type FontConfig = {
   name: string;
+  fontFamily?: string;
   category: "sans" | "serif" | "mono";
   url?: string;
 };
 
 export const GOOGLE_FONTS: FontConfig[] = [
+  {
+    name: "System",
+    fontFamily:
+      '"SF Pro Text","SF Pro Icons","Helvetica Neue","Helvetica","Arial",sans-serif',
+    category: "sans",
+    url: "",
+  },
   {
     name: "Inter",
     category: "sans",
@@ -110,13 +118,25 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const loadFonts = useCallback(
     (fonts: FontConfig[]) => {
       console.log("Loading multiple fonts");
+      console.log("already loaded", loadedFonts);
       fonts.forEach((fontConfig) => {
-        if (fontConfig.url && !loadedFonts.has(fontConfig.url)) {
+        console.log(
+          "trying to load",
+          fontConfig,
+          !!fontConfig.url,
+          !loadedFonts.has(fontConfig?.url || "none"),
+        );
+        if (
+          fontConfig.url &&
+          fontConfig.url !== "" &&
+          !loadedFonts.has(fontConfig.url)
+        ) {
+          console.log("loaded", fontConfig.name);
           const link = document.createElement("link");
           link.rel = "stylesheet";
           link.href = fontConfig.url;
           link.crossOrigin = "anonymous";
-          link.dataset.font = fontConfig.name;
+          link.dataset.font = fontConfig.fontFamily || fontConfig.name;
           document.head.appendChild(link);
 
           setLoadedFonts((prev) => new Set(prev).add(fontConfig.url!));
@@ -139,8 +159,10 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   // Manage font loading
   useEffect(() => {
     // Remove existing font links
-    const existingLinks = document.querySelectorAll("link[data-font]");
-    existingLinks.forEach((link) => link.remove());
+    // const existingLinks = document.querySelectorAll("link[data-font]");
+    // existingLinks.forEach((link) => link.remove());
+
+    // setLoadedFonts(new Set());
 
     // Create new font link
     if (font.url) {
