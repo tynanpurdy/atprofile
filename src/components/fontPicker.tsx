@@ -5,9 +5,9 @@ import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Check, ChevronsUpDown, Text } from "lucide-react";
 import { useMemo, useState } from "preact/hooks";
 
-const isMacOS = () => {
-  return (navigator?.userAgent || "unknown").toLowerCase().includes("mac");
-};
+// const isMacOS = () => {
+//   return (navigator?.userAgent || "unknown").toLowerCase().includes("mac");
+// };
 
 export function FontPicker() {
   const { font, setFont, loadFonts, loadedFonts } = useTheme();
