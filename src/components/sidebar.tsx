@@ -19,6 +19,7 @@ import { Link } from "@tanstack/react-router";
 import { ForwardRefExoticComponent, ReactNode } from "preact/compat";
 import { FontPicker } from "./fontPicker";
 import { NavUser } from "./auth/navUser";
+import { ExternalLinksRow } from "./sidebarLinks";
 
 type BaseMenuItem = {
   url: string;
@@ -111,6 +112,7 @@ export function AppSidebar() {
           <FontPicker />
           <ColorToggle />
         </div>
+        <ExternalLinksRow />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
