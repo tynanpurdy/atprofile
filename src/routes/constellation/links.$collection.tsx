@@ -18,6 +18,12 @@ export const Route = createFileRoute("/constellation/links/$collection")({
   },
 });
 
+interface DistinctDidsResponse {
+  total: number;
+  linking_records: CLink[];
+  cursor: string;
+}
+
 interface CLink {
   did: string;
   collection: string;
@@ -66,13 +72,13 @@ function useConstellationLink(
       `https://constellation.microcosm.blue/links?target=${target}&collection=${collection}&path=${path}${cursor ? `&cursor=${cursor}` : ""}`,
     );
 
-    let data = await response.json();
+    let data: DistinctDidsResponse = await response.json();
     setLink((prev) => ({
       ...prev,
       totalLinks: data.total,
       links: [...(prev.links || []), ...data.linking_records],
       cursor: data.cursor,
-      error: data.error,
+      error: data.linking_records.length === 0 ? Error("Nothing found") : null,
       isLoading: false,
     }));
   };

@@ -27,6 +27,12 @@ interface ConstellationLinkState {
   isLoading: boolean;
 }
 
+interface DistinctDidsResponse {
+  total: number;
+  linking_dids: string[];
+  cursor: string;
+}
+
 function useConstellationLink(
   collection: string,
   target: string,
@@ -61,13 +67,13 @@ function useConstellationLink(
       `https://constellation.microcosm.blue/links/distinct-dids?target=${target}&collection=${collection}&path=${path}${cursor ? `&cursor=${cursor}` : ""}`,
     );
 
-    let data = await response.json();
+    let data: DistinctDidsResponse = await response.json();
     setLink((prev) => ({
       ...prev,
       totalLinks: data.total,
       links: [...(prev.links || []), ...data.linking_dids],
       cursor: data.cursor,
-      error: data.error,
+      error: cursor === null ? Error("Nothing found") : null,
       isLoading: false,
     }));
   };
