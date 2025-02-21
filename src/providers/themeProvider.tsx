@@ -18,7 +18,7 @@ export const GOOGLE_FONTS: FontConfig[] = [
   {
     name: "System",
     fontFamily:
-      '"SF Pro Text","SF Pro Icons","Helvetica Neue","Helvetica","Arial",sans-serif',
+      "system-ui, -apple-system, 'Segoe UI', 'Ubuntu', 'Helvetica Neue', Helvetica, Arial, sans-serif",
     category: "sans",
     url: "",
   },
