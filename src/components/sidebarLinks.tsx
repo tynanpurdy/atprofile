@@ -12,7 +12,7 @@ const externalLinks = [
     icon: (
       <img
         src="/assets/invertocat.png"
-        className="h-[1.35rem] mb-0.5 brightness-[10] hover:brightness-[999] dark:hover:brightness-[8] grayscale invert dark:invert-0"
+        className="h-[1.35rem] mb-0.5 brightness-[10] dark:brightness-[999] hover:brightness-[999] dark:hover:brightness-[20] grayscale invert dark:invert-0"
         alt="Bluesky"
       />
     ),
