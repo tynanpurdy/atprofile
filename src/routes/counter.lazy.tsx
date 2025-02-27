@@ -225,7 +225,7 @@ export default function RouteComponent() {
                 ) : (
                   <div className="h-6" />
                 )}
-                <div className="text-5xl md:text-6xl lg:text-8xl font-semibold text-blue-500">
+                <div className="text-5xl md:text-6xl lg:text-8xl text-blue-500">
                   <AnimatedCounter
                     value={Math.floor(
                       userCount +
