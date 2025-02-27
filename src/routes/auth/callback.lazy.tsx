@@ -19,7 +19,6 @@ function RouteComponent() {
     const handleAuthorization = async () => {
       try {
         const params = new URLSearchParams(location.hash.slice(1));
-        console.log(params);
         if (params) {
           await qt.client.finalizeAuthorization(params);
         }
@@ -29,7 +28,22 @@ function RouteComponent() {
       } finally {
         setIsDone(true);
         setTimeout(() => {
-          window.location.href = "/";
+          // get location from local storage
+          const previousUrl = localStorage.getItem("previousUrl");
+          if (previousUrl) {
+            const [url, timestamp] = previousUrl.split(":");
+            if (Date.now() - parseInt(timestamp) < 5000) {
+              console.log(`Redirecting to previous URL: ${url}`);
+              localStorage.removeItem("previousUrl");
+              window.location.href = url;
+            } else {
+              console.log(`Previous URL expired`);
+              localStorage.removeItem("previousUrl");
+              window.location.href = "/";
+            }
+          } else {
+            window.location.href = "/";
+          }
         }, 200);
       }
     };

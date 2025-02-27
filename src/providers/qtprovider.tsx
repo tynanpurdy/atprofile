@@ -210,6 +210,10 @@ export class QtClient {
         );
         return;
       }
+      // what url are we at?
+      const url = new URL(window.location.href);
+      // store it in local storage, with the timestamp
+      localStorage.setItem("previousUrl", `${url.toString()}:${Date.now()}`);
       const resolved = await this.resolveHandle(did);
       let oauth = await this.getOAuthRedirectUri(resolved);
       // log out before we redirect
