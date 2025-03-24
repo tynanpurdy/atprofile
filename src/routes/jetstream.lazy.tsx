@@ -1,4 +1,8 @@
-import { createLazyFileRoute } from "@tanstack/react-router";
+import {
+  createLazyFileRoute,
+  useParams,
+  useSearch,
+} from "@tanstack/react-router";
 import { Collection, CommitEvent, Jetstream } from "@/lib/jetstream";
 import {
   useCallback,
@@ -30,6 +34,9 @@ function useJetstreamManager() {
   const [isConnected, setIsConnected] = useState(false);
   const [wantedCollections, setWantedCollections] = useState<string[]>([]);
   const [wantedDids, setWantedDids] = useState<string[]>([]);
+  const [endpoint, setEndpoint] = useState<string>(
+    "wss://jetstream.sprk.so/subscribe",
+  );
 
   const jetstreamRef = useRef<Jetstream | null>(null);
 
@@ -85,11 +92,25 @@ function useJetstreamManager() {
     [isConnected],
   );
 
+  const setJetstreamEndpoint = useCallback(
+    (endpoint: string) => {
+      console.log("Setting endpoint:", endpoint);
+      setEndpoint(endpoint);
+      // Restart if connected
+      if (isConnected) {
+        stop();
+        setTimeout(start, 0);
+      }
+    },
+    [isConnected],
+  );
+
   const start = useCallback(
     (cursor?: number) => {
       if (jetstreamRef.current) return;
-
+      console.log(endpoint);
       const jetstream = new Jetstream({
+        endpoint,
         wantedCollections: wantedCollections,
         wantedDids: wantedDids,
         cursor: cursor,
@@ -105,7 +126,7 @@ function useJetstreamManager() {
       jetstream.start();
       setIsConnected(true);
     },
-    [wantedCollections, wantedDids],
+    [wantedCollections, wantedDids, endpoint],
   );
 
   const stop = useCallback(() => {
@@ -140,6 +161,8 @@ function useJetstreamManager() {
     wantedDids,
     addWantedDid,
     removeWantedDid,
+    endpoint,
+    setEndpoint: setJetstreamEndpoint,
   };
 }
 
@@ -207,7 +230,15 @@ const Suggestions = memo(function Suggestions({
 });
 
 function RouteComponent() {
+  // TODO: verify search params
+  const params = useSearch({ from: "/jetstream" });
   const jet = useJetstreamManager();
+
+  useEffect(() => {
+    if ((params as any).endpoint && (params as any).endpoint !== jet.endpoint) {
+      jet.setEndpoint((params as any).endpoint);
+    }
+  }, [params, jet.endpoint]);
 
   const [newAddition, setNewAddition] = useState("");
   const [loadingStates, setLoadingStates] = useState<Record<string, boolean>>(
@@ -304,9 +335,9 @@ function RouteComponent() {
             </div>
             <div className="flex items-center">
               <div
-                className={`
+                className={` flex flex:col
                 overflow-hidden transition-all duration-200 ease-in-out md:ml-2 pb-0.5
-                ${isMoreExpanded ? "w-[200px] opacity-100 h-auto mt-2 md:mt-auto pr-2" : "w-0 h-0 opacity-0"}
+                ${isMoreExpanded ? "max-w-[400px] opacity-100 h-auto mt-2 md:mt-auto pr-2" : "w-0 h-0 opacity-0"}
               `}
               >
                 <Input
@@ -316,6 +347,13 @@ function RouteComponent() {
                   onChange={(e) =>
                     setCursorInput(Number(e.currentTarget.value))
                   }
+                  className="h-9 w-24"
+                />
+                <Input
+                  type="text"
+                  placeholder="wss://jetstream.sprk.so/subscribe"
+                  value={jet.endpoint || ""}
+                  onChange={(e) => jet.setEndpoint(e.currentTarget.value)}
                   className="h-9"
                 />
               </div>
