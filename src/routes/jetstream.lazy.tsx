@@ -1,8 +1,4 @@
-import {
-  createLazyFileRoute,
-  useParams,
-  useSearch,
-} from "@tanstack/react-router";
+import { createLazyFileRoute, useSearch } from "@tanstack/react-router";
 import { Collection, CommitEvent, Jetstream } from "@/lib/jetstream";
 import {
   useCallback,
