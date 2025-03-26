@@ -8,8 +8,8 @@ const BASE32_SORT_ALPHABET = "234567abcdefghijklmnopqrstuvwxyz";
 
 // Constants for bit operations
 const CLOCK_ID_MASK = 0x3ff;
-const MICROS_MASK = 0x1ffffffffffffn;
-const INTEGER_MASK = 0x7fffffffffffffffn;
+const MICROS_MASK = 0x1f_ffff_ffff_ffffn;
+const INTEGER_MASK = 0x7fff_ffff_ffff_ffffn;
 
 class TransactionId {
   private readonly value: string;
