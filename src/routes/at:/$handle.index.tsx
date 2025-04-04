@@ -51,7 +51,13 @@ function useRepoData(handle: string): RepoData {
       try {
         setState((prev) => ({ ...prev, isLoading: true }));
 
-        const id = await resolveFromIdentity(handle);
+        let id;
+        try {
+          id = await resolveFromIdentity(handle);
+        } catch (err: any) {
+          console.log("BSLKDJFSL");
+          throw new Error("Unable to resolve identity: " + err.message);
+        }
         // we dont use the main authenticated client here
         const rpc = new QtClient(id.identity.pds);
         // get the PDS
@@ -61,7 +67,13 @@ function useRepoData(handle: string): RepoData {
             params: { repo: id.identity.id },
             signal: abortController.signal,
           });
-        let doc = await getDidDoc(id.identity.id);
+        let doc;
+        try {
+          doc = await getDidDoc(id.identity.id);
+        } catch (error) {
+          console.log("sdf");
+          console.error("Failed to fetch DID document:", error);
+        }
         // can we get bsky data?
         if (response.data.collections.includes("app.bsky.actor.profile")) {
           // reuse client dumbass

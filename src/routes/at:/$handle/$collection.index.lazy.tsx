@@ -39,7 +39,13 @@ function useCollectionRecords(
 
       setState((prev) => ({ ...prev, isLoading: true }));
 
-      const id = await resolveFromIdentity(handle);
+      let id;
+      try {
+        id = await resolveFromIdentity(handle);
+      } catch (err: any) {
+        console.log("BSLKDJFSL");
+        throw new Error("Unable to resolve identity: " + err.message);
+      }
       const rpc = new QtClient(id.identity.pds);
 
       const response = await rpc
@@ -67,7 +73,10 @@ function useCollectionRecords(
       setState((prev) => ({
         ...prev,
         isLoading: false,
-        error: err instanceof Error ? err : new Error("An error occurred"),
+        error:
+          err instanceof Error
+            ? err
+            : new Error("Unable to resolve identity: " + err.message),
       }));
     }
   }

@@ -10,7 +10,7 @@ export default function ShowError({ error }: { error: Error }) {
       <div className="flex flex-col gap-2 items-center">
         <CircleAlert className="text-red-500" width={48} height={48} />
         <div className="h-min text-wrap break-words max-w-md w-full text-center">
-          Error: {error.message}
+          {error.message}
         </div>
       </div>
       <div className="flex flex-row gap-2 items-center">

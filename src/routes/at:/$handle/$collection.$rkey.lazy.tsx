@@ -47,7 +47,12 @@ function useRepoData(
       try {
         setState((prev) => ({ ...prev, isLoading: true }));
 
-        const id = await resolveFromIdentity(handle);
+        let id;
+        try {
+          id = await resolveFromIdentity(handle);
+        } catch (err: any) {
+          throw new Error("Unable to resolve identity: " + err.message);
+        }
         // we dont use the main authenticated client here
         const rpc = new QtClient(id.identity.pds);
         // get the PDS
@@ -78,7 +83,10 @@ function useRepoData(
         setState({
           data: undefined,
           isLoading: false,
-          error: err instanceof Error ? err : new Error("An error occurred"),
+          error:
+            err instanceof Error
+              ? err
+              : new Error("Unable to resolve identity: " + err.message),
         });
       }
     }
