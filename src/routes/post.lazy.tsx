@@ -3,12 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { QtContext } from "@/providers/qtprovider";
-import { AppBskyEmbedImages, AppBskyFeedPost } from "@atcute/client/lexicons";
-import {
-  createLazyFileRoute,
-  useNavigate,
-  useRouter,
-} from "@tanstack/react-router";
+import { AppBskyFeedPost } from "@atcute/client/lexicons";
+import { createLazyFileRoute, useNavigate } from "@tanstack/react-router";
 import { ImagePlus, Loader2, X } from "lucide-react";
 import { useContext, useRef, useState } from "preact/hooks";
 
