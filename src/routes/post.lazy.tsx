@@ -2,6 +2,7 @@ import ShowError from "@/components/error";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
 import { QtContext } from "@/providers/qtprovider";
 import { AppBskyFeedPost } from "@atcute/client/lexicons";
 import { createLazyFileRoute, useNavigate } from "@tanstack/react-router";
@@ -14,6 +15,63 @@ interface ImageMetadata {
   aspectRatio?: { width: number; height: number };
 }
 
+async function downscaleImage(
+  file: File,
+  maxSize: number = 1000000,
+): Promise<Blob> {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+
+    img.onload = () => {
+      let { width, height } = img;
+      let quality = 0.9;
+      let blob: Blob | null = null;
+
+      // First pass: try with original dimensions
+      canvas.width = width;
+      canvas.height = height;
+      ctx?.drawImage(img, 0, 0, width, height);
+
+      // Try to get under maxSize with quality reduction first
+      while (quality > 0.1) {
+        blob = canvas.toBlob(
+          (b) => {
+            if (b && b.size <= maxSize) {
+              resolve(b);
+            } else if (quality > 0.1) {
+              quality -= 0.1;
+              canvas.toBlob((b) => (blob = b), "image/jpeg", quality);
+            } else {
+              // If we get here, we need to reduce dimensions
+              width *= 0.9;
+              height *= 0.9;
+              canvas.width = width;
+              canvas.height = height;
+              ctx?.drawImage(img, 0, 0, width, height);
+              quality = 0.9;
+              canvas.toBlob((b) => (blob = b), "image/jpeg", quality);
+            }
+          },
+          "image/jpeg",
+          quality,
+        );
+      }
+
+      // If we still haven't resolved, use the last blob
+      if (blob) {
+        resolve(blob);
+      } else {
+        reject(new Error("Could not downscale image sufficiently"));
+      }
+    };
+
+    img.onerror = () => reject(new Error("Failed to load image"));
+    img.src = URL.createObjectURL(file);
+  });
+}
+
 export const Route = createLazyFileRoute("/post")({
   component: RouteComponent,
 });
@@ -23,6 +81,7 @@ function RouteComponent() {
   const [images, setImages] = useState<ImageMetadata[]>([]);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadError, setUploadError] = useState<Error | null>(null);
+  const [postToBluesky, setPostToBluesky] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const navigate = useNavigate();
@@ -52,51 +111,105 @@ function RouteComponent() {
       setIsUploading(true);
       setUploadError(null);
 
-      let blobs = [];
+      let originalBlobs = [];
+      let bskyBlobs = [];
 
+      // Upload both original and downscaled images
       for (const imageData of images) {
-        const blob = new Blob([imageData.file], { type: imageData.file.type });
-        const res = await qt.client.rpc.call("com.atproto.repo.uploadBlob", {
-          data: blob,
+        // Original upload
+        const originalBlob = new Blob([imageData.file], {
+          type: imageData.file.type,
         });
-        if (!res.data) {
-          throw new Error(`Failed to post image!`);
+        const originalRes = await qt.client.rpc.call(
+          "com.atproto.repo.uploadBlob",
+          {
+            data: originalBlob,
+          },
+        );
+        if (!originalRes.data) {
+          throw new Error(`Failed to post original image!`);
         }
-        blobs.push({ blob: res.data.blob, metadata: imageData });
+        originalBlobs.push({
+          blob: originalRes.data.blob,
+          metadata: imageData,
+        });
+
+        // Downscaled upload for Bluesky if enabled
+        if (postToBluesky) {
+          const downscaledBlob = await downscaleImage(imageData.file);
+          const bskyRes = await qt.client.rpc.call(
+            "com.atproto.repo.uploadBlob",
+            {
+              data: downscaledBlob,
+            },
+          );
+          if (!bskyRes.data) {
+            throw new Error(`Failed to post downscaled image!`);
+          }
+          bskyBlobs.push({ blob: bskyRes.data.blob, metadata: imageData });
+        }
       }
 
-      let processedImages = blobs.map((b) => ({
+      // Create dummy record with original images
+      let processedImages = originalBlobs.map((b) => ({
         image: b.blob,
         alt: b.metadata.altText,
         aspectRatio: b.metadata.aspectRatio,
       }));
 
-      let postRecord: AppBskyFeedPost.Record = {
+      let dummyRecord: AppBskyFeedPost.Record = {
         text: "",
         createdAt: new Date().toISOString(),
         embed: {
           $type: "app.bsky.embed.images",
           images: processedImages,
         },
-        // i know
         $type: "com.example.feed.post",
       } as any as AppBskyFeedPost.Record;
 
+      // Post dummy record
       let did = qt.currentAgent?.sub;
       if (!did) {
-        alert("COULD NOT GET DID????");
+        throw new Error("Could not get DID");
       }
 
-      let res = await qt.client.rpc.call("com.atproto.repo.createRecord", {
+      let dummyRes = await qt.client.rpc.call("com.atproto.repo.createRecord", {
         data: {
           collection: "com.example.feed.post",
-          record: postRecord,
-          repo: did!,
+          record: dummyRecord,
+          repo: did,
         },
       });
 
-      // for example: at://did:web:nat.vg/com.example.feed.post/rkey
-      const segs = res.data.uri.replace("at://", "").split("/");
+      // Post to Bluesky if enabled
+      if (postToBluesky && bskyBlobs.length > 0) {
+        let bskyImages = bskyBlobs.map((b) => ({
+          image: b.blob,
+          alt: b.metadata.altText,
+          aspectRatio: b.metadata.aspectRatio,
+        }));
+
+        let bskyRecord: AppBskyFeedPost.Record = {
+          text: "",
+          createdAt: new Date().toISOString(),
+          embed: {
+            $type: "app.bsky.embed.images",
+            images: bskyImages,
+          },
+          $type: "app.bsky.feed.post",
+        };
+
+        await qt.client.rpc.call("com.atproto.repo.createRecord", {
+          data: {
+            collection: "app.bsky.feed.post",
+            record: bskyRecord,
+            repo: did,
+          },
+        });
+      }
+
+      // Navigate to the dummy post
+      const segs = dummyRes.data.uri.replace("at://", "").split("/");
       navigate({
         to: "/at:/$handle/$collection/$rkey",
         params: {
@@ -158,6 +271,16 @@ function RouteComponent() {
           </p>
         </CardHeader>
         <CardContent className="space-y-6">
+          <div className="flex items-center justify-between px-2">
+            <label htmlFor="bluesky-post" className="text-sm font-medium">
+              Also post to Bluesky
+            </label>
+            <Switch
+              id="bluesky-post"
+              checked={postToBluesky}
+              onCheckedChange={setPostToBluesky}
+            />
+          </div>
           <div className="flex flex-col items-center gap-4">
             <Input
               type="file"
