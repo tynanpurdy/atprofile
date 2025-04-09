@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
+import { Textarea } from "@/components/ui/textarea";
 import { QtContext } from "@/providers/qtprovider";
 import { AppBskyFeedPost } from "@atcute/client/lexicons";
 import { createLazyFileRoute, useNavigate } from "@tanstack/react-router";
@@ -25,46 +26,60 @@ async function downscaleImage(
     const ctx = canvas.getContext("2d");
 
     img.onload = () => {
-      let { width, height } = img;
-      let quality = 0.9;
-      let blob: Blob | null = null;
+      // Calculate aspect ratio
+      const aspectRatio = img.width / img.height;
 
-      // First pass: try with original dimensions
-      canvas.width = width;
-      canvas.height = height;
-      ctx?.drawImage(img, 0, 0, width, height);
+      // Start with a reasonable size that's likely to be under 1MB
+      let targetWidth = 2000; // common width for social media
+      let targetHeight = Math.round(targetWidth / aspectRatio);
 
-      // Try to get under maxSize with quality reduction first
-      while (quality > 0.1) {
-        blob = canvas.toBlob(
-          (b) => {
-            if (b && b.size <= maxSize) {
-              resolve(b);
-            } else if (quality > 0.1) {
-              quality -= 0.1;
-              canvas.toBlob((b) => (blob = b), "image/jpeg", quality);
-            } else {
-              // If we get here, we need to reduce dimensions
-              width *= 0.9;
-              height *= 0.9;
-              canvas.width = width;
-              canvas.height = height;
-              ctx?.drawImage(img, 0, 0, width, height);
-              quality = 0.9;
-              canvas.toBlob((b) => (blob = b), "image/jpeg", quality);
-            }
-          },
-          "image/jpeg",
-          quality,
-        );
+      if (targetHeight > targetWidth) {
+        // swap width and height
+        const temp = targetHeight;
+        targetHeight = targetWidth;
+        targetWidth = temp;
       }
 
-      // If we still haven't resolved, use the last blob
-      if (blob) {
-        resolve(blob);
-      } else {
-        reject(new Error("Could not downscale image sufficiently"));
+      // If image is smaller than target size, use original dimensions
+      if (img.width < targetWidth) {
+        targetWidth = img.width;
+        targetHeight = img.height;
       }
+
+      // Set canvas size to target dimensions
+      canvas.width = targetWidth;
+      canvas.height = targetHeight;
+
+      // Draw image at new size
+      ctx?.drawImage(img, 0, 0, targetWidth, targetHeight);
+
+      // Convert to blob with reasonable quality
+      canvas.toBlob(
+        (blob) => {
+          if (!blob) {
+            reject(new Error("Failed to create blob"));
+            return;
+          }
+          // If still too large, reduce quality
+          if (blob.size > maxSize) {
+            canvas.toBlob(
+              (finalBlob) => {
+                if (!finalBlob) {
+                  reject(new Error("Failed to create blob"));
+                  return;
+                }
+                resolve(finalBlob);
+              },
+              "image/jpeg",
+              0.7, // reduced quality
+            );
+          } else {
+            resolve(blob);
+          }
+        },
+        "image/jpeg",
+        0.9, // initial quality
+      );
     };
 
     img.onerror = () => reject(new Error("Failed to load image"));
@@ -82,6 +97,7 @@ function RouteComponent() {
   const [isUploading, setIsUploading] = useState(false);
   const [uploadError, setUploadError] = useState<Error | null>(null);
   const [postToBluesky, setPostToBluesky] = useState(false);
+  const [textToPost, setTextToPost] = useState("");
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const navigate = useNavigate();
@@ -158,7 +174,7 @@ function RouteComponent() {
       }));
 
       let dummyRecord: AppBskyFeedPost.Record = {
-        text: "",
+        text: textToPost,
         createdAt: new Date().toISOString(),
         embed: {
           $type: "app.bsky.embed.images",
@@ -190,7 +206,7 @@ function RouteComponent() {
         }));
 
         let bskyRecord: AppBskyFeedPost.Record = {
-          text: "",
+          text: textToPost,
           createdAt: new Date().toISOString(),
           embed: {
             $type: "app.bsky.embed.images",
@@ -301,6 +317,21 @@ function RouteComponent() {
               Select Images (up to 4)
             </Button>
           </div>
+
+          <Textarea
+            value={textToPost}
+            onChange={(e) => setTextToPost(e.currentTarget.value)}
+            placeholder="Blaze your glory! (leave empty if you don't want to include text with your post)"
+          />
+
+          {textToPost.length > 300 - 16 ? (
+            <p>
+              Your post is too long! Remove{" "}
+              {Math.abs(textToPost.length - 300 - 16)} chars!
+            </p>
+          ) : (
+            <p>{textToPost.length}</p>
+          )}
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {images.map((imageData, index) => (
