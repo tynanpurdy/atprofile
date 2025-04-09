@@ -23,7 +23,7 @@ export function isOnMac() {
 
 function isMobile() {
   return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-    navigator.userAgent
+    navigator.userAgent,
   );
 }
 
@@ -135,6 +135,8 @@ export function SmartSearchBar({
             value={input}
             onChange={(e) => setInput(e.currentTarget.value)}
             className="border focus-visible:ring-0 focus-visible:ring-offset-0 pl-12 py-6 text-lg rounded-xl shadow-lg dark:shadow-slate-950"
+            autocorrect="off"
+            autocapitalize="none"
             autoFocus
           />
           <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-x-2">
