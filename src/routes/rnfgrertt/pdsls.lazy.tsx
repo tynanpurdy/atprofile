@@ -51,8 +51,6 @@ function RouteComponent() {
   const [state, setState] = useState<SerializedState | null>(null);
   const [error, setError] = useState<Error | null>(null);
 
-  const [search, setSearch] = useState<string>("");
-
   useEffect(() => {
     fetch(STATE_URL)
       .then((response) => response.json())
