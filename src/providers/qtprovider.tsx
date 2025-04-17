@@ -25,7 +25,7 @@ configureOAuth({
 interface QtContextType {
   client: QtClient;
   currentAgent: OAuthUserAgent | null;
-  accounts: `did:${string}`[];
+  accounts: `did:${string}:${string}`[];
   isManagementModalOpen: boolean;
   openManagementModal: () => void;
   closeManagementModal: () => void;
@@ -45,7 +45,7 @@ export function useXrpc(): XRPC {
 export function QtProvider({ children }: { children: React.ReactNode }) {
   const [client, setClient] = useState<QtClient | null>(null);
   const [currentAgent, setCurrentAgent] = useState<OAuthUserAgent | null>(null);
-  const [accounts, setAccounts] = useState<`did:${string}`[]>([]);
+  const [accounts, setAccounts] = useState<`did:${string}:${string}`[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
   const [isManagementModalOpen, setIsManagementModalOpen] = useState(false);
@@ -96,12 +96,12 @@ export function QtProvider({ children }: { children: React.ReactNode }) {
 export class QtClient {
   manager: CredentialManager;
   rpc: XRPC;
-  accounts: `did:${string}`[];
+  accounts: `did:${string}:${string}`[];
   currentAgent: OAuthUserAgent | null;
-  currentAgentDid: `did:${string}` | null;
+  currentAgentDid: `did:${string}:${string}` | null;
   onStateChange?: (
     agent: OAuthUserAgent | null,
-    accounts: `did:${string}`[],
+    accounts: `did:${string}:${string}`[],
   ) => void;
 
   constructor(service: URL = new URL("https://bsky.social")) {
@@ -110,10 +110,10 @@ export class QtClient {
     this.accounts =
       (JSON.parse(
         localStorage.getItem("currentAccountList") as string,
-      ) as `did:${string}`[]) || [];
+      ) as `did:${string}:${string}`[]) || [];
     this.currentAgent = null;
     this.currentAgentDid = localStorage.getItem("currentAgentDid") as
-      | `did:${string}`
+      | `did:${string}:${string}`
       | null;
 
     // Only attempt to resume session if it's the default service
@@ -161,8 +161,9 @@ export class QtClient {
     console.log("Logging in as ", sess.info.sub);
     const agent = new OAuthUserAgent(sess);
     this.currentAgent = agent;
-    this.currentAgentDid = agent.sub;
-    if (!this.accounts.includes(agent.sub)) this.accounts.push(agent.sub);
+    this.currentAgentDid = agent.sub as `did:${string}:${string}`;
+    if (!this.accounts.includes(agent.sub as `did:${string}:${string}`))
+      this.accounts.push(agent.sub as `did:${string}:${string}`);
     this.rpc = new XRPC({ handler: this.manager });
     this.updateState();
     console.log("Successfully logged in!");
@@ -192,7 +193,7 @@ export class QtClient {
     }
   }
 
-  async switchAccount(did: `did:${string}`) {
+  async switchAccount(did: `did:${string}:${string}`) {
     let sess;
     console.log("Switching account to", did);
     try {
@@ -227,14 +228,14 @@ export class QtClient {
     }
     const agent = new OAuthUserAgent(sess);
     this.currentAgent = agent;
-    this.currentAgentDid = agent.sub;
+    this.currentAgentDid = agent.sub as `did:${string}:${string}`;
     console.log();
     this.rpc = new XRPC({ handler: this.currentAgent });
     this.updateState();
   }
 
-  async logout(did: `did:${string}`) {
-    const currentDid = this.currentAgent?.sub;
+  async logout(did: `did:${string}:${string}`) {
+    const currentDid = this.currentAgent?.sub as `did:${string}:${string}`;
     await this.switchAccount(did);
     await this.currentAgent?.signOut();
     deleteStoredSession(did);
@@ -249,7 +250,10 @@ export class QtClient {
   }
 }
 
-export async function resolveBskyUser(did: `did:${string}`, qt: QtContextType) {
+export async function resolveBskyUser(
+  did: `did:${string}:${string}`,
+  qt: QtContextType,
+) {
   const context = qt;
 
   const cachedData = context.userCache.get(did);
