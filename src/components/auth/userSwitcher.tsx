@@ -29,7 +29,7 @@ export function UserSwitcher() {
     if (!qt?.client) return;
     setIsDeleting(true);
     try {
-      await qt.client.logout(did as `did:${string}`);
+      await qt.client.logout(did as `did:${string}:${string}`);
     } catch (error) {
       console.error("Failed to remove account:", error);
     } finally {
@@ -85,7 +85,7 @@ export function UserSwitcher() {
             <DropdownMenuItem
               key={user.did}
               onClick={() => {
-                qt.client.switchAccount(user.did as `did:${string}`);
+                qt.client.switchAccount(user.did as `did:${string}:${string}`);
               }}
             >
               <Avatar className="h-8 w-8 rounded-lg">

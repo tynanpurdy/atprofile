@@ -63,7 +63,7 @@ export function AccountsManagementModal({
     if (!qt?.client) return;
     setIsDeleting(true);
     try {
-      await qt.client.logout(did as `did:${string}`);
+      await qt.client.logout(did as `did:${string}:${string}`);
     } catch (error) {
       console.error("Failed to remove account:", error);
     } finally {

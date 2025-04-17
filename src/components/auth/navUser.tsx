@@ -118,7 +118,7 @@ export function NavUser() {
           <DropdownMenuSeparator />
           <DropdownMenuItem
             onClick={() => {
-              qt.client.logout(user.did as `did:${string}`);
+              qt.client.logout(user.did as `did:${string}:${string}`);
               redirect({ to: "/" });
               // force reload in 250ms to avoid rollback
               setTimeout(() => window.location.reload(), 250);
