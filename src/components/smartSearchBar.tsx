@@ -78,6 +78,8 @@ export function SmartSearchBar({
         });
       } else if (value === "typing") {
         navigate({ to: "/rnfgrertt/typing" });
+      } else if (value === "pdsls") {
+        navigate({ to: "/rnfgrertt/pdsls" });
       } else {
         // Allow handle lookups to start with @
         navigate({

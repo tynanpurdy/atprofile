@@ -26,6 +26,7 @@ const AboutLazyImport = createFileRoute('/about')()
 const IndexLazyImport = createFileRoute('/')()
 const RnfgrerttIndexLazyImport = createFileRoute('/rnfgrertt/')()
 const RnfgrerttTypingLazyImport = createFileRoute('/rnfgrertt/typing')()
+const RnfgrerttPdslsLazyImport = createFileRoute('/rnfgrertt/pdsls')()
 const AuthLoginLazyImport = createFileRoute('/auth/login')()
 const AuthCallbackLazyImport = createFileRoute('/auth/callback')()
 const PdsUrlIndexLazyImport = createFileRoute('/pds/$url/')()
@@ -82,6 +83,14 @@ const RnfgrerttTypingLazyRoute = RnfgrerttTypingLazyImport.update({
   getParentRoute: () => rootRoute,
 } as any).lazy(() =>
   import('./routes/rnfgrertt/typing.lazy').then((d) => d.Route),
+)
+
+const RnfgrerttPdslsLazyRoute = RnfgrerttPdslsLazyImport.update({
+  id: '/rnfgrertt/pdsls',
+  path: '/rnfgrertt/pdsls',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() =>
+  import('./routes/rnfgrertt/pdsls.lazy').then((d) => d.Route),
 )
 
 const AuthLoginLazyRoute = AuthLoginLazyImport.update({
@@ -196,6 +205,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthLoginLazyImport
       parentRoute: typeof rootRoute
     }
+    '/rnfgrertt/pdsls': {
+      id: '/rnfgrertt/pdsls'
+      path: '/rnfgrertt/pdsls'
+      fullPath: '/rnfgrertt/pdsls'
+      preLoaderRoute: typeof RnfgrerttPdslsLazyImport
+      parentRoute: typeof rootRoute
+    }
     '/rnfgrertt/typing': {
       id: '/rnfgrertt/typing'
       path: '/rnfgrertt/typing'
@@ -265,6 +281,7 @@ export interface FileRoutesByFullPath {
   '/post': typeof PostLazyRoute
   '/auth/callback': typeof AuthCallbackLazyRoute
   '/auth/login': typeof AuthLoginLazyRoute
+  '/rnfgrertt/pdsls': typeof RnfgrerttPdslsLazyRoute
   '/rnfgrertt/typing': typeof RnfgrerttTypingLazyRoute
   '/rnfgrertt': typeof RnfgrerttIndexLazyRoute
   '/constellation/dids/$collection': typeof ConstellationDidsCollectionRoute
@@ -283,6 +300,7 @@ export interface FileRoutesByTo {
   '/post': typeof PostLazyRoute
   '/auth/callback': typeof AuthCallbackLazyRoute
   '/auth/login': typeof AuthLoginLazyRoute
+  '/rnfgrertt/pdsls': typeof RnfgrerttPdslsLazyRoute
   '/rnfgrertt/typing': typeof RnfgrerttTypingLazyRoute
   '/rnfgrertt': typeof RnfgrerttIndexLazyRoute
   '/constellation/dids/$collection': typeof ConstellationDidsCollectionRoute
@@ -302,6 +320,7 @@ export interface FileRoutesById {
   '/post': typeof PostLazyRoute
   '/auth/callback': typeof AuthCallbackLazyRoute
   '/auth/login': typeof AuthLoginLazyRoute
+  '/rnfgrertt/pdsls': typeof RnfgrerttPdslsLazyRoute
   '/rnfgrertt/typing': typeof RnfgrerttTypingLazyRoute
   '/rnfgrertt/': typeof RnfgrerttIndexLazyRoute
   '/constellation/dids/$collection': typeof ConstellationDidsCollectionRoute
@@ -322,6 +341,7 @@ export interface FileRouteTypes {
     | '/post'
     | '/auth/callback'
     | '/auth/login'
+    | '/rnfgrertt/pdsls'
     | '/rnfgrertt/typing'
     | '/rnfgrertt'
     | '/constellation/dids/$collection'
@@ -339,6 +359,7 @@ export interface FileRouteTypes {
     | '/post'
     | '/auth/callback'
     | '/auth/login'
+    | '/rnfgrertt/pdsls'
     | '/rnfgrertt/typing'
     | '/rnfgrertt'
     | '/constellation/dids/$collection'
@@ -356,6 +377,7 @@ export interface FileRouteTypes {
     | '/post'
     | '/auth/callback'
     | '/auth/login'
+    | '/rnfgrertt/pdsls'
     | '/rnfgrertt/typing'
     | '/rnfgrertt/'
     | '/constellation/dids/$collection'
@@ -375,6 +397,7 @@ export interface RootRouteChildren {
   PostLazyRoute: typeof PostLazyRoute
   AuthCallbackLazyRoute: typeof AuthCallbackLazyRoute
   AuthLoginLazyRoute: typeof AuthLoginLazyRoute
+  RnfgrerttPdslsLazyRoute: typeof RnfgrerttPdslsLazyRoute
   RnfgrerttTypingLazyRoute: typeof RnfgrerttTypingLazyRoute
   RnfgrerttIndexLazyRoute: typeof RnfgrerttIndexLazyRoute
   ConstellationDidsCollectionRoute: typeof ConstellationDidsCollectionRoute
@@ -393,6 +416,7 @@ const rootRouteChildren: RootRouteChildren = {
   PostLazyRoute: PostLazyRoute,
   AuthCallbackLazyRoute: AuthCallbackLazyRoute,
   AuthLoginLazyRoute: AuthLoginLazyRoute,
+  RnfgrerttPdslsLazyRoute: RnfgrerttPdslsLazyRoute,
   RnfgrerttTypingLazyRoute: RnfgrerttTypingLazyRoute,
   RnfgrerttIndexLazyRoute: RnfgrerttIndexLazyRoute,
   ConstellationDidsCollectionRoute: ConstellationDidsCollectionRoute,
@@ -420,6 +444,7 @@ export const routeTree = rootRoute
         "/post",
         "/auth/callback",
         "/auth/login",
+        "/rnfgrertt/pdsls",
         "/rnfgrertt/typing",
         "/rnfgrertt/",
         "/constellation/dids/$collection",
@@ -450,6 +475,9 @@ export const routeTree = rootRoute
     },
     "/auth/login": {
       "filePath": "auth/login.lazy.tsx"
+    },
+    "/rnfgrertt/pdsls": {
+      "filePath": "rnfgrertt/pdsls.lazy.tsx"
     },
     "/rnfgrertt/typing": {
       "filePath": "rnfgrertt/typing.lazy.tsx"
