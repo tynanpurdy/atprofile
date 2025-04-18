@@ -120,8 +120,12 @@ function PDSList({
       <tbody>
         {Object.entries(pdses).map(([did, pds]) => (
           <tr key={did}>
-            <td className="border-b border-gray-100 p-4 text-gray-500 dark:border-gray-700 dark:text-gray-400">
-              <Link to={`/pds/$url`} params={{ url: did }}>
+            <td className="border-b border-gray-100 p-4 text-sky-600 dark:border-gray-700 dark:text-sky-400 hover:text-sky-500">
+              <Link
+                className="hover:border-b"
+                to={`/pds/$url`}
+                params={{ url: did }}
+              >
                 {did}
               </Link>
             </td>
