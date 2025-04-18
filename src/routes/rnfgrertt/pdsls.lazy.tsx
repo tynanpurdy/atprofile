@@ -124,7 +124,7 @@ function PDSList({
               <Link
                 className="hover:border-b"
                 to={`/pds/$url`}
-                params={{ url: did }}
+                params={{ url: did.replace("https://", "") }}
               >
                 {did}
               </Link>
