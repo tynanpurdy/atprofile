@@ -1,7 +1,7 @@
 import ShowError from "@/components/error";
 import { Loader } from "@/components/ui/loader";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { createLazyFileRoute } from "@tanstack/react-router";
+import { createLazyFileRoute, Link } from "@tanstack/react-router";
 import { Check, X } from "lucide-react";
 import { useEffect, useState } from "preact/hooks";
 
@@ -121,7 +121,9 @@ function PDSList({
         {Object.entries(pdses).map(([did, pds]) => (
           <tr key={did}>
             <td className="border-b border-gray-100 p-4 text-gray-500 dark:border-gray-700 dark:text-gray-400">
-              {did}
+              <Link to={`/pds/$url`} params={{ url: did }}>
+                {did}
+              </Link>
             </td>
             <td className="border-b border-gray-100 p-4 max-w-sm text-gray-500 dark:border-gray-700 dark:text-gray-400">
               {pds.version}
