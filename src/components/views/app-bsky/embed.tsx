@@ -112,18 +112,22 @@ export const BlueskyPostWithoutEmbed = ({
       const rkey = splits[splits.length - 1];
       try {
         const rpc = new QtClient(new URL("https://public.api.bsky.app"));
-        const response = await rpc
+        const responsePromise = rpc
           .getXrpcClient()
           .get("com.atproto.repo.getRecord", {
             params: { repo: did, collection, rkey },
             signal: abortController.signal,
           });
-        const actor = await rpc
+        const actorPromise = rpc
           .getXrpcClient()
           .get("app.bsky.actor.getProfile", {
             params: { actor: did },
             signal: abortController.signal,
           });
+        const [response, actor] = await Promise.all([
+          responsePromise,
+          actorPromise,
+        ]);
         setData({
           actorProfile: actor.data,
           post: response.data.value as AppBskyFeedPost.Record,

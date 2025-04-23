@@ -201,3 +201,7 @@
 .scrollbar-hide::-webkit-scrollbar {
     display: none; /* Chrome, Safari, and Opera */
 }
+
+* {
+    text-decoration-line: none !important;
+}

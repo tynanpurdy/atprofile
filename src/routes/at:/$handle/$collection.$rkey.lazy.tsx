@@ -56,19 +56,26 @@ function useRepoData(
         // we dont use the main authenticated client here
         const rpc = new QtClient(id.identity.pds);
         // get the PDS
-        const response = await rpc
+        // Start both requests without awaiting them individually
+        const getRecordPromise = rpc
           .getXrpcClient()
           .get("com.atproto.repo.getRecord", {
             params: { repo: id.identity.id, collection, rkey },
             signal: abortController.signal,
           });
-        // get the if we don't have it
-        const record = await rpc
+
+        const describeRepoPromise = rpc
           .getXrpcClient()
           .get("com.atproto.repo.describeRepo", {
             params: { repo: id.identity.id },
             signal: abortController.signal,
           });
+
+        // Wait for both promises to complete in parallel
+        const [response, record] = await Promise.all([
+          getRecordPromise,
+          describeRepoPromise,
+        ]);
         // todo: actual errors
         setState({
           data: response.data,

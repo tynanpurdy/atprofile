@@ -80,7 +80,7 @@ export function AllBacklinksViewer({ aturi }: { aturi: string }) {
   return (
     <>
       <h2 className="text-2xl pt-6 font-semibold leading-3">Backlinks</h2>
-      <div className="text-lg text-muted-foreground">
+      <div className="text-sm text-muted-foreground">
         Interaction Statistics from{" "}
         <a
           className="text-blue-500 hover:underline"
@@ -152,7 +152,7 @@ export function AllBacklinksViewer({ aturi }: { aturi: string }) {
             <p className="text-muted-foreground w-max">
               Nothing doing! No links indexed for this target!
             </p>
-            <span className="text-muted-foreground">
+            <span className="text-muted-foreground text-xs">
               You can{" "}
               <a
                 href={`https://constellation.microcosm.blue/links/all?target=${encodeURIComponent(aturi)}`}

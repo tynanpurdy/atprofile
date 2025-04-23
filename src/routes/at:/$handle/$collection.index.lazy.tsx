@@ -43,7 +43,6 @@ function useCollectionRecords(
       try {
         id = await resolveFromIdentity(handle);
       } catch (err: any) {
-        console.log("BSLKDJFSL");
         throw new Error("Unable to resolve identity: " + err.message);
       }
       const rpc = new QtClient(id.identity.pds);
