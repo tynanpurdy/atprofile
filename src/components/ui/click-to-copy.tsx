@@ -46,7 +46,7 @@ export function ClickToCopy({
         variant="link"
         size="icon"
         className={cn(
-          "absolute -left-8 top-1/2 transform -translate-y-1/2 p-1 h-full w-auto bg-green-500",
+          "absolute -left-8 top-1/2 transform -translate-y-1/2 p-1 h-full w-auto",
           "opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity duration-150",
           isCopied
             ? "text-green-600 hover:text-green-700"
