@@ -41,7 +41,7 @@ export function AllBacklinksViewer({ aturi }: { aturi: string }) {
     };
 
     fetchData();
-  }, []);
+  }, [aturi]);
 
   if (loading) {
     return (
@@ -90,16 +90,6 @@ export function AllBacklinksViewer({ aturi }: { aturi: string }) {
         >
           constellation
         </a>
-        by
-        <Link
-          className="text-blue-500 hover:underline"
-          to="/at:/$handle"
-          params={{ handle: "bad-example.com" }}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          phil
-        </Link>
       </div>
       <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-2 leading-snug">
         {Object.entries(data.links).map(([category, stats]) => (
@@ -190,7 +180,7 @@ const formatCategoryName = (name: string) => {
 
 // Helper function to format stat names
 const formatStatName = (name: string) => {
-  return name.split(".").filter(Boolean).join(" → ");
+  return name.split(".").filter(Boolean).join(".");
 };
 
 export default AllBacklinksViewer;
