@@ -65,7 +65,6 @@ export function ClickToCopy({
               isCopied ? "opacity-0 scale-75" : "opacity-100 scale-100",
             )}
           />
-          {/* Check Icon */}
           <Check
             size={iconSize}
             className={cn(

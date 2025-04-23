@@ -301,7 +301,7 @@ function RouteComponent() {
         {/* Backlinks Section */}
         {data?.did && (
           <div className="pt-4 pb-8 flex flex-col gap-2">
-            <AllBacklinksViewer aturi={`at://${data.did}`} />
+            <AllBacklinksViewer aturi={data.did} />
           </div>
         )}
       </div>
