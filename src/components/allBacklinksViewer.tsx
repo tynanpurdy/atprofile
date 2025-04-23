@@ -88,8 +88,18 @@ export function AllBacklinksViewer({ aturi }: { aturi: string }) {
           target="_blank"
           rel="noopener noreferrer"
         >
-          microcosm constellation
+          constellation
         </a>
+        by
+        <Link
+          className="text-blue-500 hover:underline"
+          to="/at:/$handle"
+          params={{ handle: "bad-example.com" }}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          phil
+        </Link>
       </div>
       <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-2 leading-snug">
         {Object.entries(data.links).map(([category, stats]) => (
