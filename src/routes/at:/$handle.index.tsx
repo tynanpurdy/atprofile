@@ -264,9 +264,9 @@ function RouteComponent() {
                       {c.split(".").slice(0, 2).join(".")}{" "}
                     </div>
                   )}
-                  <li className="text-blue-600 dark:text-blue-400 hover:no-underline border-b hover:border-border border-transparent w-min">
+                  <li>
                     <Link
-                      className="ml-4"
+                      className="ml-4 text-blue-600 dark:text-blue-400 hover:no-underline border-b hover:border-border border-transparent w-min"
                       to="/at:/$handle/$collection"
                       params={{
                         handle: handle, // Use original handle for navigation consistency
