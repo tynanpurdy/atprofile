@@ -180,7 +180,7 @@ function RouteComponent() {
             params={{
               handle: repoInfo?.did || "",
             }}
-            className="inline dark:hover:text-blue-400 group-hover:text-blue-500 transition-colors duration-300"
+            className="inline dark:hover:text-blue-400 group-hover:text-blue-600 dark:text-blue-400 transition-colors duration-300"
           >
             at://{handle}
           </Link>
@@ -190,7 +190,7 @@ function RouteComponent() {
               handle: repoInfo?.did || "",
               collection,
             }}
-            className="inline dark:hover:text-blue-400 group-hover:text-blue-500 transition-colors duration-300"
+            className="inline dark:hover:text-blue-400 group-hover:text-blue-600 dark:text-blue-400 transition-colors duration-300"
           >
             /{collection}
           </Link>
