@@ -4,7 +4,7 @@ import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { QtClient } from "@/providers/qtprovider";
 import { RenderJson } from "@/components/renderJson";
 import {
-  ComAtprotoRepoGetRecord,
+  // ComAtprotoRepoGetRecord, // Removed as it's no longer needed for hover
   ComAtprotoRepoListRecords,
 } from "@atcute/client/lexicons";
 import {
@@ -33,13 +33,7 @@ interface CollectionRecords {
   error: Error | null;
 }
 
-// State to hold fetched data for the *currently* hovered card
-interface HoveredRecordState {
-  uri: string | null; // Which URI is being hovered/fetched for
-  data: ComAtprotoRepoGetRecord.Output | null;
-  loading: boolean;
-  error: Error | null;
-}
+// State for hovered record removed
 
 function useCollectionRecords(
   handle: string,
@@ -64,6 +58,7 @@ function useCollectionRecords(
       } catch (err: any) {
         throw new Error("Unable to resolve identity: " + err.message);
       }
+      // QtClient is still needed here for listRecords
       const rpc = new QtClient(id.identity.pds);
 
       const response = await rpc
@@ -119,92 +114,12 @@ function RouteComponent() {
     useCollectionRecords(handle, collection);
   const loaderRef = useRef<HTMLDivElement>(null);
 
-  // State for the *single* actively fetched/displayed hover card
-  const [hoveredRecordState, setHoveredRecordState] =
-    useState<HoveredRecordState>({
-      uri: null,
-      data: null,
-      loading: false,
-      error: null,
-    });
-  // Ref to prevent fetching multiple times if hover is rapid
-  const fetchTimeoutRef = useRef<number | null>(null);
+  // Removed hoveredRecordState and fetchTimeoutRef
 
   useDocumentTitle(records ? `${collection} | atp.tools` : "atp.tools");
 
-  // Function to fetch single record data (triggered by HoverCard)
-  const fetchHoverRecordData = async (recordUri: string) => {
-    if (!identity || hoveredRecordState.uri === recordUri) return; // Don't refetch if already fetched/fetching for this URI
-
-    // Clear previous fetch timeout if any
-    if (fetchTimeoutRef.current) {
-      clearTimeout(fetchTimeoutRef.current);
-    }
-
-    // Set loading state for the new URI
-    setHoveredRecordState({
-      uri: recordUri,
-      data: null,
-      loading: true,
-      error: null,
-    });
-
-    // Use a timeout to delay the actual fetch slightly
-    fetchTimeoutRef.current = window.setTimeout(async () => {
-      try {
-        const rpc = new QtClient(identity.pds);
-        const recordParts = recordUri.replace("at://", "").split("/");
-        if (recordParts.length !== 3) throw new Error("Invalid record URI");
-
-        const response = await rpc
-          .getXrpcClient()
-          .get("com.atproto.repo.getRecord", {
-            params: {
-              repo: recordParts[0],
-              collection: recordParts[1],
-              rkey: recordParts[2],
-            },
-          });
-
-        // Update state only if the URI still matches the one we started fetching for
-        setHoveredRecordState(
-          (prev) =>
-            prev.uri === recordUri
-              ? { ...prev, data: response.data, loading: false, error: null }
-              : prev, // Ignore if URI changed during fetch
-        );
-      } catch (err: any) {
-        console.error("Failed to fetch record on hover:", err);
-        // Update state only if the URI still matches
-        setHoveredRecordState(
-          (prev) =>
-            prev.uri === recordUri
-              ? {
-                  ...prev,
-                  data: null,
-                  loading: false,
-                  error:
-                    err instanceof Error
-                      ? err
-                      : new Error("Failed to fetch record"),
-                }
-              : prev, // Ignore if URI changed during fetch
-        );
-      } finally {
-        fetchTimeoutRef.current = null;
-      }
-    }, 150); // ~150ms delay before fetching starts
-  };
-
-  const resetHoverState = () => {
-    // Clear fetch timeout if card closes before fetch starts
-    if (fetchTimeoutRef.current) {
-      clearTimeout(fetchTimeoutRef.current);
-      fetchTimeoutRef.current = null;
-    }
-    // Optionally reset state immediately, or let HoverCard handle closing visual
-    // setHoveredRecordState({ uri: null, data: null, loading: false, error: null });
-  };
+  // Removed fetchHoverRecordData function
+  // Removed resetHoverState function
 
   useEffect(() => {
     // (Intersection Observer logic remains the same)
@@ -231,7 +146,6 @@ function RouteComponent() {
   }
 
   return (
-    // No relative positioning needed on the parent here
     <div className="flex flex-row justify-center w-full min-h-[calc(100vh-5rem)]">
       <div className="max-w-md lg:max-w-2xl w-[90vw] mx-4 md:mt-16 space-y-2">
         {/* Header Link and PDS info */}
@@ -257,22 +171,14 @@ function RouteComponent() {
           <ul className="list-none p-0 m-0">
             {records?.map((r) => (
               <li key={r.uri} className="py-1">
-                {" "}
-                {/* Remove hover styling/handlers from li */}
                 <HoverCard
-                  openDelay={100} // Standard delay before opening
-                  closeDelay={100} // Standard delay before closing
-                  onOpenChange={(isOpen) => {
-                    if (isOpen) {
-                      fetchHoverRecordData(r.uri);
-                    } else {
-                      resetHoverState();
-                    }
-                  }}
+                  openDelay={100}
+                  closeDelay={100}
+                  // Removed onOpenChange handler
                 >
                   <HoverCardTrigger asChild>
                     <Link
-                      className="text-blue-600 dark:text-blue-400 hover:underline" // Add underline on hover for affordance
+                      className="text-blue-600 dark:text-blue-400 hover:underline"
                       to="/at:/$handle/$collection/$rkey"
                       params={{
                         handle: handle,
@@ -284,30 +190,15 @@ function RouteComponent() {
                     </Link>
                   </HoverCardTrigger>
                   <HoverCardContent
-                    className="w-auto max-w-lg max-h-96 overflow-auto text-xs bg-background/40 backdrop-blur-md" // Adjust width/styling as needed
-                    // Optional: Add side="top|bottom|left|right" align="start|center|end" for positioning
+                    className="w-auto max-w-lg max-h-96 overflow-auto text-xs bg-background/40 backdrop-blur-md"
                     side="bottom"
                     align="start"
                   >
-                    {/* Render content based on the shared hover state, *if* the URI matches */}
-                    {hoveredRecordState.uri === r.uri ? (
-                      <>
-                        {hoveredRecordState.loading && <Loader />}
-                        {hoveredRecordState.error && (
-                          <ShowError error={hoveredRecordState.error} />
-                        )}
-                        {hoveredRecordState.data && identity && (
-                          <RenderJson
-                            data={hoveredRecordState.data.value}
-                            did={identity.id}
-                            pds={identity.pds.toString()}
-                          />
-                        )}
-                      </>
-                    ) : (
-                      // Can show a mini-loader here too if desired while waiting for fetchHoverRecordData to set loading state
-                      <Loader />
-                    )}
+                    <RenderJson
+                      data={r.value}
+                      did={identity?.id!}
+                      pds={identity?.pds.toString()!}
+                    />
                   </HoverCardContent>
                 </HoverCard>
               </li>
