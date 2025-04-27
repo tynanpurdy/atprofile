@@ -252,7 +252,7 @@ function RouteComponent() {
           {identity?.pds.hostname}
         </div>
 
-        <h2 className="text-2xl">{collection} collections:</h2>
+        <h2 className="text-2xl">{collection} records:</h2>
         <div>
           <ul className="list-none p-0 m-0">
             {records?.map((r) => (
@@ -260,7 +260,7 @@ function RouteComponent() {
                 {" "}
                 {/* Remove hover styling/handlers from li */}
                 <HoverCard
-                  openDelay={200} // Standard delay before opening
+                  openDelay={100} // Standard delay before opening
                   closeDelay={100} // Standard delay before closing
                   onOpenChange={(isOpen) => {
                     if (isOpen) {
@@ -271,12 +271,11 @@ function RouteComponent() {
                   }}
                 >
                   <HoverCardTrigger asChild>
-                    {/* The Link component itself triggers the hover card */}
                     <Link
                       className="text-blue-600 dark:text-blue-400 hover:underline" // Add underline on hover for affordance
                       to="/at:/$handle/$collection/$rkey"
                       params={{
-                        handle: handle, // or identity?.raw ?? handle
+                        handle: handle,
                         collection: collection,
                         rkey: r.uri.split("/").pop() ?? "",
                       }}
@@ -285,9 +284,9 @@ function RouteComponent() {
                     </Link>
                   </HoverCardTrigger>
                   <HoverCardContent
-                    className="w-auto max-w-lg max-h-96 overflow-auto text-xs" // Adjust width/styling as needed
+                    className="w-auto max-w-lg max-h-96 overflow-auto text-xs bg-background/40 backdrop-blur-md" // Adjust width/styling as needed
                     // Optional: Add side="top|bottom|left|right" align="start|center|end" for positioning
-                    side="right"
+                    side="bottom"
                     align="start"
                   >
                     {/* Render content based on the shared hover state, *if* the URI matches */}
