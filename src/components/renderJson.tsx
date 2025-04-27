@@ -84,7 +84,7 @@ export function RenderJson(props: {
       console.log("props.data", props.data);
       return (
         <div style={{ marginLeft: `${20}px` }}>
-          {props.data.$type}:{" "}
+          <span className="text-muted-foreground">{props.data.$type}</span>:{" "}
           <Component
             did={props.did}
             dollar_link={props.data?.ref?.$link || undefined}
@@ -100,7 +100,7 @@ export function RenderJson(props: {
       {Object.keys(props.data).map((k) => {
         return (
           <div style={{ marginLeft: `${20}px` }}>
-            {k}:{" "}
+            <span className="text-muted-foreground">{k}</span>:{" "}
             <RenderJson
               data={props.data[k]}
               depth={(props.depth ?? 0) + 1}

@@ -27,7 +27,7 @@ import {
 } from "@atcute/oauth-browser-client";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { AtSign } from "lucide-react";
-import { useState, useEffect } from "preact/compat";
+import { useState, useEffect, Fragment } from "preact/compat";
 
 interface RepoData {
   data?: ComAtprotoRepoDescribeRepo.Output;
@@ -242,7 +242,7 @@ function RouteComponent() {
               href={`https://${identity.identity.pds.hostname}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-500 hover:underline"
+              className="text-blue-600 dark:text-blue-400 hover:underline"
             >
               {identity.identity.pds.hostname}
             </a>
@@ -252,21 +252,31 @@ function RouteComponent() {
           <div className="pt-2">
             <h2 className="text-xl font-bold mb-1">Collections</h2>
             <ul className="list-inside space-y-1">
-              {data.collections.map((c) => (
-                <li
-                  key={c}
-                  className="text-blue-500 hover:no-underline border-b hover:border-border border-transparent w-min"
-                >
-                  <Link
-                    to="/at:/$handle/$collection"
-                    params={{
-                      handle: handle, // Use original handle for navigation consistency
-                      collection: c,
-                    }}
-                  >
-                    {c}
-                  </Link>
-                </li>
+              {data.collections.map((c, i) => (
+                <Fragment key={c}>
+                  {c.split(".").slice(0, 2).join(".") !=
+                    (i > 0 &&
+                      data.collections[i - 1]
+                        .split(".")
+                        .slice(0, 2)
+                        .join(".")) && (
+                    <div className="w-min pt-2">
+                      {c.split(".").slice(0, 2).join(".")}{" "}
+                    </div>
+                  )}
+                  <li className="text-blue-600 dark:text-blue-400 hover:no-underline border-b hover:border-border border-transparent w-min">
+                    <Link
+                      className="ml-4"
+                      to="/at:/$handle/$collection"
+                      params={{
+                        handle: handle, // Use original handle for navigation consistency
+                        collection: c,
+                      }}
+                    >
+                      {c}
+                    </Link>
+                  </li>
+                </Fragment>
               ))}
             </ul>
           </div>
