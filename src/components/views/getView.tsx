@@ -1,12 +1,13 @@
 import { JSX } from "preact/jsx-runtime";
-import AppBskyFeedPostView from "./app-bsky/feedPost";
+import AppBskyFeedPostView from "./appBsky/feedPost";
 import {
   ComAtprotoRepoDescribeRepo,
   ComAtprotoRepoGetRecord,
 } from "@atcute/client/lexicons";
-import { AppBskyFeedRepostView } from "./app-bsky/feedRepost";
-import { AppBskyFeedLikeView } from "./app-bsky/feedLike";
-import { AppBskyActorProfileView } from "./app-bsky/actorProfile";
+import { AppBskyFeedRepostView } from "./appBsky/feedRepost";
+import { AppBskyFeedLikeView } from "./appBsky/feedLike";
+import { AppBskyActorProfileView } from "./appBsky/actorProfile";
+import CommunityLexiconCalendarEventView from "./CommunityLexicon/calendarEvent";
 
 export type CollectionViewComponent<T = {}> = (
   props: React.HTMLAttributes<HTMLDivElement> & T,
@@ -26,6 +27,7 @@ const viewMap: Record<
   "app.bsky.feed.repost": AppBskyFeedRepostView,
   "app.bsky.feed.like": AppBskyFeedLikeView,
   "app.bsky.actor.profile": AppBskyActorProfileView,
+  "community.lexicon.calendar.event": CommunityLexiconCalendarEventView,
 };
 
 const getView = (
