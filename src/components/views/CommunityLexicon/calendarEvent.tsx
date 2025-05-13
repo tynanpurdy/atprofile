@@ -1,4 +1,3 @@
-import React from "react";
 import { CollectionViewComponent, CollectionViewProps } from "../getView";
 
 interface CalendarEventLexiconValue {
@@ -22,13 +21,9 @@ interface CalendarEventLexicon {
   value: CalendarEventLexiconValue;
 }
 
-interface CalendarEventDisplayProps {
-  eventData: CalendarEventLexicon;
-}
-
 const CommunityLexiconCalendarEventView: CollectionViewComponent<
   CollectionViewProps
-> = ({ data, repoData }: CollectionViewProps) => {
+> = ({ data }: CollectionViewProps) => {
   const { value } = data as CalendarEventLexicon;
 
   // Helper function to format date strings
@@ -132,7 +127,7 @@ const CommunityLexiconCalendarEventView: CollectionViewComponent<
   );
 };
 
-function getFriendlyUntilDate(date) {
+function getFriendlyUntilDate(date: Date) {
   const now = new Date();
   const diffInMs = date.getTime() - now.getTime();
 
