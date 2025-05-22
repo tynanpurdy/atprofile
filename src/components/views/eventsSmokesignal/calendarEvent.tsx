@@ -86,9 +86,9 @@ const EventsSmokesignalCalendarEventView: CollectionViewComponent<
           </span>
         </p>
         <p>
-          <strong>Where:</strong> {getFriendlyTerm(value.mode)}{" "}
+          <strong>Where:</strong> {getFriendlyTerm(value.mode)}
           {value.location &&
-            `${value.location.name}: ${value.location.street}, ${value.location.locality}, ${value.location.region}`}
+            ` - ${value.location.name}: ${value.location.street}, ${value.location.locality}, ${value.location.region}`}
         </p>
       </div>
 
