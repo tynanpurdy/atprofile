@@ -8,6 +8,7 @@ import { AppBskyFeedRepostView } from "./appBsky/feedRepost";
 import { AppBskyFeedLikeView } from "./appBsky/feedLike";
 import { AppBskyActorProfileView } from "./appBsky/actorProfile";
 import CommunityLexiconCalendarEventView from "./CommunityLexicon/calendarEvent";
+import EventsSmokesignalCalendarEventView from "./eventsSmokesignal/calendarEvent";
 
 export type CollectionViewComponent<T = {}> = (
   props: React.HTMLAttributes<HTMLDivElement> & T,
@@ -28,6 +29,7 @@ const viewMap: Record<
   "app.bsky.feed.like": AppBskyFeedLikeView,
   "app.bsky.actor.profile": AppBskyActorProfileView,
   "community.lexicon.calendar.event": CommunityLexiconCalendarEventView,
+  "events.smokesignal.calendar.event": EventsSmokesignalCalendarEventView,
 };
 
 const getView = (
