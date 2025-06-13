@@ -151,7 +151,6 @@ function WordleClone() {
   // Update countdown timer
   useEffect(() => {
     const updateCountdown = () => {
-      const now = new Date();
       const nextMidnightUTC = new Date();
       nextMidnightUTC.setUTCDate(nextMidnightUTC.getUTCDate() + 1);
       nextMidnightUTC.setUTCHours(0, 0, 0, 0); // Set to UTC midnight
