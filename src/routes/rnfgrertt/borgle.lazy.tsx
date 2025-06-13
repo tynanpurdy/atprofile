@@ -35,63 +35,14 @@ type BorglePlayRecord = {
 };
 
 function AutoSubmitPlaythrough({
-  evaluations,
-  gameState,
+  record,
+  error,
+  isSubmitting,
 }: {
-  evaluations: EvaluationsArray;
-  gameState: GameState;
+  record: string;
+  error: string;
+  isSubmitting: boolean;
 }) {
-  const [record, setRecord] = useState("");
-  const [error, setError] = useState("");
-  const qt = useContext(QtContext);
-
-  // Convert evaluations to the lexicon format for submission
-  const playthroughData: BorglePlayRecord = {
-    game: evaluations
-      .filter(
-        (evaluation): evaluation is GuessEvaluation => evaluation !== null,
-      )
-      .map((evaluation) => ({
-        guess: evaluation.guess,
-        evaluations: evaluation.evaluations,
-      })),
-  };
-
-  // Submit once when game ends
-  useEffect(() => {
-    const submitPlaythrough = async () => {
-      if (!qt) {
-        console.error("QtContext is not available");
-        return;
-      }
-      if (record !== "" || gameState === "playing") return;
-      if (playthroughData.game.length === 0) return;
-
-      try {
-        if (qt.currentAgent) {
-          let response = await qt.client.rpc.call(
-            "com.atproto.repo.putRecord",
-            {
-              data: {
-                rkey: generateTid().toString(),
-                repo: qt.currentAgent.sub,
-                record: playthroughData,
-                collection: "tools.atp.borgle.play",
-              },
-            },
-          );
-          console.log("Playthrough submitted successfully");
-          setRecord(response.data.uri);
-        }
-      } catch (err: any) {
-        console.error("Error submitting playthrough:", err);
-        setError(err.toString());
-      }
-    };
-
-    submitPlaythrough();
-  }, [qt, gameState, playthroughData]);
-
   if (error) {
     return (
       <div className="text-red-500 text-xs">Error: {error.slice(0, 50)}...</div>
@@ -113,7 +64,7 @@ function AutoSubmitPlaythrough({
     );
   }
 
-  if (gameState !== "playing") {
+  if (isSubmitting) {
     return (
       <div className="flex items-center gap-1">
         <Loader2 className="animate-spin w-4 h-4" />
@@ -181,6 +132,9 @@ function WordleClone() {
   const [todaysSubmission, setTodaysSubmission] =
     useState<BorglePlayRecord | null>(null);
   const [checkingSubmission, setCheckingSubmission] = useState<boolean>(true);
+  const [hasSubmittedToday, setHasSubmittedToday] = useState<boolean>(false);
+  const [submissionRecord, setSubmissionRecord] = useState<string>("");
+  const [submissionError, setSubmissionError] = useState<string>("");
 
   // Initialize game
   useEffect(() => {
@@ -188,6 +142,85 @@ function WordleClone() {
       startNewGame();
     }
   }, [checkingSubmission, todaysSubmission]);
+
+  // Submit playthrough when game ends
+  useEffect(() => {
+    const submitPlaythrough = async () => {
+      if (!qt || !qt.currentAgent) return;
+      if (hasSubmittedToday || gameState === "playing") return;
+      if (evaluations.filter((e) => e !== null).length === 0) return;
+
+      try {
+        setHasSubmittedToday(true);
+        // Check if today's submission already exists
+        const today = new Date().toISOString().split("T")[0];
+        const response = await qt.client.rpc.get(
+          "com.atproto.repo.listRecords",
+          {
+            params: {
+              repo: qt.currentAgent.sub,
+              collection: "tools.atp.borgle.play",
+              limit: 50,
+            },
+          },
+        );
+
+        // Check if any submission from today exists
+        const existingSubmission = response.data.records.find((record: any) => {
+          if (!record.uri) return false;
+          try {
+            const rkey = record.uri.split("/").pop();
+            if (!rkey) return false;
+            const recordDate = tidToTime(rkey);
+            return recordDate.toISOString().split("T")[0] === today;
+          } catch (error) {
+            return false;
+          }
+        });
+
+        if (existingSubmission) {
+          console.log("Today's submission already exists, skipping");
+          setSubmissionRecord(existingSubmission.uri);
+          setHasSubmittedToday(true);
+          return;
+        }
+
+        // Convert evaluations to the lexicon format for submission
+        const playthroughData: BorglePlayRecord = {
+          game: evaluations
+            .filter(
+              (evaluation): evaluation is GuessEvaluation =>
+                evaluation !== null,
+            )
+            .map((evaluation) => ({
+              guess: evaluation.guess,
+              evaluations: evaluation.evaluations,
+            })),
+        };
+
+        // Create new record if none exists for today
+        let createResponse = await qt.client.rpc.call(
+          "com.atproto.repo.putRecord",
+          {
+            data: {
+              rkey: generateTid().toString(),
+              repo: qt.currentAgent.sub,
+              record: playthroughData,
+              collection: "tools.atp.borgle.play",
+            },
+          },
+        );
+        console.log("Playthrough submitted successfully");
+        setSubmissionRecord(createResponse.data.uri);
+        setHasSubmittedToday(true);
+      } catch (err: any) {
+        console.error("Error submitting playthrough:", err);
+        setSubmissionError(err.toString());
+      }
+    };
+
+    submitPlaythrough();
+  }, [gameState]);
 
   // // Optional: Add debug info to see today's word (remove in production)
   // useEffect(() => {
@@ -788,8 +821,9 @@ function WordleClone() {
                 Copy your results
               </button>
               <AutoSubmitPlaythrough
-                evaluations={evaluations}
-                gameState={gameState}
+                record={submissionRecord}
+                error={submissionError}
+                isSubmitting={!hasSubmittedToday}
               />
             </div>
             <div className="text-xs text-gray-500 mt-2">
