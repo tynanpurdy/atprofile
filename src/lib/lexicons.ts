@@ -9,6 +9,24 @@
 import "@atcute/client/lexicons";
 
 declare module "@atcute/client/lexicons" {
+  namespace ToolsAtpBorglePlay {
+    interface Record {
+      $type: "tools.atp.borgle.play";
+      game: Guess[];
+    }
+    interface Guess {
+      [Brand.Type]?: "tools.atp.borgle.play#guess";
+      /** Array of evaluation results for each letter in the guess */
+      evaluations: ("correct" | "present" | "absent")[];
+      /**
+       * The guessed word (5 letters, uppercase) \
+       * Minimum string length: 5 \
+       * Maximum string length: 5
+       */
+      guess: string;
+    }
+  }
+
   namespace ToolsAtpTypingTest {
     interface Record {
       $type: "tools.atp.typing.test";
@@ -122,6 +140,7 @@ declare module "@atcute/client/lexicons" {
   }
 
   interface Records {
+    "tools.atp.borgle.play": ToolsAtpBorglePlay.Record;
     "tools.atp.typing.test": ToolsAtpTypingTest.Record;
   }
 

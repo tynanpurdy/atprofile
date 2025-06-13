@@ -47,6 +47,32 @@ class TransactionId {
 }
 
 /**
+ * Extracts timestamp from a TID string
+ * @param tid - The TID string to parse
+ * @returns Date object representing the timestamp
+ */
+export function tidToTime(tid: string): Date {
+  // Convert TID string to integer
+  let value = 0n;
+  for (let i = 0; i < Math.min(tid.length, 13); i++) {
+    const char = tid[i];
+    const charValue = BASE32_SORT_ALPHABET.indexOf(char);
+    if (charValue === -1) {
+      throw new Error(`Invalid base32 character: ${char}`);
+    }
+    value = (value << 5n) | BigInt(charValue);
+  }
+
+  // Extract timestamp (shift right 10 bits to remove clock ID, mask to get microseconds)
+  const micros = (value >> 10n) & 0x1fff_ffff_ffff_ffffn;
+
+  // Convert microseconds to milliseconds for JavaScript Date
+  const millis = Number(micros / 1000n);
+
+  return new Date(millis);
+}
+
+/**
  * Generates a new Transaction ID with a random clock ID
  * @returns TransactionId
  */

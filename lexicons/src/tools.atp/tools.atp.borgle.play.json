@@ -1,0 +1,47 @@
+{
+  "lexicon": 1,
+  "id": "tools.atp.borgle.play",
+  "defs": {
+    "main": {
+      "type": "record",
+      "record": {
+        "type": "object",
+        "required": ["game"],
+        "description": "Record of a Borgle game session",
+        "properties": {
+          "game": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 6,
+            "items": {
+              "type": "ref",
+              "ref": "#guess"
+            }
+          }
+        }
+      }
+    },
+    "guess": {
+      "type": "object",
+      "required": ["guess", "evaluations"],
+      "properties": {
+        "guess": {
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 5,
+          "description": "The guessed word (5 letters, uppercase)"
+        },
+        "evaluations": {
+          "type": "array",
+          "minItems": 5,
+          "maxItems": 5,
+          "items": {
+            "type": "string",
+            "enum": ["correct", "present", "absent"]
+          },
+          "description": "Array of evaluation results for each letter in the guess"
+        }
+      }
+    }
+  }
+}

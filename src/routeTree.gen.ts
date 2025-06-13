@@ -27,6 +27,7 @@ const IndexLazyImport = createFileRoute('/')()
 const RnfgrerttIndexLazyImport = createFileRoute('/rnfgrertt/')()
 const RnfgrerttTypingLazyImport = createFileRoute('/rnfgrertt/typing')()
 const RnfgrerttPdslsLazyImport = createFileRoute('/rnfgrertt/pdsls')()
+const RnfgrerttBorgleLazyImport = createFileRoute('/rnfgrertt/borgle')()
 const AuthLoginLazyImport = createFileRoute('/auth/login')()
 const AuthCallbackLazyImport = createFileRoute('/auth/callback')()
 const PdsUrlIndexLazyImport = createFileRoute('/pds/$url/')()
@@ -91,6 +92,14 @@ const RnfgrerttPdslsLazyRoute = RnfgrerttPdslsLazyImport.update({
   getParentRoute: () => rootRoute,
 } as any).lazy(() =>
   import('./routes/rnfgrertt/pdsls.lazy').then((d) => d.Route),
+)
+
+const RnfgrerttBorgleLazyRoute = RnfgrerttBorgleLazyImport.update({
+  id: '/rnfgrertt/borgle',
+  path: '/rnfgrertt/borgle',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() =>
+  import('./routes/rnfgrertt/borgle.lazy').then((d) => d.Route),
 )
 
 const AuthLoginLazyRoute = AuthLoginLazyImport.update({
@@ -205,6 +214,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthLoginLazyImport
       parentRoute: typeof rootRoute
     }
+    '/rnfgrertt/borgle': {
+      id: '/rnfgrertt/borgle'
+      path: '/rnfgrertt/borgle'
+      fullPath: '/rnfgrertt/borgle'
+      preLoaderRoute: typeof RnfgrerttBorgleLazyImport
+      parentRoute: typeof rootRoute
+    }
     '/rnfgrertt/pdsls': {
       id: '/rnfgrertt/pdsls'
       path: '/rnfgrertt/pdsls'
@@ -281,6 +297,7 @@ export interface FileRoutesByFullPath {
   '/post': typeof PostLazyRoute
   '/auth/callback': typeof AuthCallbackLazyRoute
   '/auth/login': typeof AuthLoginLazyRoute
+  '/rnfgrertt/borgle': typeof RnfgrerttBorgleLazyRoute
   '/rnfgrertt/pdsls': typeof RnfgrerttPdslsLazyRoute
   '/rnfgrertt/typing': typeof RnfgrerttTypingLazyRoute
   '/rnfgrertt': typeof RnfgrerttIndexLazyRoute
@@ -300,6 +317,7 @@ export interface FileRoutesByTo {
   '/post': typeof PostLazyRoute
   '/auth/callback': typeof AuthCallbackLazyRoute
   '/auth/login': typeof AuthLoginLazyRoute
+  '/rnfgrertt/borgle': typeof RnfgrerttBorgleLazyRoute
   '/rnfgrertt/pdsls': typeof RnfgrerttPdslsLazyRoute
   '/rnfgrertt/typing': typeof RnfgrerttTypingLazyRoute
   '/rnfgrertt': typeof RnfgrerttIndexLazyRoute
@@ -320,6 +338,7 @@ export interface FileRoutesById {
   '/post': typeof PostLazyRoute
   '/auth/callback': typeof AuthCallbackLazyRoute
   '/auth/login': typeof AuthLoginLazyRoute
+  '/rnfgrertt/borgle': typeof RnfgrerttBorgleLazyRoute
   '/rnfgrertt/pdsls': typeof RnfgrerttPdslsLazyRoute
   '/rnfgrertt/typing': typeof RnfgrerttTypingLazyRoute
   '/rnfgrertt/': typeof RnfgrerttIndexLazyRoute
@@ -341,6 +360,7 @@ export interface FileRouteTypes {
     | '/post'
     | '/auth/callback'
     | '/auth/login'
+    | '/rnfgrertt/borgle'
     | '/rnfgrertt/pdsls'
     | '/rnfgrertt/typing'
     | '/rnfgrertt'
@@ -359,6 +379,7 @@ export interface FileRouteTypes {
     | '/post'
     | '/auth/callback'
     | '/auth/login'
+    | '/rnfgrertt/borgle'
     | '/rnfgrertt/pdsls'
     | '/rnfgrertt/typing'
     | '/rnfgrertt'
@@ -377,6 +398,7 @@ export interface FileRouteTypes {
     | '/post'
     | '/auth/callback'
     | '/auth/login'
+    | '/rnfgrertt/borgle'
     | '/rnfgrertt/pdsls'
     | '/rnfgrertt/typing'
     | '/rnfgrertt/'
@@ -397,6 +419,7 @@ export interface RootRouteChildren {
   PostLazyRoute: typeof PostLazyRoute
   AuthCallbackLazyRoute: typeof AuthCallbackLazyRoute
   AuthLoginLazyRoute: typeof AuthLoginLazyRoute
+  RnfgrerttBorgleLazyRoute: typeof RnfgrerttBorgleLazyRoute
   RnfgrerttPdslsLazyRoute: typeof RnfgrerttPdslsLazyRoute
   RnfgrerttTypingLazyRoute: typeof RnfgrerttTypingLazyRoute
   RnfgrerttIndexLazyRoute: typeof RnfgrerttIndexLazyRoute
@@ -416,6 +439,7 @@ const rootRouteChildren: RootRouteChildren = {
   PostLazyRoute: PostLazyRoute,
   AuthCallbackLazyRoute: AuthCallbackLazyRoute,
   AuthLoginLazyRoute: AuthLoginLazyRoute,
+  RnfgrerttBorgleLazyRoute: RnfgrerttBorgleLazyRoute,
   RnfgrerttPdslsLazyRoute: RnfgrerttPdslsLazyRoute,
   RnfgrerttTypingLazyRoute: RnfgrerttTypingLazyRoute,
   RnfgrerttIndexLazyRoute: RnfgrerttIndexLazyRoute,
@@ -444,6 +468,7 @@ export const routeTree = rootRoute
         "/post",
         "/auth/callback",
         "/auth/login",
+        "/rnfgrertt/borgle",
         "/rnfgrertt/pdsls",
         "/rnfgrertt/typing",
         "/rnfgrertt/",
@@ -475,6 +500,9 @@ export const routeTree = rootRoute
     },
     "/auth/login": {
       "filePath": "auth/login.lazy.tsx"
+    },
+    "/rnfgrertt/borgle": {
+      "filePath": "rnfgrertt/borgle.lazy.tsx"
     },
     "/rnfgrertt/pdsls": {
       "filePath": "rnfgrertt/pdsls.lazy.tsx"
