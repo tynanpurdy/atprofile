@@ -80,6 +80,8 @@ export function SmartSearchBar({
         navigate({ to: "/rnfgrertt/typing" });
       } else if (value === "pdsls") {
         navigate({ to: "/rnfgrertt/pdsls" });
+      } else if (value === "borgle" || value === "wordle") {
+        navigate({ to: "/rnfgrertt/borgle" });
       } else {
         // Allow handle lookups to start with @
         navigate({
