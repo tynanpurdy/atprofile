@@ -3,6 +3,7 @@ import { useState, useEffect, useCallback, useContext } from "preact/compat";
 import { QtContext } from "@/providers/qtprovider";
 import { Check, Loader2, Clipboard } from "lucide-react";
 import { generateTid, tidToTime } from "@/lib/tid";
+import { timeAgo } from "@/lib/utils";
 
 import { WORD_LIST, ACCEPTED_WORDS } from "@/lib/borgle-lists";
 import { StateUpdater } from "preact/hooks";
@@ -87,8 +88,11 @@ function seededRandom(seed: number): () => number {
 
 // Get word and puzzle number based on the current date
 function getTodaysWordData(): WordData {
-  const today = new Date();
-  const startDate = new Date("2025-06-10"); // Reference start date
+  const now = new Date();
+  const today = new Date(
+    Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()),
+  );
+  const startDate = new Date("2025-06-10T00:00:00Z"); // Reference start date in UTC
   const daysSinceStart = Math.floor(
     (today.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24),
   );
@@ -100,7 +104,7 @@ function getTodaysWordData(): WordData {
   return {
     word: WORD_LIST[index],
     puzzleNumber: daysSinceStart + 1, // Start from puzzle #1
-    date: today.toLocaleDateString(),
+    date: today.toISOString().split("T")[0], // Use UTC date
   };
 }
 
@@ -135,6 +139,7 @@ function WordleClone() {
   const [hasSubmittedToday, setHasSubmittedToday] = useState<boolean>(false);
   const [submissionRecord, setSubmissionRecord] = useState<string>("");
   const [submissionError, setSubmissionError] = useState<string>("");
+  const [nextPuzzleTime, setNextPuzzleTime] = useState<string>("");
 
   // Initialize game
   useEffect(() => {
@@ -142,6 +147,25 @@ function WordleClone() {
       startNewGame();
     }
   }, [checkingSubmission, todaysSubmission]);
+
+  // Update countdown timer
+  useEffect(() => {
+    const updateCountdown = () => {
+      const now = new Date();
+      const nextMidnightUTC = new Date();
+      nextMidnightUTC.setUTCDate(nextMidnightUTC.getUTCDate() + 1);
+      nextMidnightUTC.setUTCHours(0, 0, 0, 0); // Set to UTC midnight
+
+      setNextPuzzleTime(
+        timeAgo(nextMidnightUTC, { future: true, useShortLabels: true }),
+      );
+    };
+
+    updateCountdown(); // Initial update
+    const interval = setInterval(updateCountdown, 60000); // Update every minute
+
+    return () => clearInterval(interval);
+  }, []);
 
   // Submit playthrough when game ends
   useEffect(() => {
@@ -152,8 +176,12 @@ function WordleClone() {
 
       try {
         setHasSubmittedToday(true);
-        // Check if today's submission already exists
-        const today = new Date().toISOString().split("T")[0];
+        // Check if today's submission already exists (using UTC date)
+        const now = new Date();
+        const todayUTC = new Date(
+          Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()),
+        );
+        const today = todayUTC.toISOString().split("T")[0];
         const response = await qt.client.rpc.get(
           "com.atproto.repo.listRecords",
           {
@@ -255,7 +283,11 @@ function WordleClone() {
     try {
       console.log("Checking submission");
       const wordData = getTodaysWordData();
-      const today = new Date().toISOString().split("T")[0]; // YYYY-MM-DD format
+      const now = new Date();
+      const todayUTC = new Date(
+        Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()),
+      );
+      const today = todayUTC.toISOString().split("T")[0]; // YYYY-MM-DD format in UTC
 
       const response = await qt.client.rpc.get("com.atproto.repo.listRecords", {
         params: {
@@ -617,7 +649,7 @@ function WordleClone() {
   };
 
   const generateCurrentGameState = (): string => {
-    let state = `Borgle Puzzle #${puzzleNumber} (${todaysDate})\n`;
+    let state = `Borgle Puzzle #${puzzleNumber}\n`;
 
     for (let res in evaluations) {
       const evalRow = evaluations[res];
@@ -718,7 +750,7 @@ function WordleClone() {
             <h1 className="text-4xl font-bold tracking-wide">BORGLE</h1>
             {puzzleNumber > 0 && (
               <div className="text-sm text-muted-foreground mt-1">
-                Puzzle #{puzzleNumber} • {todaysDate}
+                Puzzle #{puzzleNumber} • {todaysDate} Zulu time
               </div>
             )}
           </div>
@@ -739,7 +771,8 @@ function WordleClone() {
 
           <div className="text-center">
             <div className="text-sm text-gray-500 mb-4">
-              Come back tomorrow for the next puzzle!
+              Come back after midnight UTC ({nextPuzzleTime}) for the next
+              puzzle!
             </div>
             <button
               onClick={() => {
@@ -827,7 +860,7 @@ function WordleClone() {
               />
             </div>
             <div className="text-xs text-gray-500 mt-2">
-              Daily word changes at midnight
+              Daily puzzle changes at midnight UTC ({nextPuzzleTime})
             </div>
           </div>
         ) : (
