@@ -629,7 +629,7 @@ function WordleClone() {
               ? "🟩"
               : evalRow.evaluations[char] === "present"
                 ? "🟨"
-                : "⬜️";
+                : "⬜";
           state += emoji;
         }
         // if this row is the winning row add a confetti
