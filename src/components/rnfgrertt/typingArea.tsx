@@ -79,7 +79,7 @@ export function TypingArea({
           </div>
           <div className="my-auto pb-4">{timeRemaining?.toFixed(0)}</div>
         </div>
-        <div className="relative overflow-y-visible bg-muted p-4 rounded-lg h-full max-h-max">
+        <div className="relative overflow-y-visible bg-muted p-4 rounded-lg h-min max-h-max">
           <TextDisplay
             userInput={userInput}
             sampleText={sampleText}
