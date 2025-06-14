@@ -648,7 +648,7 @@ function WordleClone() {
   };
 
   const generateCurrentGameState = (): string => {
-    let state = `Borgle Puzzle #${puzzleNumber}\n`;
+    let state = `Borgle #${puzzleNumber}\n`;
 
     for (let res in evaluations) {
       const evalRow = evaluations[res];
