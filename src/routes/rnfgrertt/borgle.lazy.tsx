@@ -92,7 +92,7 @@ function getTodaysWordData(): WordData {
   const today = new Date(
     Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()),
   );
-  const startDate = new Date("2025-06-10T00:00:00Z"); // Reference start date in UTC
+  const startDate = new Date("2025-06-09T00:00:00Z"); // Reference start date in UTC
   const daysSinceStart = Math.floor(
     (today.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24),
   );
