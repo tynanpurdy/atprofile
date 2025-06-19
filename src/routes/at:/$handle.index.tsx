@@ -252,32 +252,44 @@ function RouteComponent() {
           <div className="pt-2">
             <h2 className="text-xl font-bold mb-1">Collections</h2>
             <ul className="list-inside space-y-1">
-              {data.collections.map((c, i) => (
-                <Fragment key={c}>
-                  {c.split(".").slice(0, 2).join(".") !=
-                    (i > 0 &&
-                      data.collections[i - 1]
-                        .split(".")
-                        .slice(0, 2)
-                        .join(".")) && (
-                    <div className="w-min pt-2">
-                      {c.split(".").slice(0, 2).join(".")}{" "}
-                    </div>
-                  )}
-                  <li>
+              {Array.from(
+                data.collections
+                  .reduce((map, c) => {
+                    const prefix = c.split(".").slice(0, 2).join(".");
+                    if (!map.has(prefix)) {
+                      map.set(prefix, prefix);
+                    }
+                    return map;
+                  }, new Map<string, string>())
+                  .values(),
+              ).map((prefix) => {
+                const domain = prefix.split(".").reverse().join(".");
+                const faviconUrl = `https://www.google.com/s2/favicons?sz=64&domain=${domain}`;
+                return (
+                  <li key={prefix} className="flex items-center gap-2">
+                    <img
+                      src={faviconUrl}
+                      alt={`${domain} favicon`}
+                      className="w-4 h-4 rounded-sm flex-shrink-0"
+                      onError={(e) => {
+                        // Hide image if favicon not found
+                        (e.target as HTMLImageElement).style.display = "none";
+                      }}
+                    />
                     <Link
-                      className="ml-4 text-blue-600 dark:text-blue-400 hover:no-underline border-b hover:border-border border-transparent w-min"
+                      className="text-blue-600 dark:text-blue-400 hover:no-underline border-b hover:border-border border-transparent flex-1 break-all"
                       to="/at:/$handle/$collection"
                       params={{
-                        handle: handle, // Use original handle for navigation consistency
-                        collection: c,
+                        handle: handle,
+                        collection: prefix,
                       }}
+                      title={`https://${domain}`}
                     >
-                      {c}
+                      {`https://${domain}`}
                     </Link>
                   </li>
-                </Fragment>
-              ))}
+                );
+              })}
             </ul>
           </div>
         )}
@@ -309,11 +321,11 @@ function RouteComponent() {
           </Accordion>
         )}
         {/* Backlinks Section */}
-        {data?.did && (
+        {/* {data?.did && (
           <div className="pt-4 pb-8 flex flex-col gap-2">
             <AllBacklinksViewer aturi={data.did} />
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );

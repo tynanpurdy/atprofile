@@ -68,6 +68,11 @@ function getIconForCollection(collection: string) {
   return matchingKey ? iconMappings[matchingKey] : null;
 }
 
+function reverseDomain(collection: string) {
+  // Split by dot, reverse, join with dot
+  return collection.split(".").reverse().join(".");
+}
+
 function RepoIcons({
   collections,
   did,
@@ -79,12 +84,18 @@ function RepoIcons({
 }) {
   let uniqueTypes = Array.from(
     collections
-      .map((collection) => ({
-        id: collection,
-        Icon: getIconForCollection(collection)?.icon ?? <ShieldQuestionIcon />,
-        displayName: getIconForCollection(collection)?.label ?? "Unknown",
-        linkTemplate: getIconForCollection(collection)?.linkTemplate,
-      }))
+      .map((collection) => {
+        const iconObj = getIconForCollection(collection);
+        return {
+          id: collection,
+          Icon: iconObj?.icon ?? <ShieldQuestionIcon />,
+          displayName: iconObj?.label ?? "Unknown",
+          // If linkTemplate exists, use it; else generate URL from reversed domain
+          linkTemplate:
+            iconObj?.linkTemplate ??
+            `https://${reverseDomain(collection)}/{did}`,
+        };
+      })
       .reduce((acc, current) => {
         if (
           !Array.from(acc.values()).some(
@@ -107,6 +118,8 @@ function RepoIcons({
     <a
       href={linkTemplate?.replace("{handle}", handle).replace("{did}", did)}
       key={id}
+      target="_blank"
+      rel="noopener noreferrer"
     >
       <div className="w-8 h-8 p-1 mr-2 rounded-full dark:bg-neutral-800 border border-neutral-500/50 text-white">
         {typeof Icon === "string" ? (
